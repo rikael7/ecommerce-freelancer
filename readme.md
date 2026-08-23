@@ -565,15 +565,23 @@ Crie um arquivo `.env` na raiz do projeto.
 Exemplo:
 
 ```env
-PORT=3000
+# Servidor
+PORT= 3000  
+NODE_ENV= development
 
-DATABASE_URL=postgresql://usuario:senha@localhost:5432/ecommerce
+# Sessão
+SESSION_SECRET= troque-este-valor-por-uma-string-aleatoria-e-segura
 
-SESSION_SECRET=sua_chave_secreta
+# postgree
+DATABASE_URL=
 
-MERCADOPAGO_ACCESS_TOKEN=seu_access_token
 
-MERCADOPAGO_WEBHOOK_SECRET=seu_webhook_secret
+# Mercado pago
+MP_ACCESS_TOKEN= seu_access_token do mercado pago para o server fazer a criação de preferencia
+MP_WEBHOOK_SECRET= secret do webhook para validar se realmente vem do mercado pago
+APP_URL= url do seu site #coloque a url usada em produção
+
+
 ```
 
 > ⚠️ Os nomes das variáveis devem corresponder exatamente aos utilizados pelo código da aplicação.
