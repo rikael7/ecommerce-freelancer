@@ -330,36 +330,147 @@ async criarPedido(req, res) {
   },
 
   // Recebe as notificações (webhook) do Mercado Pago
-  async receberWebhook(req, res) {
-    try {
-      const { type, data } = req.body;
+  // async receberWebhook(req, res) {
+  //   try {
+  //     const { type, data } = req.body;
 
-      if (type === 'payment') {
-        const pagamento = await paymentClient.get({ id: data.id });
+  //     if (type === 'payment') {
+  //       const pagamento = await paymentClient.get({ id: data.id });
 
-        const status = pagamento.status; // approved, pending, rejected, etc.
-        const pedidoId = pagamento.external_reference;
+  //       const status = pagamento.status; // approved, pending, rejected, etc.
+  //       const pedidoId = pagamento.external_reference;
 
-        await pool.query(
-          `UPDATE pedidos SET status_pagamento = $1, payment_id = $2, atualizado_em = NOW() WHERE id = $3`,
-          [status, pagamento.id, pedidoId]
-        );
+  //       await pool.query(
+  //         `UPDATE pedidos SET status_pagamento = $1, payment_id = $2, atualizado_em = NOW() WHERE id = $3`,
+  //         [status, pagamento.id, pedidoId]
+  //       );
 
-        await pool.query(
-          `INSERT INTO pagamentos (pedido_id, payment_id, status, valor, metodo, criado_em)
-           VALUES ($1, $2, $3, $4, $5, NOW())
-           ON CONFLICT (payment_id) DO UPDATE SET status = EXCLUDED.status`,
-          [pedidoId, pagamento.id, status, pagamento.transaction_amount, pagamento.payment_method_id]
-        );
-      }
+  //       await pool.query(
+  //         `INSERT INTO pagamentos (pedido_id, payment_id, status, valor, metodo, criado_em)
+  //          VALUES ($1, $2, $3, $4, $5, NOW())
+  //          ON CONFLICT (payment_id) DO UPDATE SET status = EXCLUDED.status`,
+  //         [pedidoId, pagamento.id, status, pagamento.transaction_amount, pagamento.payment_method_id]
+  //       );
+  //     }
 
-      // Mercado Pago espera um 200 rápido para não reenviar a notificação
+  //     // Mercado Pago espera um 200 rápido para não reenviar a notificação
+  //     return res.sendStatus(200);
+  //   } catch (erro) {
+  //     console.error('Erro ao processar webhook do Mercado Pago:', erro);
+  //     return res.sendStatus(500);
+  //   }
+  // },
+
+async receberWebhook(req, res) {
+  try {
+    console.log('========== WEBHOOK MERCADO PAGO ==========');
+    console.log('Body recebido:', JSON.stringify(req.body, null, 2));
+
+    const { type, data } = req.body;
+
+    // Mercado Pago pode enviar outros tipos de notificação
+    if (type !== 'payment') {
+      console.log('Webhook ignorado. Tipo:', type);
       return res.sendStatus(200);
-    } catch (erro) {
-      console.error('Erro ao processar webhook do Mercado Pago:', erro);
-      return res.sendStatus(500);
     }
-  },
+
+    if (!data || !data.id) {
+      console.log('Webhook sem data.id');
+      return res.sendStatus(200);
+    }
+
+    console.log('Payment ID recebido:', data.id);
+
+    // Busca o pagamento diretamente na API do Mercado Pago
+    const pagamento = await paymentClient.get({
+      id: data.id
+    });
+
+    console.log(
+      'Pagamento retornado pelo Mercado Pago:',
+      JSON.stringify(pagamento, null, 2)
+    );
+
+    const status = pagamento.status;
+    const pedidoId = pagamento.external_reference;
+
+    console.log('Status:', status);
+    console.log('External Reference:', pedidoId);
+
+    if (!pedidoId) {
+      console.error(
+        'Pagamento não possui external_reference. Não foi possível identificar o pedido.'
+      );
+
+      return res.sendStatus(200);
+    }
+
+    // Atualiza pedido
+    const resultadoPedido = await pool.query(
+      `
+      UPDATE pedidos
+      SET
+        status_pagamento = $1,
+        payment_id = $2,
+        atualizado_em = NOW()
+      WHERE id = $3
+      `,
+      [
+        status,
+        pagamento.id,
+        pedidoId
+      ]
+    );
+
+    console.log(
+      'Pedidos atualizados:',
+      resultadoPedido.rowCount
+    );
+
+    // Registra/atualiza pagamento
+    const resultadoPagamento = await pool.query(
+      `
+      INSERT INTO pagamentos (
+        pedido_id,
+        payment_id,
+        status,
+        valor,
+        metodo,
+        criado_em
+      )
+      VALUES ($1, $2, $3, $4, $5, NOW())
+      ON CONFLICT (payment_id)
+      DO UPDATE SET
+        status = EXCLUDED.status
+      `,
+      [
+        pedidoId,
+        pagamento.id,
+        status,
+        pagamento.transaction_amount,
+        pagamento.payment_method_id
+      ]
+    );
+
+    console.log(
+      'Pagamento inserido/atualizado:',
+      resultadoPagamento.rowCount
+    );
+
+    console.log('==========================================');
+
+    return res.sendStatus(200);
+
+  } catch (erro) {
+    console.error(
+      'Erro ao processar webhook do Mercado Pago:'
+    );
+
+    console.error(erro);
+
+    return res.sendStatus(500);
+  }
+},
 
 
 
