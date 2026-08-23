@@ -25,6 +25,22 @@ function validarWebhookMercadoPago(req, res, next) {
 
     const secret = process.env.MP_WEBHOOK_SECRET;
 
+    console.log("========== TESTE SECRET ==========");
+console.log(
+  "SECRET LENGTH:",
+  process.env.MP_WEBHOOK_SECRET?.length
+);
+
+console.log(
+  "SECRET SHA256:",
+  crypto
+    .createHash("sha256")
+    .update(process.env.MP_WEBHOOK_SECRET || "")
+    .digest("hex")
+);
+
+console.log("==================================");
+
     console.log("\n========== MP WEBHOOK ==========");
     console.log("tipo:", req.query.type);
     console.log("data.id:", dataId);
