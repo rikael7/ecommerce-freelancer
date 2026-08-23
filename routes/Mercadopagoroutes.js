@@ -20,7 +20,7 @@ router.post('/pedidos', mercadopagoController.criarPedido);
 router.post('/preferencia', mercadopagoController.criarPreferencia);
 
 // Endpoint que o Mercado Pago chama para notificar mudanças de status
-router.post('/webhook', mercadopagoController.receberWebhook);
+router.post('/webhook', validarWebhookMercadoPago, mercadopagoController.receberWebhook);
 
 
 
