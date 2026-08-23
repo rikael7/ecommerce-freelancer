@@ -1,34 +1,49 @@
-const {
-    WebhookSignatureValidator,
-    InvalidWebhookSignatureError
-} = require("mercadopago");
+const crypto = require("crypto");
 
 function validarWebhookMercadoPago(req, res, next) {
     try {
+        // ==========================================
+        // IGNORA NOTIFICAÇÕES ANTIGAS / INDESEJADAS
+        // ==========================================
+
+        if (req.query.type !== "payment") {
+            console.log(
+                "Webhook ignorado. Tipo:",
+                req.query.type || req.query.topic
+            );
+
+            return res.sendStatus(200);
+        }
+
+        // ==========================================
+        // DADOS DO WEBHOOK
+        // ==========================================
+
         const xSignature = req.headers["x-signature"];
         const xRequestId = req.headers["x-request-id"];
+        const dataId = req.query["data.id"];
 
-        const dataId =
-            req.query["data.id"] ||
-            req.body?.data?.id;
+        const secret = process.env.MP_WEBHOOK_SECRET;
 
         console.log("========== MP WEBHOOK ==========");
-        console.log("x-signature:", xSignature);
         console.log("x-request-id:", xRequestId);
         console.log("data.id:", dataId);
-        console.log("query:", req.query);
-        console.log("body:", req.body);
+        console.log("tipo:", req.query.type);
         console.log("================================");
 
+        // ==========================================
+        // VERIFICA CONFIGURAÇÃO
+        // ==========================================
+
         if (!xSignature || !xRequestId || !dataId) {
-            console.warn("Webhook sem dados necessários.");
+            console.warn(
+                "Webhook sem dados necessários."
+            );
 
             return res.status(401).json({
                 error: "Webhook inválido."
             });
         }
-
-        const secret = process.env.MP_WEBHOOK_SECRET;
 
         if (!secret) {
             console.error(
@@ -40,21 +55,91 @@ function validarWebhookMercadoPago(req, res, next) {
             });
         }
 
-        WebhookSignatureValidator.validate({
-            xSignature,
-            xRequestId,
-            dataId: String(dataId),
-            secret
-        });
+        // ==========================================
+        // EXTRAI ts E v1 DO X-SIGNATURE
+        // ==========================================
 
-        console.log(
-            "Webhook Mercado Pago: assinatura válida."
+        const parts = xSignature.split(",");
+
+        let ts = null;
+        let v1 = null;
+
+        for (const part of parts) {
+            const [key, value] = part.split("=");
+
+            if (key === "ts") {
+                ts = value;
+            }
+
+            if (key === "v1") {
+                v1 = value;
+            }
+        }
+
+        if (!ts || !v1) {
+            console.warn(
+                "x-signature está em formato inválido."
+            );
+
+            return res.status(401).json({
+                error: "Assinatura do webhook inválida."
+            });
+        }
+
+        // ==========================================
+        // MANIFEST
+        // ==========================================
+
+        const manifest =
+            `id:${dataId};request-id:${xRequestId};ts:${ts};`;
+
+        // ==========================================
+        // CALCULA HMAC SHA-256
+        // ==========================================
+
+        const calculatedSignature = crypto
+            .createHmac("sha256", secret)
+            .update(manifest)
+            .digest("hex");
+
+        // ==========================================
+        // COMPARAÇÃO SEGURA
+        // ==========================================
+
+        const receivedBuffer = Buffer.from(v1, "hex");
+        const calculatedBuffer = Buffer.from(
+            calculatedSignature,
+            "hex"
         );
 
-        next();
+        let assinaturaValida = false;
 
-    } catch (error) {
-        if (error instanceof InvalidWebhookSignatureError) {
+        if (
+            receivedBuffer.length === calculatedBuffer.length
+        ) {
+            assinaturaValida = crypto.timingSafeEqual(
+                receivedBuffer,
+                calculatedBuffer
+            );
+        }
+
+        // ==========================================
+        // LOG DE DIAGNÓSTICO
+        // ==========================================
+
+        console.log("========== HMAC TEST ==========");
+        console.log("data.id:", dataId);
+        console.log("request-id:", xRequestId);
+        console.log("ts:", ts);
+        console.log("manifest:", manifest);
+        console.log("MATCH:", assinaturaValida);
+        console.log("===============================");
+
+        // ==========================================
+        // ASSINATURA INVÁLIDA
+        // ==========================================
+
+        if (!assinaturaValida) {
             console.warn(
                 "Webhook do Mercado Pago rejeitado: assinatura inválida."
             );
@@ -64,6 +149,17 @@ function validarWebhookMercadoPago(req, res, next) {
             });
         }
 
+        // ==========================================
+        // ASSINATURA VÁLIDA
+        // ==========================================
+
+        console.log(
+            "Webhook Mercado Pago: assinatura válida."
+        );
+
+        next();
+
+    } catch (error) {
         console.error(
             "Erro ao validar webhook do Mercado Pago:",
             error
