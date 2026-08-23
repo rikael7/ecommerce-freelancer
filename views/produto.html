@@ -1,0 +1,3358 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <style>
+      /* =========================================================
+   DESIGN SYSTEM — Loja do Mecânico (reprodução fiel)
+   ========================================================= */
+      :root {
+        /* Cores */
+        --color-bg: #eeeeee; /* fundo das seções cinza */
+        --color-surface: #ffffff; /* cards / painéis brancos */
+        --color-header-bg: #f8f9fa; /* faixa utilitária clara */
+        --color-text: #242424; /* texto principal */
+        --color-text-strong: #1c1f24; /* preço / títulos fortes */
+        --color-text-muted: #6b7280; /* texto secundário / labels */
+        --color-border: #e3e5e8; /* bordas sutis */
+        --color-border-strong: #d8dadd;
+
+        --color-orange: #fe5000; /* accent primário (badges, links, CTA texto) */
+        --color-orange-dark: #d84200;
+        --color-green: #21ad34; /* botão comprar / preço pix */
+        --color-green-dark: #1a8c2a;
+        --color-green-bg: #ebfaef; /* fundo botão adicionar ao carrinho */
+        --color-blue: #1f6fd8; /* links secundários */
+        --color-yellow: #febd01; /* estrelas de avaliação */
+
+        --radius-sm: 4px;
+        --radius-md: 8px;
+        --radius-lg: 12px;
+
+        --shadow-card:
+          0 1px 3px rgba(8, 8, 8, 0.331), 0 1px 2px rgba(20, 20, 20, 0.04);
+
+        --max-width: 1220px;
+
+        --font-base:
+          "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial,
+          sans-serif;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        font-family: var(--font-base);
+        color: var(--color-text);
+        background: var(--color-bg);
+        font-size: 15px;
+        line-height: 1.45;
+        -webkit-font-smoothing: antialiased;
+      }
+      img {
+        max-width: 100%;
+        display: block;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      button {
+        font-family: inherit;
+        cursor: pointer;
+      }
+      input {
+        font-family: inherit;
+      }
+
+      /* globais */
+      .mesmalinha {
+        display: flex;
+        gap: 5px;
+      }
+
+      .container {
+        max-width: var(--max-width);
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .section-title {
+        font-size: 22px;
+        font-weight: 700;
+        color: #1c2a3a;
+        margin: 0 0 18px;
+      }
+
+      /* Estrelas */
+      .stars {
+        display: inline-flex;
+        align-items: center;
+        gap: 2px;
+      }
+      .stars svg {
+        width: 14px;
+        height: 14px;
+      }
+      .star-full {
+        fill: var(--color-yellow);
+      }
+      .star-empty {
+        fill: #e2e4e8;
+      }
+      .rating-count,
+      .rating-num {
+        font-size: 12.5px;
+        color: var(--color-text-muted);
+        margin-left: 4px;
+      }
+
+      /* =========================================================
+   TOPO / HEADER
+   ========================================================= */
+      .topbar {
+        background: #1c2a3a;
+        color: #cfd6de;
+        font-size: 12.5px;
+      }
+      .topbar .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 34px;
+      }
+      .topbar a {
+        color: #cfd6de;
+      }
+      .topbar a:hover {
+        color: #fff;
+      }
+      .topbar-left {
+        display: flex;
+        gap: 18px;
+      }
+
+      .main-header {
+        background: var(--color-surface);
+        border-bottom: 1px solid var(--color-border);
+      }
+      .main-header .container {
+        display: flex;
+        align-items: center;
+        gap: 32px;
+        height: 84px;
+      }
+      .logo {
+        font-size: 22px;
+        font-weight: 800;
+        color: #1c2a3a;
+        white-space: nowrap;
+        letter-spacing: -0.2px;
+      }
+      .logo span {
+        color: var(--color-orange);
+      }
+
+      .search-bar {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        border: 1.5px solid var(--color-border-strong);
+        border-radius: 24px;
+        padding: 0 6px 0 18px;
+        height: 44px;
+        background: #fff;
+      }
+      .search-bar input {
+        flex: 1;
+        border: 0;
+        outline: 0;
+        font-size: 14px;
+        background: transparent;
+      }
+      .search-bar button {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 0;
+        background: var(--color-orange);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .search-bar button svg {
+        width: 16px;
+        height: 16px;
+        stroke: #fff;
+      }
+
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 26px;
+      }
+      .header-action {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12.5px;
+        color: #1c2a3a;
+      }
+      .header-action svg {
+        width: 24px;
+        height: 24px;
+        stroke: #1c2a3a;
+        flex-shrink: 0;
+      }
+      .header-action .cart-count {
+        background: var(--color-orange);
+        color: #fff;
+        font-size: 10px;
+        font-weight: 700;
+        border-radius: 50%;
+        width: 16px;
+        height: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: -14px;
+        margin-top: -14px;
+      }
+      .header-action strong {
+        display: block;
+        font-size: 13px;
+      }
+
+      .category-nav {
+        background: #1c2a3a;
+      }
+      .category-nav .container {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+        height: 46px;
+        overflow-x: auto;
+      }
+      .category-nav a {
+        color: #fff;
+        font-size: 13.5px;
+        font-weight: 500;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .category-nav a.all-cats {
+        color: var(--color-orange);
+        font-weight: 700;
+      }
+      .category-nav a:hover {
+        color: var(--color-orange);
+      }
+
+      /* =========================================================
+   BREADCRUMB
+   ========================================================= */
+      .breadcrumb {
+        padding: 16px 0 0;
+        font-size: 12.5px;
+        color: var(--color-text-muted);
+      }
+      .breadcrumb a:hover {
+        color: var(--color-orange);
+      }
+      .breadcrumb span {
+        margin: 0 6px;
+      }
+
+      /* =========================================================
+   PRODUTO — SEÇÃO PRINCIPAL
+   ========================================================= */
+      .product-section {
+        padding: 16px 0 32px;
+        background-color: #ffff;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      .product-grid {
+        display: grid;
+        grid-template-columns: 1fr 420px 300px;
+        gap: 10px;
+        align-items: start;
+      }
+      .product-card {
+        background: var(--color-surface);
+        border-radius: var(--radius-lg);
+        /* box-shadow:var(--shadow-card); */
+        padding: 28px;
+        position: relative;
+        margin: 40px;
+      }
+
+      /* galeria */
+      .gallery {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .gallery-main {
+        width: 100%;
+        max-width: 420px;
+        aspect-ratio: 1.4/1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .gallery-main img {
+        max-height: 280px;
+        object-fit: contain;
+      }
+      .gallery-fav,
+      .gallery-share {
+        position: absolute;
+        top: 28px;
+        right: 28px;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        border: 1px solid var(--color-border-strong);
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .gallery-share {
+        top: 74px;
+      }
+      .gallery-fav svg,
+      .gallery-share svg {
+        width: 18px;
+        height: 18px;
+        stroke: #5a6270;
+      }
+      /* Sobre o Produto */
+      .spec-card2 {
+        background: var(--color-surface);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-card);
+        padding: 0px;
+        margin-top: 20px;
+        width: 100%;
+      }
+
+      /* info do produto */
+      .product-info {
+        padding-top: 2px;
+      }
+      .badges {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+      }
+      .badge-best {
+        background: var(--color-orange);
+        color: #fff;
+        font-size: 12.5px;
+        font-weight: 700;
+        padding: 6px 12px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .badge-rank {
+        color: var(--color-blue);
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .product-title {
+        font-size: 21px;
+        font-weight: 700;
+        color: #1c2a3a;
+        margin: 0 0 10px;
+        line-height: 1.3;
+      }
+
+      /* estado de carregamento / erro da API */
+      .api-state {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13.5px;
+        font-weight: 600;
+        padding: 10px 14px;
+        border-radius: var(--radius-md);
+        margin-bottom: 16px;
+        background: #f2f4f7;
+        color: #3a4250;
+        border: 1px solid var(--color-border-strong);
+      }
+      .api-state.is-loading {
+        background: #eef4ff;
+        color: #1f4fa8;
+        border-color: #c9dbfa;
+      }
+      .api-state.is-error {
+        background: #fdecea;
+        color: #b3261e;
+        border-color: #f6c6c2;
+      }
+
+      .product-description {
+        font-size: 14px;
+        color: #3a4250;
+        line-height: 1.55;
+        margin: 0 0 16px;
+      }
+
+      .stock-info {
+        font-size: 13px;
+        font-weight: 700;
+        margin: -6px 0 16px;
+      }
+      .stock-info.in-stock {
+        color: var(--color-green-dark);
+      }
+      .stock-info.out-of-stock {
+        color: var(--color-orange-dark);
+      }
+
+      .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        filter: grayscale(0.15);
+      }
+
+      .rating-row {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid var(--color-border);
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+      }
+      .rating-row .sku {
+        font-size: 13px;
+        color: var(--color-text-muted);
+        margin-left: auto;
+      }
+      .rating-row .sku b {
+        color: var(--color-orange);
+        font-weight: 700;
+      }
+
+      .price-old {
+        font-size: 13px;
+        color: var(--color-text-muted);
+        text-decoration: line-through;
+      }
+      .price-main {
+        font-size: 34px;
+        font-weight: 800;
+        color: var(--color-text-strong);
+        margin: 2px 0 10px;
+      }
+      .price-main sup {
+        font-size: 18px;
+        font-weight: 700;
+        top: -0.6em;
+      }
+      .price-detail {
+        font-size: 14.5px;
+        color: #3a4250;
+        line-height: 1.55;
+        margin-bottom: 18px;
+      }
+      .price-detail b {
+        color: var(--color-text);
+      }
+
+      .payment-more {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 14px 0;
+        border-top: 1px solid var(--color-border);
+        font-size: 13.5px;
+        color: #3a4250;
+        cursor: pointer;
+      }
+      .payment-more .left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .payment-more svg {
+        width: 16px;
+        height: 16px;
+      }
+      .payment-more .chev {
+        color: var(--color-orange);
+        width: 18px;
+        height: 18px;
+      }
+
+      .affiliate-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #3a4250;
+        padding-top: 6px;
+      }
+      .affiliate-row svg {
+        width: 16px;
+        height: 16px;
+      }
+      .affiliate-row a {
+        color: var(--color-blue);
+      }
+      .affiliate-row a:hover {
+        text-decoration: underline;
+      }
+
+      /* caixa de compra (lateral direita) */
+      .buybox {
+        background: var(--color-surface);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-card);
+        padding: 22px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        padding-top: 30px;
+      }
+      .fretegratiscard {
+        background-color: #1fe63db9;
+        color: #0d3212d0;
+        padding: 2px;
+      }
+
+      .cep-input {
+        display: flex;
+        align-items: center;
+        border: 1.5px solid var(--color-border-strong);
+        border-radius: 24px;
+        padding: 0 6px 0 16px;
+        height: 44px;
+      }
+      .cep-input input {
+        flex: 1;
+        border: 0;
+        outline: 0;
+        font-size: 13.5px;
+      }
+      .cep-input button {
+        width: 32px;
+        height: 32px;
+        border: 0;
+        background: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .cep-input svg {
+        width: 16px;
+        height: 16px;
+        stroke: #8a919c;
+      }
+
+      .qty-row {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .qty-selector {
+        display: flex;
+        align-items: center;
+        border: 1.5px solid var(--color-border-strong);
+        border-radius: 24px;
+        overflow: hidden;
+      }
+      .qty-selector button {
+        width: 34px;
+        height: 38px;
+        border: 0;
+        background: #fff;
+        color: var(--color-orange);
+        font-size: 17px;
+        font-weight: 600;
+      }
+      .qty-selector button:hover {
+        background: #fff6f0;
+      }
+      .qty-selector input {
+        width: 34px;
+        text-align: center;
+        border: 0;
+        outline: 0;
+        font-size: 14px;
+      }
+      .qty-label {
+        font-size: 13.5px;
+        color: #3a4250;
+      }
+
+      .btn {
+        height: 48px;
+        border-radius: 24px;
+        font-size: 15px;
+        font-weight: 700;
+        border: 1.5px solid transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition:
+          filter 0.15s ease,
+          background 0.15s ease;
+      }
+      .btn-primary {
+        background: var(--color-green);
+        color: #fff;
+      }
+      .btn-primary:hover {
+        background: var(--color-green-dark);
+      }
+      .btn-secondary {
+        background: var(--color-green-bg);
+        color: var(--color-green-dark);
+        border-color: #bfe9c6;
+      }
+      .btn-secondary:hover {
+        background: #defbe4;
+      }
+      .btn-secondary svg {
+        width: 18px;
+        height: 18px;
+      }
+      .btn-outline {
+        background: #fff;
+        color: var(--color-orange);
+        border: 1.5px solid var(--color-orange);
+        height: 44px;
+        border-radius: 24px;
+        font-weight: 700;
+        font-size: 14px;
+        padding: 0 22px;
+      }
+      .btn-outline:hover {
+        background: #fff6f0;
+      }
+
+      .sold-by {
+        font-size: 12.5px;
+        color: var(--color-text-muted);
+        text-align: center;
+      }
+      .sold-by b {
+        color: var(--color-orange);
+      }
+
+      /* highlights list */
+      .highlights {
+        margin-top: 26px;
+        padding-top: 22px;
+        border-top: 1px solid var(--color-border);
+      }
+      .highlights li {
+        position: relative;
+        padding-left: 20px;
+        margin-bottom: 9px;
+        font-size: 14px;
+        color: #3a4250;
+      }
+      .highlights li::before {
+        content: "::";
+        position: absolute;
+        left: 0;
+        color: #3a4250;
+        font-weight: 700;
+        letter-spacing: -2px;
+      }
+      .see-more {
+        color: var(--color-orange);
+        font-weight: 700;
+        font-size: 13.5px;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        margin-top: 6px;
+        background: none;
+        border: 0;
+      }
+
+            .see-more-about {
+        color: var(--color-orange);
+        font-weight: 700;
+        font-size: 13.5px;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        margin-top: 6px;
+        background: none;
+        border: 0;
+        display: flex;
+      }
+
+
+      .see-more svg {
+        width: 14px;
+        height: 14px;
+        transition: transform 0.2s;
+      }
+      .see-more.open svg {
+        transform: rotate(180deg);
+      }
+
+      /* =========================================================
+   FICHA TÉCNICA
+   ========================================================= */
+
+      .doc-section {
+        padding: 16px 0 32px;
+        background-color: #ce5e5e;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 24px;
+        display: flex;
+        gap: 12px;
+      }
+
+      .spec-card {
+        background: var(--color-surface);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-card);
+        padding: 28px;
+        margin-top: 20px;
+      }
+
+      .spec-heading {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 18px;
+        font-weight: 700;
+        color: #1c2a3a;
+        margin-bottom: 18px;
+      }
+
+
+      .spec-heading svg {
+        width: 20px;
+        height: 20px;
+        color: var(--color-orange);
+      }
+      .spec-table {
+        width: 80%;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        overflow: hidden;
+      }
+      .spec-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+      .spec-row:nth-child(odd) {
+        background: #fafafa;
+      }
+      .spec-row div {
+        padding: 13px 18px;
+        font-size: 14px;
+      }
+      .spec-row .k {
+        font-weight: 700;
+        color: #1c2a3a;
+      }
+      .spec-row .v {
+        color: #3a4250;
+      }
+      .spec-table .spec-row + .spec-row {
+        border-top: 1px solid var(--color-border);
+      }
+      .spec-more {
+        text-align: center;
+        margin-top: 16px;
+      }
+      .spec-more button {
+        color: var(--color-orange);
+        font-weight: 700;
+        font-size: 14px;
+        background: none;
+        border: 0;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .spec-more svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      /* =========================================================
+   SIDEBAR "VEJA TAMBÉM"
+   ========================================================= */
+      .side-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: #1c2a3a;
+        margin: 20px 0 12px;
+      }
+      .mini-card {
+        background: var(--color-surface);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-card);
+        padding: 16px;
+        display: flex;
+        gap: 14px;
+        margin-bottom: 14px;
+        align-items: flex-start;
+      }
+      .mini-card img {
+        width: 76px;
+        height: 76px;
+        object-fit: contain;
+        flex-shrink: 0;
+      }
+      .mini-card .name {
+        font-size: 13.5px;
+        font-weight: 600;
+        color: #1c2a3a;
+        line-height: 1.35;
+        margin-bottom: 6px;
+      }
+      .mini-card .price {
+        font-size: 17px;
+        font-weight: 800;
+        color: var(--color-text-strong);
+        margin-top: 4px;
+      }
+
+      /* =========================================================
+   CARDS DE PRODUTO (carrosséis)
+   ========================================================= */
+      .product-card-item {
+        background: var(--color-surface);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-card);
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        height: 100%;
+      }
+      .product-card-item .thumb {
+        position: relative;
+        aspect-ratio: 1/1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
+      }
+      .product-card-item .thumb img {
+        max-height: 150px;
+        object-fit: contain;
+      }
+      .tag-turbo {
+        position: absolute;
+        left: 0;
+        bottom: 6px;
+        background: #141517;
+        color: #fff;
+        font-size: 10.5px;
+        font-weight: 700;
+        padding: 5px 8px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .tag-turbo svg {
+        width: 11px;
+        height: 11px;
+        fill: var(--color-yellow);
+      }
+      .pc-name {
+        font-size: 13.5px;
+        font-weight: 600;
+        color: #1c2a3a;
+        line-height: 1.35;
+        min-height: 36px;
+        margin-bottom: 6px;
+      }
+      .pc-price {
+        font-size: 19px;
+        font-weight: 800;
+        color: var(--color-text-strong);
+        margin: 6px 0 2px;
+      }
+      .pc-price small {
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .pc-pix {
+        font-size: 12.5px;
+        color: #3a4250;
+        margin-bottom: 2px;
+      }
+      .pc-pix b {
+        color: var(--color-green-dark);
+        font-weight: 700;
+      }
+      .pc-install {
+        font-size: 12px;
+        color: var(--color-text-muted);
+        margin-bottom: 12px;
+        line-height: 1.4;
+      }
+      .pc-footer {
+        margin-top: auto;
+        display: flex;
+        gap: 5px;
+      }
+      .pc-footer .qty-selector {
+        height: 38px;
+        flex-shrink: 0;
+      }
+      .pc-footer .qty-selector button {
+        height: 36px;
+        width: 24px;
+        font-size: 14px;
+      }
+      .pc-footer .qty-selector input {
+        width: 20px;
+        font-size: 12px;
+      }
+      .pc-footer .btn-add {
+        flex: 1;
+        height: 38px;
+        min-width: 0;
+        border-radius: 22px;
+        border: 1.5px solid var(--color-green);
+        background: #fff;
+        color: var(--color-green-dark);
+        font-weight: 700;
+        font-size: 10.5px;
+        padding: 0 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        letter-spacing: -0.2px;
+      }
+      .pc-footer .btn-add:hover {
+        background: var(--color-green-bg);
+      }
+
+      /* =========================================================
+   CARROSSÉIS
+   ========================================================= */
+      .carousel-section {
+        padding: 34px 0;
+      }
+      .carousel-wrap {
+        position: relative;
+      }
+      .carousel-track {
+        display: flex;
+        gap: 18px;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        padding-bottom: 4px;
+        scrollbar-width: none;
+      }
+      .carousel-track::-webkit-scrollbar {
+        display: none;
+      }
+      .carousel-track > * {
+        flex: 0 0 calc((100% - 4 * 18px) / 5);
+        min-width: 200px;
+      }
+      .carousel-nav {
+        position: absolute;
+        top: 38%;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: #fff;
+        border: 1px solid var(--color-border-strong);
+        box-shadow: var(--shadow-card);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
+      }
+      .carousel-nav svg {
+        width: 16px;
+        height: 16px;
+        color: var(--color-orange);
+      }
+      .carousel-nav.prev {
+        left: -19px;
+      }
+      .carousel-nav.next {
+        right: -19px;
+      }
+      .carousel-nav:hover {
+        background: #fff6f0;
+      }
+
+      /* =========================================================
+   AVALIAÇÕES
+   ========================================================= */
+      .reviews-section {
+        padding: 34px 0 10px;
+      }
+      .reviews-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 18px;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .reviews-head .section-title {
+        margin: 0;
+      }
+      .reviews-filters {
+        display: flex;
+        gap: 10px;
+      }
+      .select-fake {
+        border: 1.5px solid var(--color-border-strong);
+        border-radius: 24px;
+        padding: 0 16px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        font-size: 13.5px;
+        color: #3a4250;
+        background: #fff;
+      }
+      .select-fake svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      .reviews-body {
+        background: var(--color-surface);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-card);
+        padding: 28px;
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        gap: 28px;
+      }
+      .reviews-summary {
+        background: #fafafa;
+        border-radius: var(--radius-md);
+        padding: 22px;
+        align-self: start;
+      }
+      .reviews-summary .score {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+      .reviews-summary .score b {
+        font-size: 36px;
+        font-weight: 800;
+        color: #1c2a3a;
+      }
+      .reviews-summary .count {
+        font-size: 13.5px;
+        color: #3a4250;
+        margin-bottom: 4px;
+      }
+      .reviews-summary .count b {
+        font-weight: 700;
+      }
+      .reviews-summary .recommend {
+        font-size: 13.5px;
+        color: #3a4250;
+        margin-bottom: 18px;
+      }
+      .reviews-summary .recommend b {
+        color: var(--color-green-dark);
+        font-weight: 700;
+      }
+      .reviews-summary h4 {
+        font-size: 14px;
+        margin: 0 0 10px;
+      }
+      .filter-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 7px;
+        font-size: 12.5px;
+        color: #3a4250;
+      }
+      .filter-row .bar {
+        flex: 1;
+        height: 8px;
+        background: #e6e6e6;
+        border-radius: 4px;
+        overflow: hidden;
+      }
+      .filter-row .bar span {
+        display: block;
+        height: 100%;
+        background: var(--color-yellow);
+      }
+      .filter-row .pct {
+        width: 34px;
+        text-align: right;
+        color: var(--color-text-muted);
+      }
+
+      .review-item {
+        padding-bottom: 22px;
+        margin-bottom: 22px;
+        border-bottom: 1px solid var(--color-border);
+      }
+      .review-item:last-child {
+        border-bottom: 0;
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
+      .review-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 6px;
+      }
+      .review-author {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+        font-size: 14px;
+        color: #1c2a3a;
+      }
+      .review-author svg {
+        width: 26px;
+        height: 26px;
+        color: #c7cbd1;
+      }
+      .review-date {
+        font-size: 12.5px;
+        color: var(--color-text-muted);
+      }
+      .review-text {
+        font-size: 14px;
+        color: #3a4250;
+        margin: 8px 0 12px;
+        line-height: 1.55;
+      }
+      .review-photo {
+        width: 64px;
+        height: 64px;
+        border-radius: 6px;
+        object-fit: cover;
+        margin-bottom: 12px;
+      }
+      .review-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .review-actions button {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid var(--color-border-strong);
+        background: #fff;
+        border-radius: 20px;
+        padding: 7px 14px;
+        font-size: 12.5px;
+        color: #3a4250;
+      }
+      .review-actions svg {
+        width: 14px;
+        height: 14px;
+      }
+      .review-actions .flag {
+        margin-left: auto;
+        border: 0;
+        padding: 6px;
+      }
+
+      .write-review {
+        margin-top: 24px;
+        padding-top: 22px;
+        border-top: 1px solid var(--color-border);
+      }
+      .write-review p {
+        font-size: 13.5px;
+        color: var(--color-text-muted);
+        margin: 4px 0 16px;
+      }
+
+      /* =========================================================
+   RODAPÉ
+   ========================================================= */
+      .footer {
+        background: var(--color-surface);
+        margin-top: 34px;
+      }
+      .footer-cats {
+        padding: 36px 0 26px;
+        border-bottom: 1px solid var(--color-border);
+      }
+      .footer-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 34px;
+      }
+      .footer-col h4 {
+        font-size: 16px;
+        font-weight: 700;
+        color: #1c2a3a;
+        margin: 0 0 16px;
+      }
+      .footer-col.corporate .underline {
+        display: block;
+        width: 170px;
+        height: 2px;
+        background: var(--color-orange);
+        margin: -10px 0 18px;
+      }
+      .footer-col ul li {
+        margin-bottom: 11px;
+      }
+      .footer-col ul li a {
+        font-size: 13.5px;
+        color: #3a4250;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .footer-col ul li a::before {
+        content: "▸";
+        color: var(--color-orange);
+        font-size: 10px;
+      }
+      .footer-col ul li.category a::before {
+        content: "▸";
+      }
+      .footer-col.corporate .phone,
+      .footer-col.corporate .mail {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 14px;
+        color: #1c2a3a;
+        margin-bottom: 14px;
+        font-weight: 600;
+      }
+      .footer-col.corporate .mail {
+        color: #3a4250;
+        font-weight: 400;
+      }
+      .footer-col.corporate svg {
+        width: 16px;
+        height: 16px;
+        color: #1c2a3a;
+      }
+
+      .footer-brands {
+        padding: 16px 0;
+        border-bottom: 1px solid var(--color-border);
+        text-align: center;
+        font-size: 13.5px;
+        color: #3a4250;
+      }
+      .footer-brands b {
+        color: #1c2a3a;
+      }
+      .footer-brands a {
+        color: #3a4250;
+      }
+      .footer-brands a:hover {
+        color: var(--color-orange);
+      }
+
+      .footer-utility {
+        padding: 26px 0;
+      }
+      .footer-utility-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 30px;
+        flex-wrap: wrap;
+      }
+      .footer-links {
+        display: flex;
+        gap: 26px;
+        flex-wrap: wrap;
+      }
+      .footer-links a {
+        font-size: 13.5px;
+        font-weight: 600;
+        color: #1c2a3a;
+      }
+      .footer-links a:hover {
+        color: var(--color-orange);
+      }
+
+      .footer-app h5,
+      .footer-certs h5 {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--color-orange);
+        margin: 0 0 10px;
+        letter-spacing: 0.3px;
+      }
+      .footer-app {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .qr-box {
+        width: 64px;
+        height: 64px;
+        background: repeating-conic-gradient(#141517 0 25%, #fff 0 50%) 0/8px
+          8px;
+        border: 1px solid #141517;
+      }
+      .store-badges {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        font-size: 12px;
+        color: #3a4250;
+      }
+      .store-badges span {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .store-badges svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      .footer-certs {
+        display: flex;
+        gap: 10px;
+      }
+      .cert-badge {
+        width: 76px;
+        height: 60px;
+        border: 1px solid var(--color-border-strong);
+        border-radius: 6px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 9px;
+        text-align: center;
+        gap: 3px;
+        padding: 4px;
+      }
+
+      .footer-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-top: 22px;
+        flex-wrap: wrap;
+        gap: 16px;
+        font-size: 12.5px;
+        color: var(--color-text-muted);
+      }
+      .footer-meta p {
+        margin: 0 0 6px;
+        max-width: 560px;
+      }
+      .footer-brazil {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 700;
+        color: #1c2a3a;
+        margin-bottom: 12px;
+      }
+      .footer-social {
+        display: flex;
+        gap: 10px;
+      }
+      .footer-social a {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 1px solid var(--color-border-strong);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .footer-social svg {
+        width: 15px;
+        height: 15px;
+        color: #3a4250;
+      }
+      .footer-copy {
+        text-align: right;
+      }
+
+      /* =========================================================
+   RESPONSIVO
+   ========================================================= */
+      @media (max-width: 1080px) {
+        .product-grid {
+          grid-template-columns: 1fr 380px;
+        }
+        .product-grid > .sidebar-also {
+          grid-column: 1 / -1;
+        }
+        .reviews-body {
+          grid-template-columns: 1fr;
+        }
+        .footer-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .carousel-track > * {
+          flex-basis: calc((100% - 3 * 18px) / 4);
+        }
+      }
+      @media (max-width: 860px) {
+        .topbar {
+          display: none;
+        }
+        .main-header .container {
+          flex-wrap: wrap;
+          height: auto;
+          padding: 12px 20px;
+          gap: 12px;
+        }
+        .search-bar {
+          order: 3;
+          flex-basis: 100%;
+        }
+        .category-nav .container {
+          height: 42px;
+        }
+        .product-grid {
+          grid-template-columns: 1fr;
+        }
+        .footer-grid {
+          grid-template-columns: 1fr;
+          gap: 26px;
+        }
+        .footer-utility-top {
+          flex-direction: column;
+        }
+        .carousel-track > * {
+          flex-basis: calc((100% - 2 * 18px) / 3);
+        }
+      }
+      @media (max-width: 560px) {
+        .product-card {
+          padding: 18px;
+        }
+        .price-main {
+          font-size: 27px;
+        }
+        .carousel-track > * {
+          flex-basis: calc((100% - 18px) / 2);
+        }
+        .reviews-body {
+          padding: 18px;
+        }
+        .footer-meta {
+          flex-direction: column;
+        }
+        .footer-copy {
+          text-align: left;
+        }
+      }
+
+      /* =========================================================
+   CARRINHO
+   ========================================================= */
+      .header-action.cart-trigger {
+        cursor: pointer;
+        position: relative;
+      }
+      .header-action .cart-count-badge {
+        position: absolute;
+        top: -6px;
+        right: -14px;
+        background: var(--color-orange);
+        color: #fff;
+        font-size: 10px;
+        font-weight: 800;
+        border-radius: 50%;
+        min-width: 16px;
+        height: 16px;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 0 3px;
+      }
+      .cart-drawer {
+        position: fixed;
+        top: 0;
+        right: 0;
+        height: 100vh;
+        width: 360px;
+        max-width: 92vw;
+        background: #fff;
+        color: var(--color-text);
+        z-index: 200;
+        box-shadow: -4px 0 24px rgba(0, 0, 0, 0.25);
+        transform: translateX(100%);
+        transition: transform 0.28s ease;
+        display: flex;
+        flex-direction: column;
+      }
+      .cart-drawer.open {
+        transform: translateX(0);
+      }
+      .cart-drawer-header {
+        background: #1c2a3a;
+        color: #fff;
+        padding: 16px 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-weight: 700;
+        font-size: 15px;
+      }
+      .cart-drawer-header button {
+        background: none;
+        border: 0;
+        color: #fff;
+        font-size: 18px;
+        cursor: pointer;
+        line-height: 1;
+      }
+      .cart-drawer-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 10px 14px;
+      }
+      .cart-item {
+        display: flex;
+        gap: 10px;
+        padding: 12px 0;
+        border-bottom: 1px solid #eee;
+      }
+      .cart-item .ci-thumb {
+        width: 52px;
+        height: 52px;
+        background: var(--color-bg);
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        opacity: 0.5;
+        flex-shrink: 0;
+        overflow: hidden;
+      }
+      .cart-item .ci-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 6px;
+      }
+      .cart-item .ci-info {
+        flex: 1;
+        min-width: 0;
+      }
+      .cart-item .ci-name {
+        font-size: 12.5px;
+        font-weight: 600;
+        line-height: 1.3;
+        margin-bottom: 4px;
+      }
+      .cart-item .ci-price {
+        font-size: 13px;
+        font-weight: 800;
+        color: var(--color-text);
+      }
+      .cart-item .ci-controls {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 6px;
+      }
+      .cart-item .ci-controls button {
+        width: 22px;
+        height: 22px;
+        border: 1px solid #ddd;
+        background: #fff;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 13px;
+        line-height: 1;
+      }
+      .cart-item .ci-controls .ci-qty {
+        font-size: 12.5px;
+        min-width: 16px;
+        text-align: center;
+      }
+      .cart-item .ci-remove {
+        background: none;
+        border: 0;
+        color: #c0392b;
+        font-size: 11.5px;
+        cursor: pointer;
+        margin-left: auto;
+        text-decoration: underline;
+      }
+      .cart-empty {
+        padding: 40px 10px;
+        text-align: center;
+        color: var(--color-text-muted);
+        font-size: 13px;
+      }
+      .cart-drawer-footer {
+        padding: 14px 18px;
+        border-top: 1px solid #eee;
+        background: #fff;
+      }
+      .cart-drawer-footer .cart-total-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        font-weight: 700;
+        margin-bottom: 10px;
+      }
+      .cart-drawer-footer .cart-checkout-btn {
+        display: block;
+        text-align: center;
+        background: var(--color-orange);
+        color: #fff;
+        font-weight: 700;
+        padding: 12px;
+        border-radius: 6px;
+        font-size: 13.5px;
+      }
+      .cart-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 150;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.28s ease;
+      }
+      .cart-overlay.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+    </style>
+
+    <!-- ================= TOPBAR ================= -->
+    <div class="topbar">
+      <div class="container">
+        <div class="topbar-left">
+          <a href="#">Minha Conta</a>
+          <a href="#">Acompanhe seus pedidos</a>
+          <a href="#">Como Comprar</a>
+          <a href="#">Trabalhe Conosco</a>
+        </div>
+        <div class="topbar-left">
+          <a href="#">Vendas corporativas: (11) 3185-6786</a>
+          <a href="#">Central de Ajuda</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= HEADER ================= -->
+    <header class="main-header">
+      <div class="container">
+        <a href="#" class="logo">loja do <span>mecânico</span></a>
+        <div class="search-bar">
+          <input type="text" placeholder="O que você procura?" />
+          <button aria-label="Buscar">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke-width="2"
+              stroke-linecap="round"
+            >
+              <circle cx="11" cy="11" r="7" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+          </button>
+        </div>
+        <div class="header-actions">
+          <a href="#" class="header-action">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+            <span>Entrar / <strong>Cadastrar</strong></span>
+          </a>
+          <a href="#" class="header-action cart-trigger" id="cartTrigger" onclick="toggleCartDrawer(true); return false;">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M9 22a1 1 0 1 0 0-2 1 1 0 0 0 0 2ZM20 22a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"
+              />
+              <path
+                d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
+              />
+            </svg>
+            <span><strong>Carrinho</strong></span>
+            <span class="cart-count-badge" id="cartCountBadge">0</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- ================= CARRINHO (drawer) ================= -->
+    <div class="cart-overlay" id="cartOverlay" onclick="toggleCartDrawer(false)"></div>
+    <aside class="cart-drawer" id="cartDrawer">
+      <div class="cart-drawer-header">
+        <span>Meu Carrinho</span>
+        <button onclick="toggleCartDrawer(false)">✕</button>
+      </div>
+      <div class="cart-drawer-body" id="cartDrawerBody">
+        <div class="cart-empty">Seu carrinho está vazio.</div>
+      </div>
+      <div class="cart-drawer-footer">
+        <div class="cart-total-row"><span>Total</span><span id="cartDrawerTotal">R$ 0,00</span></div>
+        <a href="/cart" class="cart-checkout-btn">Finalizar compra</a>
+      </div>
+    </aside>
+
+    <!-- ================= MENU DE CATEGORIAS ================= -->
+    <nav class="category-nav">
+      <div class="container">
+        <a href="#" class="all-cats">☰ Todas as categorias</a>
+        <a href="#">Ferramentas Manuais</a>
+        <a href="#">Ferramentas Elétricas</a>
+        <a href="#">Ferramentas Automotivas</a>
+        <a href="#">Equipamento Caminhões</a>
+        <a href="#">EPI</a>
+        <a href="#">Ferramentas em Geral</a>
+        <a href="#">Black Friday</a>
+      </div>
+    </nav>
+
+    <main>
+      <div class="container">
+        <p class="breadcrumb">
+          <a href="#">Início</a>
+        </p>
+      </div>
+
+      <!-- ================= PRODUTO ================= -->
+      <section class="product-section">
+        <div class="container product-grid">
+          <!-- Galeria -->
+          <div class="product-card gallery">
+            <button class="gallery-fav" aria-label="Favoritar">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8">
+                <path
+                  d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"
+                />
+              </svg>
+            </button>
+            <button class="gallery-share" aria-label="Compartilhar">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8">
+                <circle cx="18" cy="5" r="3" />
+                <circle cx="6" cy="12" r="3" />
+                <circle cx="18" cy="19" r="3" />
+                <line x1="8.6" y1="10.5" x2="15.4" y2="6.5" />
+                <line x1="8.6" y1="13.5" x2="15.4" y2="17.5" />
+              </svg>
+            </button>
+            <div class="gallery-main">
+              <img src="assets/bancada-dark.svg" alt="Imagem do produto" />
+            </div>
+          </div>
+
+          <!-- Info central -->
+          <div class="product-card product-info">
+            <div id="apiState" class="api-state" style="display: none"></div>
+            <div class="badges">
+              <span class="badge-best">🔥 Mais vendido</span>
+              <a href="#" class="badge-rank">17º Lugar em Bancada</a>
+            </div>
+            <h1 class="product-title" id="productTitle">
+              
+            </h1>
+            <div class="rating-row">
+              <span class="stars" aria-label="5.0 de 5 estrelas">
+                <svg viewBox="0 0 20 20" class="star-full">
+                  <polygon
+                    points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"
+                  />
+                </svg>
+                <svg viewBox="0 0 20 20" class="star-full">
+                  <polygon
+                    points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"
+                  />
+                </svg>
+                <svg viewBox="0 0 20 20" class="star-full">
+                  <polygon
+                    points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"
+                  />
+                </svg>
+                <svg viewBox="0 0 20 20" class="star-full">
+                  <polygon
+                    points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"
+                  />
+                </svg>
+                <svg viewBox="0 0 20 20" class="star-full">
+                  <polygon
+                    points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"
+                  />
+                </svg>
+              </span>
+              <span class="rating-num">5.0</span>
+              <span class="rating-count">(2)</span>
+              <span class="sku"
+                >COD. <span id="productId">2841117</span> <b>PRESTO</b></span
+              >
+            </div>
+
+            <div
+              class="mesmalinha great-timing d-flex justify-content-between align-items-center mb-3"
+            >
+              <svg
+                class="stamp"
+                width="146"
+                height="42"
+                viewBox="0 0 146 42"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M17.478 22.9893V10.3523C12.6658 10.3698 8.45808 13.0819 6.20079 17.0999C6.19679 17.1069 6.19309 17.1139 6.18939 17.1209L16.7909 23.4356C16.9265 23.1816 17.1819 23.0061 17.478 22.9893Z"
+                  fill="#00B34C"
+                ></path>
+                <path
+                  d="M17.8275 39.4285C17.7268 39.4304 17.6257 39.4323 17.5246 39.4323C9.19308 39.4323 2.41505 32.4393 2.41505 23.8441C2.41505 15.2487 9.19308 8.25597 17.5246 8.25597C17.626 8.25597 17.7268 8.25788 17.8275 8.25978V0H14.6533C14.2527 0 13.9283 0.335045 13.9283 0.747971V3.44899C13.9283 3.86224 14.253 4.19696 14.6533 4.19696H16.8462V5.73296C13.7945 5.86138 10.9404 6.79563 8.4807 8.33607L7.97292 7.54805L8.92871 6.89227C9.26209 6.66339 9.35268 6.19897 9.13114 5.85502L8.03824 4.15945C7.81639 3.81551 7.36623 3.72205 7.03284 3.95061L3.9615 6.05751C3.62812 6.28639 3.53753 6.75081 3.75907 7.09476L4.85197 8.79033C4.95858 8.95562 5.12404 9.07038 5.31261 9.10948C5.36006 9.11933 5.40813 9.1241 5.45558 9.1241C5.59731 9.1241 5.7372 9.08118 5.85706 8.99885L6.76478 8.37613L7.27318 9.16479C2.86952 12.4628 0 17.814 0 23.8441C0 33.8399 7.88233 41.9719 17.5712 41.9719C17.6568 41.9719 17.7422 41.9709 17.8275 41.9696V39.4285Z"
+                  fill="#008000"
+                ></path>
+                <path
+                  d="M17.4783 11.3162C17.6714 11.3162 17.828 11.1548 17.828 10.9555V9.74751C17.828 9.5482 17.6714 9.38672 17.4783 9.38672C17.2851 9.38672 17.1285 9.5482 17.1285 9.74751V10.9555C17.1285 11.1548 17.2851 11.3162 17.4783 11.3162Z"
+                  fill="#008000"
+                ></path>
+                <path
+                  d="M17.4783 38.3016C17.6714 38.3016 17.828 38.1401 17.828 37.9408V36.7329C17.828 36.5336 17.6714 36.3721 17.4783 36.3721C17.2851 36.3721 17.1285 36.5336 17.1285 36.7329V37.9408C17.1285 38.1401 17.2851 38.3016 17.4783 38.3016Z"
+                  fill="#008000"
+                ></path>
+                <path
+                  d="M10.6455 36.4132C10.7663 36.4132 10.884 36.3484 10.9487 36.2327L11.5342 35.1865C11.6306 35.0139 11.5733 34.7933 11.4063 34.6938C11.239 34.5943 11.0251 34.6535 10.9287 34.8257L10.3433 35.8719C10.2468 36.0445 10.3041 36.2651 10.4711 36.3646C10.526 36.3977 10.5864 36.4132 10.6455 36.4132Z"
+                  fill="#008000"
+                ></path>
+                <path
+                  d="M5.64502 31.2536C5.70418 31.2536 5.76427 31.238 5.81942 31.2053L6.83344 30.6013C7.00075 30.5018 7.05806 30.2812 6.96131 30.1086C6.86487 29.9363 6.65104 29.8769 6.48373 29.9767L5.4697 30.5806C5.30239 30.6801 5.24508 30.9008 5.34183 31.0734C5.40685 31.1891 5.52424 31.2536 5.64502 31.2536Z"
+                  fill="#008000"
+                ></path>
+                <path
+                  d="M3.81383 24.205H4.98468C5.17788 24.205 5.3344 24.0435 5.3344 23.8442C5.3344 23.6449 5.17788 23.4834 4.98468 23.4834H3.81383C3.62064 23.4834 3.46411 23.6449 3.46411 23.8442C3.46411 24.0435 3.62064 24.205 3.81383 24.205Z"
+                  fill="#008000"
+                ></path>
+                <path
+                  d="M6.65816 17.7606C6.77895 17.7606 6.89665 17.6958 6.96135 17.5801C7.0578 17.4074 7.00049 17.1868 6.83348 17.0873L5.81946 16.4834C5.65215 16.3839 5.43832 16.443 5.34187 16.6153C5.24543 16.7879 5.30274 17.0085 5.46974 17.108L6.48377 17.712C6.53861 17.745 6.5987 17.7606 6.65816 17.7606Z"
+                  fill="#008000"
+                ></path>
+                <path
+                  d="M11.2317 13.043C11.2909 13.043 11.3513 13.0274 11.4061 12.9947C11.5734 12.8952 11.6308 12.6746 11.534 12.502L10.9486 11.4558C10.8521 11.2832 10.6383 11.2241 10.471 11.3239C10.3037 11.4234 10.2464 11.644 10.3431 11.8166L10.9285 12.8628C10.9932 12.9785 11.111 13.043 11.2317 13.043Z"
+                  fill="#008000"
+                ></path>
+                <path
+                  d="M17.8272 24.6546C17.7333 24.6925 17.6313 24.7141 17.5244 24.7141C17.0625 24.7141 16.6872 24.3266 16.6872 23.8501C16.6872 23.3736 17.0628 22.9864 17.5244 22.9864C17.6313 22.9864 17.7333 23.008 17.8272 23.0459V21.8233C17.7283 21.8077 17.6273 21.7995 17.5244 21.7995C17.1167 21.7995 16.7374 21.9272 16.4222 22.1456L9.6676 19.1646L15.5472 23.709C15.5444 23.7538 15.5422 23.7989 15.5422 23.8444C15.5422 24.9719 16.4315 25.8896 17.5244 25.8896C17.6273 25.8896 17.7286 25.8813 17.8272 25.8658V24.6546Z"
+                  fill="#008000"
+                ></path>
+                <mask id="path-11-inside-1_6446_21580" fill="white">
+                  <path
+                    d="M20 24H137C141.971 24 146 28.0294 146 33C146 37.9706 141.971 42 137 42H20V24Z"
+                  ></path>
+                </mask>
+                <path
+                  d="M20 24H137C141.971 24 146 28.0294 146 33C146 37.9706 141.971 42 137 42H20V24Z"
+                  fill="#F5F5F5"
+                ></path>
+                <path
+                  d="M20 23H137C142.523 23 147 27.4772 147 33H145C145 28.5817 141.418 25 137 25H20V23ZM147 33C147 38.5228 142.523 43 137 43H20V41H137C141.418 41 145 37.4183 145 33H147ZM145 33M20 42V24V42M137 23C142.523 23 147 27.4772 147 33C147 38.5228 142.523 43 137 43V41C141.418 41 145 37.4183 145 33C145 28.5817 141.418 25 137 25V23Z"
+                  fill="#D9D9D9"
+                  mask="url(#path-11-inside-1_6446_21580)"
+                ></path>
+                <path
+                  d="M35.164 31.288C35.164 31.776 35.052 32.224 34.828 32.632C34.604 33.032 34.26 33.356 33.796 33.604C33.332 33.852 32.756 33.976 32.068 33.976H30.796V37H28.744V28.576H32.068C32.74 28.576 33.308 28.692 33.772 28.924C34.236 29.156 34.584 29.476 34.816 29.884C35.048 30.292 35.164 30.76 35.164 31.288ZM31.912 32.344C32.304 32.344 32.596 32.252 32.788 32.068C32.98 31.884 33.076 31.624 33.076 31.288C33.076 30.952 32.98 30.692 32.788 30.508C32.596 30.324 32.304 30.232 31.912 30.232H30.796V32.344H31.912ZM41.4763 35.512H38.3323L37.8283 37H35.6803L38.7283 28.576H41.1043L44.1523 37H41.9803L41.4763 35.512ZM40.9483 33.928L39.9043 30.844L38.8723 33.928H40.9483ZM49.3759 37L47.6239 33.82H47.1319V37H45.0799V28.576H48.5239C49.1879 28.576 49.7519 28.692 50.2159 28.924C50.6879 29.156 51.0399 29.476 51.2719 29.884C51.5039 30.284 51.6199 30.732 51.6199 31.228C51.6199 31.788 51.4599 32.288 51.1399 32.728C50.8279 33.168 50.3639 33.48 49.7479 33.664L51.6919 37H49.3759ZM47.1319 32.368H48.4039C48.7799 32.368 49.0599 32.276 49.2439 32.092C49.4359 31.908 49.5319 31.648 49.5319 31.312C49.5319 30.992 49.4359 30.74 49.2439 30.556C49.0599 30.372 48.7799 30.28 48.4039 30.28H47.1319V32.368ZM58.1521 35.512H55.0081L54.5041 37H52.3561L55.4041 28.576H57.7801L60.8281 37H58.6561L58.1521 35.512ZM57.6241 33.928L56.5801 30.844L55.5481 33.928H57.6241ZM63.9507 32.776C63.9507 31.944 64.1307 31.204 64.4907 30.556C64.8507 29.9 65.3507 29.392 65.9907 29.032C66.6387 28.664 67.3707 28.48 68.1867 28.48C69.1867 28.48 70.0427 28.744 70.7547 29.272C71.4667 29.8 71.9427 30.52 72.1827 31.432H69.9267C69.7587 31.08 69.5187 30.812 69.2067 30.628C68.9027 30.444 68.5547 30.352 68.1627 30.352C67.5307 30.352 67.0187 30.572 66.6267 31.012C66.2347 31.452 66.0387 32.04 66.0387 32.776C66.0387 33.512 66.2347 34.1 66.6267 34.54C67.0187 34.98 67.5307 35.2 68.1627 35.2C68.5547 35.2 68.9027 35.108 69.2067 34.924C69.5187 34.74 69.7587 34.472 69.9267 34.12H72.1827C71.9427 35.032 71.4667 35.752 70.7547 36.28C70.0427 36.8 69.1867 37.06 68.1867 37.06C67.3707 37.06 66.6387 36.88 65.9907 36.52C65.3507 36.152 64.8507 35.644 64.4907 34.996C64.1307 34.348 63.9507 33.608 63.9507 32.776ZM77.4233 37.084C76.6313 37.084 75.9033 36.9 75.2393 36.532C74.5833 36.164 74.0593 35.652 73.6673 34.996C73.2833 34.332 73.0913 33.588 73.0913 32.764C73.0913 31.94 73.2833 31.2 73.6673 30.544C74.0593 29.888 74.5833 29.376 75.2393 29.008C75.9033 28.64 76.6313 28.456 77.4233 28.456C78.2153 28.456 78.9393 28.64 79.5953 29.008C80.2593 29.376 80.7793 29.888 81.1553 30.544C81.5393 31.2 81.7313 31.94 81.7313 32.764C81.7313 33.588 81.5393 34.332 81.1553 34.996C80.7713 35.652 80.2513 36.164 79.5953 36.532C78.9393 36.9 78.2153 37.084 77.4233 37.084ZM77.4233 35.212C78.0953 35.212 78.6313 34.988 79.0313 34.54C79.4393 34.092 79.6433 33.5 79.6433 32.764C79.6433 32.02 79.4393 31.428 79.0313 30.988C78.6313 30.54 78.0953 30.316 77.4233 30.316C76.7433 30.316 76.1993 30.536 75.7913 30.976C75.3913 31.416 75.1913 32.012 75.1913 32.764C75.1913 33.508 75.3913 34.104 75.7913 34.552C76.1993 34.992 76.7433 35.212 77.4233 35.212ZM92.4129 28.576V37H90.3609V31.948L88.4769 37H86.8209L84.9249 31.936V37H82.8729V28.576H85.2969L87.6609 34.408L90.0009 28.576H92.4129ZM100.309 31.288C100.309 31.776 100.197 32.224 99.9725 32.632C99.7485 33.032 99.4045 33.356 98.9405 33.604C98.4765 33.852 97.9005 33.976 97.2125 33.976H95.9405V37H93.8885V28.576H97.2125C97.8845 28.576 98.4525 28.692 98.9165 28.924C99.3805 29.156 99.7285 29.476 99.9605 29.884C100.193 30.292 100.309 30.76 100.309 31.288ZM97.0565 32.344C97.4485 32.344 97.7405 32.252 97.9325 32.068C98.1245 31.884 98.2205 31.624 98.2205 31.288C98.2205 30.952 98.1245 30.692 97.9325 30.508C97.7405 30.324 97.4485 30.232 97.0565 30.232H95.9405V32.344H97.0565ZM105.673 37L103.921 33.82H103.429V37H101.377V28.576H104.821C105.485 28.576 106.049 28.692 106.513 28.924C106.985 29.156 107.337 29.476 107.569 29.884C107.801 30.284 107.917 30.732 107.917 31.228C107.917 31.788 107.757 32.288 107.437 32.728C107.125 33.168 106.661 33.48 106.045 33.664L107.989 37H105.673ZM103.429 32.368H104.701C105.077 32.368 105.357 32.276 105.541 32.092C105.733 31.908 105.829 31.648 105.829 31.312C105.829 30.992 105.733 30.74 105.541 30.556C105.357 30.372 105.077 30.28 104.701 30.28H103.429V32.368ZM114.449 35.512H111.305L110.801 37H108.653L111.701 28.576H114.077L117.125 37H114.953L114.449 35.512ZM113.921 33.928L112.877 30.844L111.845 33.928H113.921ZM122.349 37L120.597 33.82H120.105V37H118.053V28.576H121.497C122.161 28.576 122.725 28.692 123.189 28.924C123.661 29.156 124.013 29.476 124.245 29.884C124.477 30.284 124.593 30.732 124.593 31.228C124.593 31.788 124.433 32.288 124.113 32.728C123.801 33.168 123.337 33.48 122.721 33.664L124.665 37H122.349ZM120.105 32.368H121.377C121.753 32.368 122.033 32.276 122.217 32.092C122.409 31.908 122.505 31.648 122.505 31.312C122.505 30.992 122.409 30.74 122.217 30.556C122.033 30.372 121.753 30.28 121.377 30.28H120.105V32.368ZM128.581 28.276L128.341 34.024H126.601L126.361 28.276H128.581ZM127.501 37.096C127.141 37.096 126.845 36.992 126.613 36.784C126.389 36.568 126.277 36.304 126.277 35.992C126.277 35.672 126.389 35.404 126.613 35.188C126.845 34.972 127.141 34.864 127.501 34.864C127.853 34.864 128.141 34.972 128.365 35.188C128.597 35.404 128.713 35.672 128.713 35.992C128.713 36.304 128.597 36.568 128.365 36.784C128.141 36.992 127.853 37.096 127.501 37.096Z"
+                  fill="#008000"
+                ></path>
+                <path
+                  d="M20 6H113C117.971 6 122 10.0294 122 15C122 19.9706 117.971 24 113 24H20V6Z"
+                  fill="#008000"
+                ></path>
+                <path
+                  d="M32.728 19.084C31.936 19.084 31.208 18.9 30.544 18.532C29.888 18.164 29.364 17.652 28.972 16.996C28.588 16.332 28.396 15.588 28.396 14.764C28.396 13.94 28.588 13.2 28.972 12.544C29.364 11.888 29.888 11.376 30.544 11.008C31.208 10.64 31.936 10.456 32.728 10.456C33.52 10.456 34.244 10.64 34.9 11.008C35.564 11.376 36.084 11.888 36.46 12.544C36.844 13.2 37.036 13.94 37.036 14.764C37.036 15.588 36.844 16.332 36.46 16.996C36.076 17.652 35.556 18.164 34.9 18.532C34.244 18.9 33.52 19.084 32.728 19.084ZM32.728 17.212C33.4 17.212 33.936 16.988 34.336 16.54C34.744 16.092 34.948 15.5 34.948 14.764C34.948 14.02 34.744 13.428 34.336 12.988C33.936 12.54 33.4 12.316 32.728 12.316C32.048 12.316 31.504 12.536 31.096 12.976C30.696 13.416 30.496 14.012 30.496 14.764C30.496 15.508 30.696 16.104 31.096 16.552C31.504 16.992 32.048 17.212 32.728 17.212ZM34.12 8.884L31.228 10.096V8.68L34.12 7.288V8.884ZM44.2376 10.576V12.22H42.0056V19H39.9536V12.22H37.7216V10.576H44.2376ZM47.3194 10.576V19H45.2674V10.576H47.3194ZM58.3465 10.576V19H56.2945V13.948L54.4105 19H52.7545L50.8585 13.936V19H48.8065V10.576H51.2305L53.5945 16.408L55.9345 10.576H58.3465ZM65.0661 17.512H61.9221L61.4181 19H59.2701L62.3181 10.576H64.6941L67.7421 19H65.5701L65.0661 17.512ZM64.5381 15.928L63.4941 12.844L62.4621 15.928H64.5381ZM78.5088 10.576V19H76.4568V15.532H73.2648V19H71.2128V10.576H73.2648V13.876H76.4568V10.576H78.5088ZM83.9741 19.084C83.1821 19.084 82.4541 18.9 81.7901 18.532C81.1341 18.164 80.6101 17.652 80.2181 16.996C79.8341 16.332 79.6421 15.588 79.6421 14.764C79.6421 13.94 79.8341 13.2 80.2181 12.544C80.6101 11.888 81.1341 11.376 81.7901 11.008C82.4541 10.64 83.1821 10.456 83.9741 10.456C84.7661 10.456 85.4901 10.64 86.1461 11.008C86.8101 11.376 87.3301 11.888 87.7061 12.544C88.0901 13.2 88.2821 13.94 88.2821 14.764C88.2821 15.588 88.0901 16.332 87.7061 16.996C87.3221 17.652 86.8021 18.164 86.1461 18.532C85.4901 18.9 84.7661 19.084 83.9741 19.084ZM83.9741 17.212C84.6461 17.212 85.1821 16.988 85.5821 16.54C85.9901 16.092 86.1941 15.5 86.1941 14.764C86.1941 14.02 85.9901 13.428 85.5821 12.988C85.1821 12.54 84.6461 12.316 83.9741 12.316C83.2941 12.316 82.7501 12.536 82.3421 12.976C81.9421 13.416 81.7421 14.012 81.7421 14.764C81.7421 15.508 81.9421 16.104 82.3421 16.552C82.7501 16.992 83.2941 17.212 83.9741 17.212ZM93.7197 19L91.9677 15.82H91.4757V19H89.4237V10.576H92.8677C93.5317 10.576 94.0957 10.692 94.5597 10.924C95.0317 11.156 95.3837 11.476 95.6157 11.884C95.8477 12.284 95.9637 12.732 95.9637 13.228C95.9637 13.788 95.8037 14.288 95.4837 14.728C95.1717 15.168 94.7077 15.48 94.0917 15.664L96.0357 19H93.7197ZM91.4757 14.368H92.7477C93.1237 14.368 93.4037 14.276 93.5877 14.092C93.7797 13.908 93.8757 13.648 93.8757 13.312C93.8757 12.992 93.7797 12.74 93.5877 12.556C93.4037 12.372 93.1237 12.28 92.7477 12.28H91.4757V14.368ZM102.496 17.512H99.3518L98.8478 19H96.6998L99.7478 10.576H102.124L105.172 19H103L102.496 17.512ZM101.968 15.928L100.924 12.844L99.8918 15.928H101.968Z"
+                  fill="white"
+                ></path>
+              </svg>
+
+              <div class="time">
+                <span class="timer-text">
+                  <svg
+                    class="ms-2"
+                    width="19"
+                    height="16"
+                    viewBox="0 0 19 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M18.7227 3.48926L17.2383 4.95996C18.3704 6.17115 18.9992 7.76137 19 9.41211C18.9998 13.0447 16.0164 15.9997 12.3506 16C8.68458 16 5.70037 13.0449 5.7002 9.41211C5.7002 5.77917 8.68448 2.82324 12.3506 2.82324C13.5968 2.82333 14.7595 3.1718 15.7568 3.76465L17.3799 2.1582L18.7227 3.48926ZM12.3506 4.70605C9.73139 4.70605 7.59961 6.81729 7.59961 9.41211C7.59978 12.0068 9.7315 14.1182 12.3506 14.1182C14.9695 14.1179 17.1004 12.0066 17.1006 9.41211C17.1006 6.81744 14.9696 4.70631 12.3506 4.70605ZM4.75 14.1172H0.950195V12.2354H4.75V14.1172ZM3.79102 10.3525H0V8.4707H3.79102V10.3525ZM13.2998 10.3525H11.4004V6.58789H13.2998V10.3525ZM4.75 6.58789H0.950195V4.70605H4.75V6.58789ZM14.25 1.88281H10.4502V0H14.25V1.88281Z"
+                      fill="#008000"
+                    ></path>
+                  </svg>
+                  Termina em:</span
+                >
+                <span id="contador" class="timer-count">
+                  <b id="horas">5</b>
+                  <b>:</b>
+                  <b id="minutos">10</b>
+                  <b>:</b>
+                  <b id="segundos">22</b>
+                  <b class="relogio-ponto">.</b>
+                  <b
+                    class="format-mi d-inline-block"
+                    id="milliseconds"
+                    style="width: 20px"
+                    >278</b
+                  >
+                </span>
+              </div>
+            </div>
+
+            <div class="price-old">De R$ 3.055,44</div>
+            <div class="price-main" id="productPrice">
+              R$ 2.749<sup>,90</sup>
+            </div>
+            <p class="price-detail" id="priceDetail">
+              já com <b>10% de desconto</b> à vista no Pix ou boleto ou<br />
+              <b>R$ 3.055,44</b> em até <b>10x de R$ 305,54</b> sem juros no
+              cartão
+            </p>
+            <p
+              class="product-description"
+              id="productDescription"
+              style="display: none"
+            ></p>
+            <p class="stock-info" id="stockInfo" style="display: none"></p>
+
+            <div class="payment-more">
+              <span class="left">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#3a4250"
+                  stroke-width="1.6"
+                >
+                  <rect x="2" y="5" width="20" height="14" rx="2" />
+                  <line x1="2" y1="10" x2="22" y2="10" />
+                </svg>
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#3a4250"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M7.2 7.2 9.8 4.6a3.1 3.1 0 0 1 4.4 0l2.6 2.6" />
+                  <path d="m16.8 16.8-2.6 2.6a3.1 3.1 0 0 1-4.4 0l-2.6-2.6" />
+                  <path
+                    d="m4.6 9.8 2.6-2.6 4.8 4.8a3.1 3.1 0 0 0 4.4 0l4.8-4.8"
+                  />
+                  <path
+                    d="m4.6 14.2 2.6 2.6 4.8-4.8a3.1 3.1 0 0 1 4.4 0l4.8 4.8"
+                  />
+                </svg>
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#3a4250"
+                  stroke-width="1.6"
+                >
+                  <line x1="3" y1="6" x2="3" y2="18" />
+                  <line x1="7" y1="6" x2="7" y2="18" />
+                  <line x1="11" y1="6" x2="11" y2="18" />
+                  <line x1="16" y1="6" x2="16" y2="18" />
+                  <line x1="20" y1="6" x2="20" y2="18" />
+                </svg>
+                Mais formas de pagamento
+              </span>
+              <svg
+                class="chev"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke-width="2.4"
+                stroke-linecap="round"
+              >
+                <polyline points="9 6 15 12 9 18" />
+              </svg>
+            </div>
+
+            <div class="affiliate-row">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#3a4250"
+                stroke-width="1.6"
+              >
+                <circle cx="12" cy="8" r="4" />
+                <path d="M4 21v-1a8 8 0 0 1 16 0v1" />
+              </svg>
+              Programa de Afiliados. <a href="#">Ver regras</a>
+            </div>
+          </div>
+
+          <div class="sidebar-also">
+            <div class="buybox">
+              <!-- frete card -->
+              <div class="fretegratiscard">
+                <span
+                  class="d-block text-center free mb-3"
+                  data-testid="pdp-free-shipping"
+                >
+                  <svg
+                    width="17"
+                    height="12"
+                    viewBox="0 0 17 12"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M1.96842 7.12498L1.43158 5.99998H5.18948L4.76001 4.87499H1.25264L0.715791 3.74999H6.29897L5.86949 2.625H0.615581L0 1.5H2.68422C2.68422 1.10217 2.83505 0.720638 3.10352 0.439344C3.37199 0.158039 3.73612 0 4.1158 0H12.7053V2.99999H14.8526L17 5.99998V9.75001H15.5685C15.5685 10.3467 15.3422 10.919 14.9395 11.341C14.5369 11.7629 13.9906 12 13.4211 12C12.8516 12 12.3054 11.7629 11.9027 11.341C11.4999 10.919 11.2737 10.3467 11.2737 9.75001H8.41055C8.41055 10.3467 8.18431 10.919 7.7816 11.341C7.37889 11.7629 6.8327 12 6.26317 12C5.69365 12 5.14746 11.7629 4.74475 11.341C4.34204 10.919 4.1158 10.3467 4.1158 9.75001H2.68422V7.12498H1.96842ZM13.4211 10.875C13.7058 10.875 13.979 10.7564 14.1803 10.5455C14.3817 10.3344 14.4948 10.0484 14.4948 9.75001C14.4948 9.45155 14.3817 9.16546 14.1803 8.95452C13.979 8.74348 13.7058 8.62501 13.4211 8.62501C13.1363 8.62501 12.8632 8.74348 12.6619 8.95452C12.4606 9.16546 12.3474 9.45155 12.3474 9.75001C12.3474 10.0484 12.4606 10.3344 12.6619 10.5455C12.8632 10.7564 13.1363 10.875 13.4211 10.875ZM14.4948 4.12499H12.7053V5.99998H15.8978L14.4948 4.12499ZM6.26317 10.875C6.54793 10.875 6.82104 10.7564 7.02239 10.5455C7.22374 10.3344 7.33686 10.0484 7.33686 9.75001C7.33686 9.45155 7.22374 9.16546 7.02239 8.95452C6.82104 8.74348 6.54793 8.62501 6.26317 8.62501C5.97842 8.62501 5.70532 8.74348 5.50397 8.95452C5.30261 9.16546 5.18948 9.45155 5.18948 9.75001C5.18948 10.0484 5.30261 10.3344 5.50397 10.5455C5.70532 10.7564 5.97842 10.875 6.26317 10.875Z"
+                      fill="#21AD34"
+                    ></path>
+                  </svg>
+
+                  Frete <b> Para </b> -
+                  <span class="end-states">todo o Brasil </span>
+                </span>
+              </div>
+              <div class="cep-input">
+                <input
+                  type="text"
+                  placeholder="Digite o CEP para simular o frete"
+                  maxlength="9"
+                />
+                <button aria-label="Calcular frete">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  >
+                    <circle cx="11" cy="11" r="7" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                  </svg>
+                </button>
+              </div>
+              <div class="qty-row">
+                <div class="qty-selector">
+                  <button class="qty-dec" aria-label="Diminuir">–</button>
+                  <input type="text" class="qty-value" value="1" readonly />
+                  <button class="qty-inc" aria-label="Aumentar">+</button>
+                </div>
+                <span class="qty-label"
+                  >Quantidade: <b class="qty-echo">1</b> unidade</span
+                >
+              </div>
+              <button class="btn btn-primary" id="btnComprar">
+                Comprar Agora
+              </button>
+              <button class="btn btn-secondary" id="btnAdicionar">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                >
+                  <path
+                    d="M9 22a1 1 0 1 0 0-2 1 1 0 0 0 0 2ZM20 22a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"
+                  />
+                  <path
+                    d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
+                  />
+                </svg>
+                Adicionar ao carrinho
+              </button>
+              <p class="sold-by">
+                Vendido e entregue por <b>Loja do Mecânico</b>
+              </p>
+            </div>
+
+            <!-- <h3 class="side-title">Veja Também</h3>
+        <div class="mini-card">
+          <img src="assets/carro-vermelho.svg" alt="Carro Para Ferramentas com 5 Gavetas Vermelho">
+          <div>
+            <div class="name">Carro Para Ferramentas com 5 Gavetas Vermelho</div>
+            <span class="stars">
+              <svg viewBox="0 0 20 20" class="star-full"><polygon points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"/></svg>
+              <svg viewBox="0 0 20 20" class="star-full"><polygon points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"/></svg>
+              <svg viewBox="0 0 20 20" class="star-full"><polygon points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"/></svg>
+              <svg viewBox="0 0 20 20" class="star-full"><polygon points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"/></svg>
+              <svg viewBox="0 0 20 20" class="star-full"><polygon points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"/></svg>
+              <span class="rating-num">5.0</span>
+            </span>
+            <div class="price">R$ 3.249,90</div>
+          </div>
+        </div>
+        <div class="mini-card">
+          <img src="assets/armario-visor.svg" alt="Armário Porta-Componente Compact com Visor e 33 Gavetas">
+          <div>
+            <div class="name">Armário Porta-Componente Compact com Visor e 33...</div>
+            <span class="stars">
+              <svg viewBox="0 0 20 20" class="star-full"><polygon points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"/></svg>
+              <svg viewBox="0 0 20 20" class="star-full"><polygon points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"/></svg>
+              <svg viewBox="0 0 20 20" class="star-full"><polygon points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"/></svg>
+              <svg viewBox="0 0 20 20" class="star-full"><polygon points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"/></svg>
+              <svg viewBox="0 0 20 20" class="star-full"><polygon points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"/></svg>
+              <span class="rating-num">5.0</span>
+            </span>
+            <div class="price">R$ 3.149,90</div>
+          </div>
+        </div>
+        <div class="mini-card">
+          <img src="assets/armario-compacto.svg" alt="Armário Grande Compacto com 2 Prateleiras">
+          <div>
+            <div class="name">Armário Grande Compacto com 2 Prateleiras...</div>
+            <span class="rating-count">Sem avaliações</span>
+            <div class="price">R$ 3.099,90</div>
+          </div>
+        </div>
+        <div class="mini-card">
+          <img src="assets/bancada-gavetas.svg" alt="Bancada Fechada com 7 Gavetas e Tampo">
+          <div>
+            <div class="name">Bancada Fechada com 7 Gavetas e Tampo...</div>
+            <span class="stars">
+              <svg viewBox="0 0 20 20" class="star-full"><polygon points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"/></svg>
+              <svg viewBox="0 0 20 20" class="star-full"><polygon points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"/></svg>
+              <svg viewBox="0 0 20 20" class="star-full"><polygon points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"/></svg>
+              <svg viewBox="0 0 20 20" class="star-full"><polygon points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"/></svg>
+              <svg viewBox="0 0 20 20" class="star-empty"><polygon points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"/></svg>
+              <span class="rating-num">4.6</span>
+            </span>
+            <div class="price">R$ 3.049,90</div>
+          </div> -->
+          </div>
+        </div>
+      </section>
+
+      <section class="doc-section">
+        <div class="spec-card2">
+          <div class="spec-heading">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+            >
+              <rect x="3" y="3" width="7" height="7" rx="1" />
+              <rect x="14" y="3" width="7" height="7" rx="1" />
+              <rect x="3" y="14" width="7" height="7" rx="1" />
+              <rect x="14" y="14" width="7" height="7" rx="1" />
+            </svg>
+            Sobre o Produto
+          </div>
+            <div class="about-row">
+              Descrição do Produto Aqui
+            </div>
+
+          <button class="see-more-about" id="seeMoreBtn">
+            Ver detalhes
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke-width="2.4"
+              stroke-linecap="round"
+            >
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="spec-card">
+          <div class="spec-heading">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+            >
+              <rect x="3" y="3" width="7" height="7" rx="1" />
+              <rect x="14" y="3" width="7" height="7" rx="1" />
+              <rect x="3" y="14" width="7" height="7" rx="1" />
+              <rect x="14" y="14" width="7" height="7" rx="1" />
+            </svg>
+            Ficha Técnica
+          </div>
+          <div class="spec-table" id="specTable">
+            <div class="spec-row">
+              <div class="k">Material da estrutura</div>
+              <div class="v">aço com baixo teor de carbono</div>
+            </div>
+            <div class="spec-row">
+              <div class="k">Material do tampo</div>
+              <div class="v">pinus envernizado</div>
+            </div>
+            <div class="spec-row">
+              <div class="k">Acabamento da estrutura</div>
+              <div class="v">
+                pintura eletrostática a pó e tratamento químico antiferruginoso
+                e fosfatizante
+              </div>
+            </div>
+            <div class="spec-row">
+              <div class="k">Porta com fechadura</div>
+              <div class="v">Sim</div>
+            </div>
+            <div class="spec-row">
+              <div class="k">Quantidade de prateleiras</div>
+              <div class="v">1</div>
+            </div>
+            <div class="spec-row">
+              <div class="k">Porta com batente de borracha</div>
+              <div class="v">Sim</div>
+            </div>
+            <div class="spec-row">
+              <div class="k">Material da porta</div>
+              <div class="v">aço</div>
+            </div>
+            <div class="spec-row">
+              <div class="k">Estrutura desmontável</div>
+              <div class="v">Sim</div>
+            </div>
+            <div class="spec-row">
+              <div class="k"></div>
+              <div class="v"></div>
+            </div>
+            <div class="spec-row">
+              <div class="k"></div>
+              <div class="v"></div>
+            </div>
+            <div class="spec-row">
+              <div class="k"></div>
+              <div class="v"></div>
+            </div>
+            <div class="spec-row extra" style="display: none">
+              <div class="k"></div>
+              <div class="v"></div>
+            </div>
+          </div>
+          <div class="spec-more">
+            <button id="specMoreBtn">
+              Ver ficha técnica
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke-width="2.4"
+                stroke-linecap="round"
+              >
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <!-- </div> -->
+      </section>
+
+      <!-- ================= AVALIAÇÕES ================= -->
+      <section class="reviews-section">
+        <div class="container">
+          <div class="reviews-head">
+            <h2 class="section-title">Avaliações do produto (2 opiniões)</h2>
+            <div class="reviews-filters">
+              <span class="select-fake"
+                >Ordenar
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <polyline points="6 9 12 15 18 9" /></svg
+              ></span>
+              <span class="select-fake"
+                >Nota
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <polyline points="6 9 12 15 18 9" /></svg
+              ></span>
+            </div>
+          </div>
+
+          <div class="reviews-body">
+            <div class="reviews-summary">
+              <div class="score">
+                <b>5</b>
+                <span class="stars">
+                  <svg viewBox="0 0 20 20" class="star-full">
+                    <polygon
+                      points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"
+                    />
+                  </svg>
+                  <svg viewBox="0 0 20 20" class="star-full">
+                    <polygon
+                      points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"
+                    />
+                  </svg>
+                  <svg viewBox="0 0 20 20" class="star-full">
+                    <polygon
+                      points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"
+                    />
+                  </svg>
+                  <svg viewBox="0 0 20 20" class="star-full">
+                    <polygon
+                      points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"
+                    />
+                  </svg>
+                  <svg viewBox="0 0 20 20" class="star-full">
+                    <polygon
+                      points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"
+                    />
+                  </svg>
+                </span>
+              </div>
+              <p class="count"><b>2 avaliações</b> para este produto</p>
+              <p class="recommend">
+                <b>100%</b> dos clientes recomendam este produto
+              </p>
+              <h4>Filtrar por:</h4>
+              <p style="font-size: 12.5px; color: #3a4250; margin-bottom: 8px">
+                Notas
+              </p>
+              <div class="filter-row">
+                5 ★ <span class="bar"><span style="width: 100%"></span></span>
+                <span class="pct">100%</span>
+              </div>
+              <div class="filter-row">
+                4 ★ <span class="bar"><span style="width: 0%"></span></span>
+                <span class="pct">0%</span>
+              </div>
+              <div class="filter-row">
+                3 ★ <span class="bar"><span style="width: 0%"></span></span>
+                <span class="pct">0%</span>
+              </div>
+              <div class="filter-row">
+                2 ★ <span class="bar"><span style="width: 0%"></span></span>
+                <span class="pct">0%</span>
+              </div>
+              <div class="filter-row">
+                1 ★ <span class="bar"><span style="width: 0%"></span></span>
+                <span class="pct">0%</span>
+              </div>
+            </div>
+
+            <div class="reviews-list">
+              <div class="review-item">
+                <div class="review-top">
+                  <span class="review-author">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                      <circle cx="12" cy="8" r="4" />
+                      <path d="M4 21v-1a8 8 0 0 1 16 0v1" />
+                    </svg>
+                    Patrick Sousa
+                  </span>
+                  <span class="review-date">04/06/2025</span>
+                </div>
+                <span class="stars">
+                  <svg viewBox="0 0 20 20" class="star-full">
+                    <polygon
+                      points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"
+                    />
+                  </svg>
+                  <svg viewBox="0 0 20 20" class="star-full">
+                    <polygon
+                      points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"
+                    />
+                  </svg>
+                  <svg viewBox="0 0 20 20" class="star-full">
+                    <polygon
+                      points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"
+                    />
+                  </svg>
+                  <svg viewBox="0 0 20 20" class="star-full">
+                    <polygon
+                      points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"
+                    />
+                  </svg>
+                  <svg viewBox="0 0 20 20" class="star-full">
+                    <polygon
+                      points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"
+                    />
+                  </svg>
+                </span>
+                <p class="review-text">
+                  Amei a bancada, super recomendo! fácil de montar e é linda
+                  demais!
+                </p>
+                <img
+                  class="review-photo"
+                  src="assets/bancada-dark.svg"
+                  alt="Foto enviada pelo cliente"
+                  style="background: #20242b"
+                />
+                <div class="review-actions">
+                  <button>Isto foi útil? 👍 1</button>
+                  <button aria-label="Não útil">👎</button>
+                  <button class="flag" aria-label="Denunciar">🏳</button>
+                </div>
+              </div>
+
+              <div class="review-item">
+                <div class="review-top">
+                  <span class="review-author">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                      <circle cx="12" cy="8" r="4" />
+                      <path d="M4 21v-1a8 8 0 0 1 16 0v1" />
+                    </svg>
+                    Bolivar Felipe De Freitas
+                  </span>
+                  <span class="review-date">05/03/2026</span>
+                </div>
+                <span class="stars">
+                  <svg viewBox="0 0 20 20" class="star-full">
+                    <polygon
+                      points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"
+                    />
+                  </svg>
+                  <svg viewBox="0 0 20 20" class="star-full">
+                    <polygon
+                      points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"
+                    />
+                  </svg>
+                  <svg viewBox="0 0 20 20" class="star-full">
+                    <polygon
+                      points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"
+                    />
+                  </svg>
+                  <svg viewBox="0 0 20 20" class="star-full">
+                    <polygon
+                      points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"
+                    />
+                  </svg>
+                  <svg viewBox="0 0 20 20" class="star-full">
+                    <polygon
+                      points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"
+                    />
+                  </svg>
+                </span>
+                <p class="review-text">
+                  excelente! pena que não e claro. só tem 1 prateleira, e não
+                  duas.
+                </p>
+                <div class="review-actions">
+                  <button>Isto foi útil? 👍 0</button>
+                  <button aria-label="Não útil">👎</button>
+                  <button class="flag" aria-label="Denunciar">🏳</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="write-review"
+            style="
+              background: var(--color-surface);
+              border-radius: var(--radius-lg);
+              box-shadow: var(--shadow-card);
+              padding: 28px;
+              margin-top: 20px;
+              border-top: 0;
+            "
+          >
+            <h3 style="margin: 0 0 4px; font-size: 17px; color: #1c2a3a">
+              Avalie este produto
+            </h3>
+            <p>Compartilhe seus pensamentos com outros clientes</p>
+            <button class="btn-outline">Escreva uma avaliação</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= QUEM VIU, VIU TAMBÉM ================= -->
+      <section class="carousel-section">
+        <div class="container">
+          <h2 class="section-title">Quem viu, viu também</h2>
+          <div class="carousel-wrap">
+            <button class="carousel-nav prev" aria-label="Anterior">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.4"
+                stroke-linecap="round"
+              >
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+            </button>
+            <div class="carousel-track" id="track1">
+              <!-- cards inseridos via JS -->
+            </div>
+            <button class="carousel-nav next" aria-label="Próximo">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.4"
+                stroke-linecap="round"
+              >
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= APROVEITE E COMPRE JUNTO ================= -->
+      <section class="carousel-section">
+        <div class="container">
+          <h2 class="section-title">Aproveite e compre junto</h2>
+          <div class="carousel-wrap">
+            <button class="carousel-nav prev" aria-label="Anterior">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.4"
+                stroke-linecap="round"
+              >
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+            </button>
+            <div class="carousel-track" id="track2"></div>
+            <button class="carousel-nav next" aria-label="Próximo">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.4"
+                stroke-linecap="round"
+              >
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= MAIS POPULARES ================= -->
+      <section class="carousel-section">
+        <div class="container">
+          <h2 class="section-title">Mais populares da categoria</h2>
+          <div class="carousel-wrap">
+            <button class="carousel-nav prev" aria-label="Anterior">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.4"
+                stroke-linecap="round"
+              >
+                <polyline points="15 18 9 12 15 6" />
+              </svg>
+            </button>
+            <div class="carousel-track" id="track3"></div>
+            <button class="carousel-nav next" aria-label="Próximo">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.4"
+                stroke-linecap="round"
+              >
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ================= RODAPÉ ================= -->
+    <footer class="footer">
+      <div class="container footer-cats">
+        <div class="footer-grid">
+          <div class="footer-col">
+            <ul>
+              <li><a href="#">Minha Conta</a></li>
+              <li><a href="#">Acompanhe seus pedidos</a></li>
+              <li><a href="#">Como Comprar</a></li>
+              <li><a href="#">Entrega</a></li>
+              <li><a href="#">Formas de Pagamento</a></li>
+              <li><a href="#">Nosso Blog</a></li>
+              <li><a href="#">Trabalhe Conosco</a></li>
+              <li><a href="#">LGPD</a></li>
+              <li><a href="#">Garantia Estendida</a></li>
+              <li><a href="#">Cupons de Desconto</a></li>
+              <li><a href="#">Black Friday</a></li>
+            </ul>
+          </div>
+          <div class="footer-col corporate">
+            <h4>Vendas corporativas</h4>
+            <span class="underline"></span>
+            <div class="phone">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+              >
+                <path
+                  d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"
+                />
+              </svg>
+              (11) 3185-6786
+            </div>
+            <div class="mail">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+              >
+                <rect x="2" y="4" width="20" height="16" rx="2" />
+                <path d="m22 6-10 7L2 6" />
+              </svg>
+              corporativo@lojadomecanico.com.br
+            </div>
+          </div>
+          <div class="footer-col categories">
+            <ul>
+              <li class="category"><a href="#">Ferramentas Manuais</a></li>
+              <li class="category">
+                <a href="#">Injeção Eletrônica e Motor</a>
+              </li>
+              <li class="category"><a href="#">Ferramentas Pneumáticas</a></li>
+              <li class="category"><a href="#">Lava Jato e Posto</a></li>
+              <li class="category"><a href="#">Ferramentas Automotivas</a></li>
+              <li class="category"><a href="#">Jardinagem</a></li>
+              <li class="category"><a href="#">Construção Civil</a></li>
+              <li class="category"><a href="#">Funilaria e Pintura</a></li>
+            </ul>
+          </div>
+          <div class="footer-col categories">
+            <ul>
+              <li class="category"><a href="#">EPI</a></li>
+              <li class="category"><a href="#">Borracharia</a></li>
+              <li class="category"><a href="#">Ferramentas em Geral</a></li>
+              <li class="category"><a href="#">Equipamento Caminhões</a></li>
+              <li class="category"><a href="#">Para Você e Sua Casa</a></li>
+              <li class="category"><a href="#">Aditivos e Lubrificantes</a></li>
+              <li class="category"><a href="#">Movimentação e Carga</a></li>
+              <li class="category"><a href="#">Camping e Hobby</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-brands container">
+        <b>Navegue pelas Marcas:</b>
+        A - B - C - D - E - F - G - H - I - J - K - L - M - N - O - P - Q - R -
+        S - T - U - V - W - X - Y - Z
+      </div>
+
+      <div class="container footer-utility">
+        <div class="footer-utility-top">
+          <div class="footer-links">
+            <a href="#">Atendimento</a>
+            <a href="#">Central de ajuda</a>
+            <a href="#">Troca e Devolução</a>
+            <a href="#">Quem somos</a>
+            <a href="#">Segurança</a>
+            <a href="#">Entrega</a>
+          </div>
+          <div class="footer-app">
+            <div>
+              <h5>BAIXE NOSSO APP</h5>
+              <div class="qr-box"></div>
+            </div>
+            <div class="store-badges">
+              <span>🍎 App Store</span>
+              <span>▶ Google Play</span>
+            </div>
+          </div>
+          <div class="footer-certs">
+            <div>
+              <h5>CERTIFICADOS</h5>
+              <div style="display: flex; gap: 10px">
+                <div class="cert-badge">💎<br />EXCELENTE</div>
+                <div class="cert-badge">🏆<br />PRÊMIO 2025</div>
+                <div class="cert-badge">✔<br />Verificada por ReclameAQUI</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-meta">
+          <div>
+            <p>
+              Em caso de divergência de preços no site, o valor válido é o do
+              Carrinho de Compras.<br />
+              Razão Social: GurgelMix Máquinas e Ferramentas S.A. CNPJ:
+              29.302.348/0001-15 - Matriz: Avenida Alagoas, 1193, Jardim
+              Paulista - Franca-SP - 14401-402
+            </p>
+            <div class="footer-brazil">🇧🇷 EMPRESA 100% BRASILEIRA</div>
+            <div class="footer-social">
+              <a href="#" aria-label="Facebook"
+                ><svg viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12Z"
+                  /></svg
+              ></a>
+              <a href="#" aria-label="Youtube"
+                ><svg viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M23 12s0-3.6-.5-5.3a3 3 0 0 0-2.1-2.1C18.7 4 12 4 12 4s-6.7 0-8.4.6A3 3 0 0 0 1.5 6.7C1 8.4 1 12 1 12s0 3.6.5 5.3a3 3 0 0 0 2.1 2.1C5.3 20 12 20 12 20s6.7 0 8.4-.6a3 3 0 0 0 2.1-2.1c.5-1.7.5-5.3.5-5.3ZM10 15.5v-7l6 3.5Z"
+                  /></svg
+              ></a>
+              <a href="#" aria-label="Instagram"
+                ><svg viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M12 2c-2.7 0-3 0-4.1.06-1.1.06-1.85.24-2.5.5a5 5 0 0 0-1.83 1.19A5 5 0 0 0 2.56 5.6c-.27.66-.45 1.4-.5 2.5C2 9.2 2 9.5 2 12.2s0 3 .06 4.1c.06 1.1.24 1.85.5 2.5a5 5 0 0 0 1.19 1.83 5 5 0 0 0 1.83 1.19c.66.27 1.4.45 2.5.5C9.2 22 9.5 22 12.2 22s3 0 4.1-.06c1.1-.06 1.85-.24 2.5-.5a5 5 0 0 0 1.83-1.19 5 5 0 0 0 1.19-1.83c.27-.66.45-1.4.5-2.5.06-1.1.06-1.4.06-4.1s0-3-.06-4.1c-.06-1.1-.24-1.85-.5-2.5a5 5 0 0 0-1.19-1.83A5 5 0 0 0 18.6 2.56c-.66-.27-1.4-.45-2.5-.5C15 2 14.7 2 12 2Zm0 1.8c2.66 0 2.97 0 4 .06.97.04 1.5.2 1.85.34.46.18.8.4 1.15.75.35.35.57.68.75 1.15.13.36.3.88.34 1.85.06 1.03.06 1.34.06 4s0 2.97-.06 4c-.04.97-.2 1.5-.34 1.85-.18.46-.4.8-.75 1.15-.35.35-.68.57-1.15.75-.36.13-.88.3-1.85.34-1.03.06-1.34.06-4 .06s-2.97 0-4-.06c-.97-.04-1.5-.2-1.85-.34a3.1 3.1 0 0 1-1.15-.75 3.1 3.1 0 0 1-.75-1.15c-.13-.36-.3-.88-.34-1.85C3.8 14.97 3.8 14.66 3.8 12s0-2.97.06-4c.04-.97.2-1.5.34-1.85.18-.46.4-.8.75-1.15.35-.35.68-.57 1.15-.75.36-.13.88-.3 1.85-.34C8.03 3.8 8.34 3.8 12 3.8Zm0 3.05a5.15 5.15 0 1 0 0 10.3 5.15 5.15 0 0 0 0-10.3Zm0 8.5a3.35 3.35 0 1 1 0-6.7 3.35 3.35 0 0 1 0 6.7Zm5.35-8.7a1.2 1.2 0 1 1-2.4 0 1.2 1.2 0 0 1 2.4 0Z"
+                  /></svg
+              ></a>
+              <a href="#" aria-label="TikTok"
+                ><svg viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M14 3c.3 2 1.7 3.4 4 3.7v2.6c-1.4 0-2.7-.4-4-1.2v6.2A5.7 5.7 0 1 1 8.5 8.7v2.7a3 3 0 1 0 2.5 3V3Z"
+                  /></svg
+              ></a>
+            </div>
+          </div>
+          <div class="footer-copy">
+            Copyright © 2000-2026 Loja do Mecânico - Todos os direitos
+            reservados.
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="footer-brands container"
+        style="border-top: 1px solid var(--color-border); border-bottom: 0"
+      >
+        <b>Navegue pelas Marcas:</b>
+        A - B - C - D - E - F - G - H - I - J - K - L - M - N - O - P - Q - R -
+        S - T - U - V - W - X - Y - Z
+      </div>
+    </footer>
+
+    <script>
+      // ========
+      // Contador
+      // ==========
+      let tempoRestante = 5 * 60 * 60 * 1000 + 10 * 60 * 1000 + 22 * 1000 + 278;
+
+      const horas = document.getElementById("horas");
+      const minutos = document.getElementById("minutos");
+      const segundos = document.getElementById("segundos");
+      const milliseconds = document.getElementById("milliseconds");
+
+      function atualizarContador() {
+        if (tempoRestante <= 0) {
+          tempoRestante = 0;
+        }
+
+        const h = Math.floor(tempoRestante / (1000 * 60 * 60));
+        const m = Math.floor((tempoRestante % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((tempoRestante % (1000 * 60)) / 1000);
+        const ms = tempoRestante % 1000;
+
+        horas.textContent = String(h).padStart(2, "0");
+        minutos.textContent = String(m).padStart(2, "0");
+        segundos.textContent = String(s).padStart(2, "0");
+        milliseconds.textContent = String(ms).padStart(3, "0");
+
+        if (tempoRestante > 0) {
+          tempoRestante -= 10;
+          setTimeout(atualizarContador, 10);
+        }
+      }
+
+      atualizarContador();
+
+      // =====================================================================
+      // Dados dos produtos usados nos carrosséis (conteúdo fiel à referência)
+      // =====================================================================
+      const STAR_FULL =
+        '<svg viewBox="0 0 20 20" class="star-full"><polygon points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"/></svg>';
+      const STAR_EMPTY =
+        '<svg viewBox="0 0 20 20" class="star-empty"><polygon points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"/></svg>';
+
+      function starsHTML(rating) {
+        const full = Math.round(rating);
+        let html = '<span class="stars">';
+        for (let i = 0; i < 5; i++) {
+          html += i < full ? STAR_FULL : STAR_EMPTY;
+        }
+        html += `<span class="rating-num">${rating.toFixed(2).replace(/0$/, "").replace(/\.$/, "")}</span></span>`;
+        return html;
+      }
+
+      const track1Data = [
+        {
+          img: "painel-ferramentas",
+          turbo: true,
+          name: "Painel para Ferramentas 970 x 640 x 20mm com 48 Ganchos...",
+          rating: 4.81,
+          count: 42,
+          price: "189,90",
+          pix: "189,90",
+          install: "ou R$ 211,00 em 4x R$ 52,75 sem juros no cartão",
+        },
+        {
+          img: "bancada-2000",
+          turbo: false,
+          name: "Bancada de Trabalho Profissional 2000mm PRESTO-...",
+          rating: 4.5,
+          count: 26,
+          price: "1.469,90",
+          install: "ou R$ 1.633,22 em 10x R$ 163,33 sem juros no cartão",
+        },
+        {
+          img: "bancada-gavetas",
+          turbo: false,
+          name: "Bancada Fechada com 7 Gavetas e Tampo...",
+          rating: 4.6,
+          count: 16,
+          price: "3.049,90",
+          install: "ou R$ 3.388,78 em 10x R$ 338,88 sem juros no cartão",
+        },
+        {
+          img: "armario-modulado",
+          turbo: false,
+          name: "Armario Modulado para Oficina Preto Completo ORK-...",
+          rating: 5,
+          count: 2,
+          price: "10.599,90",
+          install: "ou R$ 11.777,67 em 12x R$ 981,48 sem juros no cartão",
+        },
+        {
+          img: "bancada-dark",
+          turbo: false,
+          name: "Bancada Profissional Fechada Dark 15M PRESTO-91522",
+          rating: 4.27,
+          count: 15,
+          price: "1.909,90",
+          install: "ou R$ 2.122,11 em 10x R$ 212,22 sem juros no cartão",
+        },
+      ];
+
+      const track2Data = [
+        {
+          img: "bancada-gavetas",
+          turbo: false,
+          name: "Bancada Fechada com 7 Gavetas e Tampo...",
+          rating: 4.6,
+          count: 15,
+          price: "3.049,90",
+          install: "ou R$ 3.388,78 em 10x R$ 338,88 sem juros no cartão",
+        },
+        {
+          img: "armario-modulado",
+          turbo: false,
+          name: "Armario Modulado para Oficina Preto Completo ORK-...",
+          rating: 5,
+          count: 2,
+          price: "10.599,90",
+          install: "ou R$ 11.777,67 em 12x R$ 981,48 sem juros no cartão",
+        },
+        {
+          img: "alicate",
+          turbo: true,
+          name: "Alicate Universal para Eletricista 8 Pol Profissional Cr...",
+          rating: 4.71,
+          count: 38,
+          price: "60,90",
+          install: "ou R$ 67,67 em 2x R$ 33,84 sem juros no cartão",
+        },
+        {
+          img: "alicate",
+          turbo: true,
+          name: "Alicate Eletricista 6 Polegadas 1000 V VONDER-3662061500",
+          rating: 4.73,
+          count: 26,
+          price: "39,90",
+          install: "ou R$ 44,33 em 1x R$ 44,33 sem juros no cartão",
+        },
+        {
+          img: "painel-ferramentas",
+          turbo: true,
+          name: "Painel para Ferramentas 970 x 640 x 20mm com 48 Ganchos...",
+          rating: 4.81,
+          count: 42,
+          price: "189,90",
+          install: "ou R$ 211,00 em 4x R$ 52,75 sem juros no cartão",
+        },
+      ];
+
+      const track3Data = [
+        {
+          img: "bancada-2000",
+          turbo: false,
+          name: "Bancada com 3 Gavetas e Tampo de Madeira...",
+          rating: 4.73,
+          count: 33,
+          price: "1.669,90",
+          oldPrice: "2.049,00",
+          install: "ou R$ 1.855,44 em 10x R$ 185,55 sem juros no cartão",
+        },
+        {
+          img: "bancada-gavetas",
+          turbo: false,
+          name: "Bancada Fechada com 7 Gavetas e Tampo...",
+          rating: 4.6,
+          count: 15,
+          price: "3.049,90",
+          install: "ou R$ 3.388,78 em 10x R$ 338,88 sem juros no cartão",
+        },
+        {
+          img: "armario-multiuso",
+          turbo: false,
+          name: "Armário Multiuso Abile 4 Prateleiras 1850 x 900 mm...",
+          rating: 4.85,
+          count: 33,
+          price: "1.869,90",
+          oldPrice: "2.207,90",
+          install: "ou R$ 2.077,67 em 10x R$ 207,77 sem juros no cartão",
+        },
+        {
+          img: "painel-ferramentas",
+          turbo: true,
+          name: "Painel para Ferramentas 970 x 640 x 20mm com 48 Ganchos...",
+          rating: 4.81,
+          count: 42,
+          price: "189,90",
+          install: "ou R$ 211,00 em 4x R$ 52,75 sem juros no cartão",
+        },
+        {
+          img: "estante-gaveteiro",
+          turbo: false,
+          name: "Kit Estante Gaveteiro com 49 Gavetas Azuis Nr 3 e 7...",
+          rating: 4.64,
+          count: 106,
+          price: "419,90",
+          install: "ou R$ 466,56 em 8x R$ 77,76 sem juros no cartão",
+        },
+      ];
+
+      function buildCard(p) {
+        const turbo = p.turbo
+          ? `<span class="tag-turbo"><svg viewBox="0 0 20 20"><polygon points="10,1 12.6,6.9 19,7.5 14.2,11.9 15.6,18.2 10,14.9 4.4,18.2 5.8,11.9 1,7.5 7.4,6.9"/></svg>Entrega TURBO</span>`
+          : "";
+        const old = p.oldPrice
+          ? `<div class="price-old">De R$ ${p.oldPrice}</div>`
+          : "";
+        return `
+  <article class="product-card-item">
+    <div class="thumb">
+      ${turbo}
+      <img src="assets/${p.img}.svg" alt="${p.name}">
+    </div>
+    <div class="pc-name">${p.name}</div>
+    ${starsHTML(p.rating)}<span class="rating-count">(${p.count})</span>
+    ${old}
+    <div class="pc-price">R$ ${p.price}</div>
+    <div class="pc-pix">à vista no <b>Pix ou Boleto</b></div>
+    <div class="pc-install">${p.install}</div>
+    <div class="pc-footer">
+      <div class="qty-selector">
+        <button class="qty-dec" aria-label="Diminuir">–</button>
+        <input type="text" class="qty-value" value="1" readonly>
+        <button class="qty-inc" aria-label="Aumentar">+</button>
+      </div>
+      <button class="btn-add">Adicionar ao carrinho</button>
+    </div>
+  </article>`;
+      }
+
+      function renderTrack(id, data) {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = data.map(buildCard).join("");
+      }
+      renderTrack("track1", track1Data);
+      renderTrack("track2", track2Data);
+      renderTrack("track3", track3Data);
+
+      // =====================================================================
+      // Seletores de quantidade (delegação de evento, funciona para toda a página)
+      // =====================================================================
+      document.addEventListener("click", (e) => {
+        const dec = e.target.closest(".qty-dec");
+        const inc = e.target.closest(".qty-inc");
+        if (dec || inc) {
+          const wrap = e.target.closest(".qty-selector");
+          const input = wrap.querySelector(".qty-value");
+          let val = parseInt(input.value, 10) || 1;
+          val = inc ? val + 1 : Math.max(1, val - 1);
+          input.value = val;
+          // atualiza label "Quantidade: X unidade" na buybox principal
+          const echo = wrap.parentElement.querySelector(".qty-echo");
+          if (echo) echo.textContent = val;
+        }
+      });
+
+      // =====================================================================
+      // Acordeão: "Ver detalhes" dos destaques do produto
+      // =====================================================================
+      const seeMoreBtn = document.getElementById("seeMoreBtn");
+      if (seeMoreBtn) {
+        seeMoreBtn.addEventListener("click", () => {
+          seeMoreBtn.classList.toggle("open");
+          seeMoreBtn.firstChild.textContent = seeMoreBtn.classList.contains(
+            "open",
+          )
+            ? "Ver menos "
+            : "Ver detalhes ";
+        });
+      }
+
+      // Acordeão: Ficha técnica — mostra a linha extra e alterna o texto
+      const specMoreBtn = document.getElementById("specMoreBtn");
+      if (specMoreBtn) {
+        specMoreBtn.addEventListener("click", () => {
+          const extras = document.querySelectorAll("#specTable .extra");
+          const open = extras[0] && extras[0].style.display !== "none";
+          extras.forEach((r) => (r.style.display = open ? "none" : "grid"));
+          specMoreBtn.innerHTML = open
+            ? 'Ver ficha técnica <svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>'
+            : 'Ver menos <svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round"><polyline points="18 15 12 9 6 15"/></svg>';
+        });
+      }
+
+      // =====================================================================
+      // Carrosséis — navegação por setas com scroll suave
+      // =====================================================================
+      document.querySelectorAll(".carousel-wrap").forEach((wrap) => {
+        const track = wrap.querySelector(".carousel-track");
+        const prev = wrap.querySelector(".prev");
+        const next = wrap.querySelector(".next");
+        const scrollAmount = () => track.clientWidth * 0.8;
+        prev.addEventListener("click", () =>
+          track.scrollBy({ left: -scrollAmount(), behavior: "smooth" }),
+        );
+        next.addEventListener("click", () =>
+          track.scrollBy({ left: scrollAmount(), behavior: "smooth" }),
+        );
+      });
+
+      // CEP: máscara simples 00000-000
+      const cepInput = document.querySelector(".cep-input input");
+      if (cepInput) {
+        cepInput.addEventListener("input", () => {
+          let v = cepInput.value.replace(/\D/g, "").slice(0, 8);
+          if (v.length > 5) v = v.slice(0, 5) + "-" + v.slice(5);
+          cepInput.value = v;
+        });
+      }
+
+      // =====================================================================
+      // Carrega o produto pela query string (?id=123) consultando a API
+      // Endpoint: GET /api/produto/:id
+      // Controller retorna: { id, nome, descricao, preco, estoque, ativo }
+      // =====================================================================
+      const apiStateEl = document.getElementById("apiState");
+      const titleEl = document.getElementById("productTitle");
+      const productIdEl = document.getElementById("productId");
+      const priceEl = document.getElementById("productPrice");
+      const priceDetailEl = document.getElementById("priceDetail");
+      const descriptionEl = document.getElementById("productDescription");
+      const stockEl = document.getElementById("stockInfo");
+      const btnComprar = document.getElementById("btnComprar");
+      const btnAdicionar = document.getElementById("btnAdicionar");
+
+      function formatarPreco(valor) {
+        const numero = Number(valor) || 0;
+        const partes = numero
+          .toLocaleString("pt-BR", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })
+          .split(",");
+        return { inteiro: partes[0], centavos: partes[1] };
+      }
+
+      function mostrarEstadoAPI(mensagem, tipo) {
+        if (!apiStateEl) return;
+        apiStateEl.textContent = mensagem;
+        apiStateEl.className = "api-state" + (tipo ? ` is-${tipo}` : "");
+        apiStateEl.style.display = mensagem ? "flex" : "none";
+      }
+
+      function definirDisponibilidade(disponivel, textoIndisponivel) {
+        [btnComprar, btnAdicionar].forEach((btn) => {
+          if (!btn) return;
+          btn.disabled = !disponivel;
+        });
+        if (stockEl) {
+          if (disponivel) {
+            stockEl.style.display = "none";
+          } else {
+            stockEl.textContent = textoIndisponivel;
+            stockEl.className = "stock-info out-of-stock";
+            stockEl.style.display = "block";
+          }
+        }
+      }
+
+      function preencherProduto(produto) {
+        produtoAtual = produto; // guarda o produto carregado para uso no carrinho
+
+        document.title = `${produto.nome} | Loja do Mecânico`;
+
+        if (titleEl) titleEl.textContent = produto.nome;
+        if (productIdEl) productIdEl.textContent = produto.id;
+
+        if (priceEl) {
+          const { inteiro, centavos } = formatarPreco(produto.preco);
+          priceEl.innerHTML = `R$ ${inteiro}<sup>,${centavos}</sup>`;
+        }
+        // preço parcelado é apenas ilustrativo — sem regra de negócio vinda da API
+        if (priceDetailEl) {
+          priceDetailEl.style.display = "none";
+        }
+
+        if (descriptionEl) {
+          if (produto.descricao) {
+            descriptionEl.textContent = produto.descricao;
+            descriptionEl.style.display = "block";
+          } else {
+            descriptionEl.style.display = "none";
+          }
+        }
+
+        const emEstoque = Number(produto.estoque) > 0;
+        const ativo = produto.ativo !== false;
+
+        if (!ativo) {
+          definirDisponibilidade(false, "Produto indisponível no momento");
+        } else if (!emEstoque) {
+          definirDisponibilidade(false, "Produto fora de estoque");
+        } else {
+          definirDisponibilidade(true);
+          if (stockEl && Number(produto.estoque) <= 5) {
+            stockEl.textContent = `Últimas ${produto.estoque} unidades em estoque`;
+            stockEl.className = "stock-info in-stock";
+            stockEl.style.display = "block";
+          }
+        }
+      }
+
+      async function carregarProdutoPorId(id) {
+        mostrarEstadoAPI("Carregando produto…", "loading");
+        try {
+          const resposta = await fetch(
+            `/api/produtos/${encodeURIComponent(id)}`,
+          );
+
+          if (resposta.status === 404) {
+            mostrarEstadoAPI("Produto não encontrado.", "error");
+            definirDisponibilidade(false, "Produto não encontrado");
+            return;
+          }
+          if (!resposta.ok) {
+            mostrarEstadoAPI("Erro ao buscar produto.", "error");
+            return;
+          }
+
+          const produto = await resposta.json();
+          preencherProduto(produto);
+          mostrarEstadoAPI("");
+        } catch (erro) {
+          console.error("Erro ao buscar produto:", erro);
+          mostrarEstadoAPI("Não foi possível conectar à API.", "error");
+        }
+      }
+
+      (function inicializarBuscaPorQueryParam() {
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get("id");
+        if (id) {
+          carregarProdutoPorId(id);
+        }
+      })();
+
+      // =====================================================================
+      // Carrinho — mesmo esquema usado em loja.html (localStorage "carrinho")
+      // =====================================================================
+      const CART_KEY = "carrinho";
+      let produtoAtual = null;
+
+      function formatBRL(valor) {
+        const n = Number(valor) || 0;
+        return n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+      }
+
+      function getCarrinho() {
+        return JSON.parse(localStorage.getItem(CART_KEY)) || [];
+      }
+
+      function salvarCarrinho(carrinho) {
+        localStorage.setItem(CART_KEY, JSON.stringify(carrinho));
+        renderCartDrawer();
+      }
+
+      function adicionarAoCarrinho(produto, quantidade) {
+        const carrinho = getCarrinho();
+        const existente = carrinho.find((item) => item.id === produto.id);
+        if (existente) {
+          existente.quantidade += quantidade;
+        } else {
+          carrinho.push({
+            id: produto.id,
+            nome: produto.nome,
+            preco: Number(produto.preco) || 0,
+            quantidade,
+            imagem: produto.imagem_url || null,
+          });
+        }
+        salvarCarrinho(carrinho);
+      }
+
+      function alterarQuantidade(id, delta) {
+        const carrinho = getCarrinho();
+        const item = carrinho.find((i) => i.id === id);
+        if (!item) return;
+        item.quantidade += delta;
+        if (item.quantidade <= 0) return removerDoCarrinho(id);
+        salvarCarrinho(carrinho);
+      }
+
+      function removerDoCarrinho(id) {
+        const carrinho = getCarrinho().filter((i) => i.id !== id);
+        salvarCarrinho(carrinho);
+      }
+
+      function renderCartDrawer() {
+        const carrinho = getCarrinho();
+        const body = document.getElementById("cartDrawerBody");
+        const totalEl = document.getElementById("cartDrawerTotal");
+        const badge = document.getElementById("cartCountBadge");
+
+        const totalItens = carrinho.reduce((soma, i) => soma + i.quantidade, 0);
+        const totalValor = carrinho.reduce(
+          (soma, i) => soma + i.preco * i.quantidade,
+          0,
+        );
+
+        if (badge) {
+          badge.style.display = totalItens > 0 ? "flex" : "none";
+          badge.textContent = totalItens;
+        }
+        if (totalEl) totalEl.textContent = formatBRL(totalValor);
+
+        if (!body) return;
+        if (!carrinho.length) {
+          body.innerHTML = `<div class="cart-empty">Seu carrinho está vazio.</div>`;
+          return;
+        }
+
+        body.innerHTML = carrinho
+          .map(
+            (item) => `
+    <div class="cart-item">
+      <div class="ci-thumb">${
+        item.imagem ? `<img src="${item.imagem}" alt="${item.nome}">` : "🔧"
+      }</div>
+      <div class="ci-info">
+        <div class="ci-name">${item.nome}</div>
+        <div class="ci-price">${formatBRL(item.preco)}</div>
+        <div class="ci-controls">
+          <button onclick="alterarQuantidade('${item.id}', -1)">−</button>
+          <span class="ci-qty">${item.quantidade}</span>
+          <button onclick="alterarQuantidade('${item.id}', 1)">+</button>
+          <button class="ci-remove" onclick="removerDoCarrinho('${item.id}')">Remover</button>
+        </div>
+      </div>
+    </div>`,
+          )
+          .join("");
+      }
+
+      function toggleCartDrawer(forceOpen) {
+        const drawer = document.getElementById("cartDrawer");
+        const overlay = document.getElementById("cartOverlay");
+        const shouldOpen =
+          typeof forceOpen === "boolean"
+            ? forceOpen
+            : !drawer.classList.contains("open");
+        drawer.classList.toggle("open", shouldOpen);
+        overlay.classList.toggle("open", shouldOpen);
+      }
+
+      function getQuantidadeSelecionada() {
+        const input = document.querySelector(".buybox .qty-value");
+        return Math.max(1, parseInt(input?.value, 10) || 1);
+      }
+
+      if (btnComprar) {
+        btnComprar.addEventListener("click", () => {
+          if (!produtoAtual) return;
+          adicionarAoCarrinho(produtoAtual, getQuantidadeSelecionada());
+          window.location.href = "/cart";
+        });
+      }
+
+      if (btnAdicionar) {
+        btnAdicionar.addEventListener("click", () => {
+          if (!produtoAtual) return;
+          adicionarAoCarrinho(produtoAtual, getQuantidadeSelecionada());
+          toggleCartDrawer(true);
+        });
+      }
+
+      renderCartDrawer();
+    </script>
+  </body>
+</html>

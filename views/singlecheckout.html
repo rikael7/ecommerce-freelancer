@@ -1,0 +1,1583 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Checkout</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            color: #222;
+        }
+
+        header {
+            background: #111;
+            color: white;
+            padding: 20px;
+        }
+
+        header .container {
+            max-width: 1100px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,.08);
+            margin-bottom: 20px;
+        }
+
+        .card h2 {
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .campo.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            font-size: 15px;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #111;
+        }
+
+        .produto {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .produto:last-child {
+            border-bottom: none;
+        }
+
+        .produto-info {
+            flex: 1;
+        }
+
+        .produto-nome {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .produto-qtd {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .produto-preco {
+            font-weight: bold;
+        }
+
+        .total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 20px;
+            font-weight: bold;
+            padding-top: 20px;
+            margin-top: 10px;
+            border-top: 2px solid #eee;
+        }
+
+        button {
+            width: 100%;
+            border: none;
+            background: #009ee3;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background: #008ac7;
+        }
+
+        button:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
+        .erro {
+            display: none;
+            background: #ffe5e5;
+            color: #b00020;
+            padding: 14px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .sucesso {
+            display: none;
+            background: #e5ffe9;
+            color: #08751c;
+            padding: 14px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .vazio {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .vazio a {
+            display: inline-block;
+            margin-top: 20px;
+            background: #111;
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 7px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+        }
+
+        @media (max-width: 800px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .campo.full {
+                grid-column: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="container">
+        <strong>Minha Loja</strong>
+
+        <a href="/cart">
+            ← Voltar ao carrinho
+        </a>
+    </div>
+</header>
+
+
+<main>
+
+    <h1>Finalizar pedido</h1>
+
+    <div id="mensagemErro" class="erro"></div>
+
+    <div id="mensagemSucesso" class="sucesso"></div>
+
+
+    <div id="checkoutConteudo">
+
+        <div class="grid">
+
+            <!-- ========================= -->
+            <!-- DADOS DO CLIENTE -->
+            <!-- ========================= -->
+
+            <div>
+
+                <div class="card">
+
+                    <h2>Dados pessoais</h2>
+
+                    <div class="form-grid">
+
+                        <div class="campo full">
+                            <label for="nomeCompleto">
+                                Nome completo *
+                            </label>
+
+                            <input
+                                type="text"
+                                id="nomeCompleto"
+                                name="nomeCompleto"
+                                placeholder="Digite seu nome completo"
+                                autocomplete="name"
+                            >
+                        </div>
+
+
+                        <div class="campo">
+
+                            <label for="email">
+                                E-mail *
+                            </label>
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="seu@email.com"
+                                autocomplete="email"
+                            >
+
+                        </div>
+
+
+                        <div class="campo">
+
+                            <label for="cpfCnpj">
+                                CPF/CNPJ *
+                            </label>
+
+                            <input
+                                type="text"
+                                id="cpfCnpj"
+                                name="cpfCnpj"
+                                placeholder="CPF ou CNPJ"
+                            >
+
+                        </div>
+
+
+                        <div class="campo">
+
+                            <label for="telefone">
+                                Telefone *
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="telefone"
+                                name="telefone"
+                                placeholder="(00) 00000-0000"
+                                autocomplete="tel"
+                            >
+
+                        </div>
+
+
+                        <div class="campo">
+
+                            <label for="dataNascimento">
+                                Data de nascimento
+                            </label>
+
+                            <input
+                                type="date"
+                                id="dataNascimento"
+                                name="dataNascimento"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ========================= -->
+                <!-- ENDEREÇO -->
+                <!-- ========================= -->
+
+                <div class="card">
+
+                    <h2>Endereço de entrega</h2>
+
+                    <div class="form-grid">
+
+                        <div class="campo">
+
+                            <label for="cep">
+                                CEP *
+                            </label>
+
+                            <input
+                                type="text"
+                                id="cep"
+                                name="cep"
+                                placeholder="00000-000"
+                                autocomplete="postal-code"
+                            >
+
+                        </div>
+
+
+                        <div class="campo">
+
+                            <label for="pais">
+                                País *
+                            </label>
+
+                            <input
+                                type="text"
+                                id="pais"
+                                name="pais"
+                                value="Brasil"
+                                autocomplete="country-name"
+                            >
+
+                        </div>
+
+
+                        <div class="campo">
+
+                            <label for="estado">
+                                Estado *
+                            </label>
+
+                            <input
+                                type="text"
+                                id="estado"
+                                name="estado"
+                                placeholder="RS"
+                                autocomplete="address-level1"
+                            >
+
+                        </div>
+
+
+                        <div class="campo">
+
+                            <label for="cidade">
+                                Cidade *
+                            </label>
+
+                            <input
+                                type="text"
+                                id="cidade"
+                                name="cidade"
+                                placeholder="Cidade"
+                                autocomplete="address-level2"
+                            >
+
+                        </div>
+
+
+                        <div class="campo">
+
+                            <label for="bairro">
+                                Bairro *
+                            </label>
+
+                            <input
+                                type="text"
+                                id="bairro"
+                                name="bairro"
+                                placeholder="Bairro"
+                                autocomplete="address-level3"
+                            >
+
+                        </div>
+
+
+                        <div class="campo">
+
+                            <label for="rua">
+                                Rua *
+                            </label>
+
+                            <input
+                                type="text"
+                                id="rua"
+                                name="rua"
+                                placeholder="Rua"
+                                autocomplete="street-address"
+                            >
+
+                        </div>
+
+
+                        <div class="campo">
+
+                            <label for="numero">
+                                Número *
+                            </label>
+
+                            <input
+                                type="text"
+                                id="numero"
+                                name="numero"
+                                placeholder="Número"
+                            >
+
+                        </div>
+
+
+                        <div class="campo">
+
+                            <label for="complemento">
+                                Complemento
+                            </label>
+
+                            <input
+                                type="text"
+                                id="complemento"
+                                name="complemento"
+                                placeholder="Apartamento, bloco..."
+                            >
+
+                        </div>
+
+
+                        <div class="campo full">
+
+                            <label for="pontoReferencia">
+                                Ponto de referência
+                            </label>
+
+                            <input
+                                type="text"
+                                id="pontoReferencia"
+                                name="pontoReferencia"
+                                placeholder="Próximo a..."
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ========================= -->
+                <!-- DESTINATÁRIO -->
+                <!-- ========================= -->
+
+                <div class="card">
+
+                    <h2>Destinatário</h2>
+
+                    <div class="form-grid">
+
+                        <div class="campo">
+
+                            <label for="nomeDestinatario">
+                                Nome do destinatário *
+                            </label>
+
+                            <input
+                                type="text"
+                                id="nomeDestinatario"
+                                name="nomeDestinatario"
+                                placeholder="Nome de quem receberá"
+                            >
+
+                        </div>
+
+
+                        <div class="campo">
+
+                            <label for="telefoneEntrega">
+                                Telefone para entrega *
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="telefoneEntrega"
+                                name="telefoneEntrega"
+                                placeholder="(00) 00000-0000"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ========================= -->
+            <!-- RESUMO -->
+            <!-- ========================= -->
+
+            <div>
+
+                <div class="card">
+
+                    <h2>Seu pedido</h2>
+
+                    <div id="listaProdutos">
+
+                        <div class="loading">
+                            Carregando carrinho...
+                        </div>
+
+                    </div>
+
+
+                    <div class="total">
+
+                        <span>Total</span>
+
+                        <span id="valorTotal">
+                            R$ 0,00
+                        </span>
+
+                    </div>
+
+
+                    <button
+                        id="btnFinalizar"
+                        type="button"
+                    >
+                        Continuar para pagamento
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<script>
+
+    /*
+    ============================================================
+    CONFIGURAÇÃO
+    ============================================================
+    */
+
+    const API = '/api/mercadopago';
+
+
+    /*
+    ============================================================
+    ELEMENTOS
+    ============================================================
+    */
+
+    const listaProdutos =
+        document.getElementById('listaProdutos');
+
+    const valorTotal =
+        document.getElementById('valorTotal');
+
+    const btnFinalizar =
+        document.getElementById('btnFinalizar');
+
+    const mensagemErro =
+        document.getElementById('mensagemErro');
+
+    const mensagemSucesso =
+        document.getElementById('mensagemSucesso');
+
+
+    /*
+    ============================================================
+    VARIÁVEIS
+    ============================================================
+    */
+
+    let carrinho = [];
+
+
+    /*
+    ============================================================
+    LOCAL STORAGE
+    ============================================================
+    */
+
+    function carregarCarrinho() {
+
+        /*
+         * Tenta os nomes mais comuns.
+         * Se você estiver usando "carrinho", será encontrado.
+         */
+
+        const possiveisChaves = [
+            'carrinho',
+            'cart',
+            'shoppingCart'
+        ];
+
+        let dados = null;
+
+        for (const chave of possiveisChaves) {
+
+            const salvo = localStorage.getItem(chave);
+
+            if (!salvo) continue;
+
+            try {
+
+                const convertido = JSON.parse(salvo);
+
+                if (Array.isArray(convertido)) {
+
+                    dados = convertido;
+                    break;
+
+                }
+
+            } catch (erro) {
+
+                console.error(
+                    `Erro ao ler localStorage "${chave}":`,
+                    erro
+                );
+
+            }
+
+        }
+
+        if (!dados || dados.length === 0) {
+
+            mostrarCarrinhoVazio();
+
+            return false;
+
+        }
+
+        carrinho = dados;
+
+        return true;
+    }
+
+
+    /*
+    ============================================================
+    NORMALIZA PRODUTO DO CARRINHO
+    ============================================================
+    */
+
+    function normalizarProduto(item) {
+
+        return {
+
+            produtoId:
+                Number(
+                    item.produtoId ??
+                    item.id ??
+                    item.productId
+                ),
+
+            quantidade:
+                Number(
+                    item.quantidade ??
+                    item.quantity ??
+                    1
+                ),
+
+            nome:
+                item.nome ??
+                item.name ??
+                item.titulo ??
+                'Produto',
+
+            preco:
+                Number(
+                    item.preco ??
+                    item.price ??
+                    0
+                )
+
+        };
+
+    }
+
+
+    /*
+    ============================================================
+    EXIBIR CARRINHO
+    ============================================================
+    */
+
+    function renderizarCarrinho() {
+
+        if (!carrinho.length) {
+
+            mostrarCarrinhoVazio();
+
+            return;
+
+        }
+
+        let total = 0;
+
+        listaProdutos.innerHTML = '';
+
+        carrinho.forEach(itemOriginal => {
+
+            const item =
+                normalizarProduto(itemOriginal);
+
+            const subtotal =
+                item.preco * item.quantidade;
+
+            total += subtotal;
+
+
+            const div =
+                document.createElement('div');
+
+            div.className = 'produto';
+
+            div.innerHTML = `
+
+                <div class="produto-info">
+
+                    <div class="produto-nome">
+                        ${escaparHTML(item.nome)}
+                    </div>
+
+                    <div class="produto-qtd">
+                        Quantidade: ${item.quantidade}
+                    </div>
+
+                </div>
+
+                <div class="produto-preco">
+                    ${formatarMoeda(subtotal)}
+                </div>
+
+            `;
+
+            listaProdutos.appendChild(div);
+
+        });
+
+
+        valorTotal.textContent =
+            formatarMoeda(total);
+
+    }
+
+
+    /*
+    ============================================================
+    CARRINHO VAZIO
+    ============================================================
+    */
+
+    function mostrarCarrinhoVazio() {
+
+        carrinho = [];
+
+        listaProdutos.innerHTML = `
+
+            <div class="vazio">
+
+                <strong>
+                    Seu carrinho está vazio.
+                </strong>
+
+                <br>
+
+                Adicione produtos antes de continuar.
+
+                <br>
+
+                <a href="/">
+                    Voltar para a loja
+                </a>
+
+            </div>
+
+        `;
+
+        valorTotal.textContent =
+            'R$ 0,00';
+
+        btnFinalizar.disabled = true;
+
+    }
+
+
+    /*
+    ============================================================
+    FORMATAR MOEDA
+    ============================================================
+    */
+
+    function formatarMoeda(valor) {
+
+        return Number(valor).toLocaleString(
+            'pt-BR',
+            {
+                style: 'currency',
+                currency: 'BRL'
+            }
+        );
+
+    }
+
+
+    /*
+    ============================================================
+    ESCAPAR HTML
+    ============================================================
+    */
+
+    function escaparHTML(valor) {
+
+        const div =
+            document.createElement('div');
+
+        div.textContent =
+            String(valor);
+
+        return div.innerHTML;
+
+    }
+
+
+    /*
+    ============================================================
+    MENSAGENS
+    ============================================================
+    */
+
+    function mostrarErro(mensagem) {
+
+        mensagemSucesso.style.display =
+            'none';
+
+        mensagemErro.textContent =
+            mensagem;
+
+        mensagemErro.style.display =
+            'block';
+
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+
+    }
+
+
+    function mostrarSucesso(mensagem) {
+
+        mensagemErro.style.display =
+            'none';
+
+        mensagemSucesso.textContent =
+            mensagem;
+
+        mensagemSucesso.style.display =
+            'block';
+
+    }
+
+
+    /*
+    ============================================================
+    LER FORMULÁRIO
+    ============================================================
+    */
+
+    function obterDadosFormulario() {
+
+        return {
+
+            nomeCompleto:
+                document
+                    .getElementById('nomeCompleto')
+                    .value
+                    .trim(),
+
+            email:
+                document
+                    .getElementById('email')
+                    .value
+                    .trim(),
+
+            cpfCnpj:
+                document
+                    .getElementById('cpfCnpj')
+                    .value
+                    .trim(),
+
+            telefone:
+                document
+                    .getElementById('telefone')
+                    .value
+                    .trim(),
+
+            dataNascimento:
+                document
+                    .getElementById('dataNascimento')
+                    .value
+                    .trim(),
+
+            cep:
+                document
+                    .getElementById('cep')
+                    .value
+                    .trim(),
+
+            pais:
+                document
+                    .getElementById('pais')
+                    .value
+                    .trim(),
+
+            estado:
+                document
+                    .getElementById('estado')
+                    .value
+                    .trim(),
+
+            cidade:
+                document
+                    .getElementById('cidade')
+                    .value
+                    .trim(),
+
+            bairro:
+                document
+                    .getElementById('bairro')
+                    .value
+                    .trim(),
+
+            rua:
+                document
+                    .getElementById('rua')
+                    .value
+                    .trim(),
+
+            numero:
+                document
+                    .getElementById('numero')
+                    .value
+                    .trim(),
+
+            complemento:
+                document
+                    .getElementById('complemento')
+                    .value
+                    .trim(),
+
+            pontoReferencia:
+                document
+                    .getElementById('pontoReferencia')
+                    .value
+                    .trim(),
+
+            nomeDestinatario:
+                document
+                    .getElementById('nomeDestinatario')
+                    .value
+                    .trim(),
+
+            telefoneEntrega:
+                document
+                    .getElementById('telefoneEntrega')
+                    .value
+                    .trim()
+
+        };
+
+    }
+
+
+    /*
+    ============================================================
+    VALIDAÇÃO FRONTEND
+    ============================================================
+    */
+
+    function validarFormulario(dados) {
+
+        const obrigatorios = {
+
+            nomeCompleto:
+                'Nome completo',
+
+            email:
+                'E-mail',
+
+            cpfCnpj:
+                'CPF/CNPJ',
+
+            telefone:
+                'Telefone',
+
+            cep:
+                'CEP',
+
+            pais:
+                'País',
+
+            estado:
+                'Estado',
+
+            cidade:
+                'Cidade',
+
+            bairro:
+                'Bairro',
+
+            rua:
+                'Rua',
+
+            numero:
+                'Número',
+
+            nomeDestinatario:
+                'Nome do destinatário',
+
+            telefoneEntrega:
+                'Telefone para entrega'
+
+        };
+
+
+        for (
+            const [campo, nome] of
+            Object.entries(obrigatorios)
+        ) {
+
+            if (
+                !dados[campo] ||
+                String(dados[campo]).trim() === ''
+            ) {
+
+                mostrarErro(
+                    `O campo "${nome}" é obrigatório.`
+                );
+
+                document
+                    .getElementById(campo)
+                    ?.focus();
+
+                return false;
+
+            }
+
+        }
+
+
+        return true;
+
+    }
+
+
+    /*
+    ============================================================
+    CONVERTER CARRINHO PARA API
+    ============================================================
+    */
+
+    function obterItensParaAPI() {
+
+        return carrinho.map(itemOriginal => {
+
+            const item =
+                normalizarProduto(itemOriginal);
+
+            return {
+
+                produtoId:
+                    item.produtoId,
+
+                quantidade:
+                    item.quantidade
+
+            };
+
+        });
+
+    }
+
+
+    /*
+    ============================================================
+    CRIAR PEDIDO
+    ============================================================
+    */
+
+    async function criarPedido() {
+
+        const dados =
+            obterDadosFormulario();
+
+
+        if (!validarFormulario(dados)) {
+
+            return null;
+
+        }
+
+
+        const itens =
+            obterItensParaAPI();
+
+
+        if (!itens.length) {
+
+            mostrarErro(
+                'Seu carrinho está vazio.'
+            );
+
+            return null;
+
+        }
+
+
+        btnFinalizar.disabled = true;
+
+        btnFinalizar.textContent =
+            'Criando pedido...';
+
+
+        try {
+
+            console.log(
+                'Enviando pedido:',
+                {
+                    ...dados,
+                    itens
+                }
+            );
+
+
+            const resposta =
+                await fetch(
+                    `${API}/pedidos`,
+                    {
+
+                        method: 'POST',
+
+                        headers: {
+                            'Content-Type':
+                                'application/json'
+                        },
+
+                        body: JSON.stringify({
+
+                            itens,
+
+                            ...dados
+
+                        })
+
+                    }
+                );
+
+
+            /*
+            ====================================================
+            TENTA LER A RESPOSTA
+            ====================================================
+            */
+
+            const texto =
+                await resposta.text();
+
+
+            let resultado;
+
+            try {
+
+                resultado =
+                    texto
+                        ? JSON.parse(texto)
+                        : {};
+
+            } catch {
+
+                console.error(
+                    'Resposta não JSON:',
+                    texto
+                );
+
+                throw new Error(
+                    `Servidor retornou uma resposta inválida. HTTP ${resposta.status}`
+                );
+
+            }
+
+
+            console.log(
+                'Resposta criarPedido:',
+                resultado
+            );
+
+
+            if (!resposta.ok) {
+
+                throw new Error(
+                    resultado.erro ||
+                    resultado.error ||
+                    `Erro HTTP ${resposta.status}`
+                );
+
+            }
+
+
+            if (!resultado.pedidoId) {
+
+                throw new Error(
+                    'O servidor criou o pedido, mas não retornou o pedidoId.'
+                );
+
+            }
+
+
+            return resultado;
+
+        } catch (erro) {
+
+            console.error(
+                'Erro ao criar pedido:',
+                erro
+            );
+
+            mostrarErro(
+                erro.message ||
+                'Erro ao criar pedido.'
+            );
+
+            return null;
+
+        }
+
+    }
+
+
+    /*
+    ============================================================
+    CRIAR PREFERÊNCIA MERCADO PAGO
+    ============================================================
+    */
+
+    async function criarPreferencia(pedidoId) {
+
+        btnFinalizar.textContent =
+            'Preparando pagamento...';
+
+
+        try {
+
+            console.log(
+                'Criando preferência para pedido:',
+                pedidoId
+            );
+
+
+            const resposta =
+                await fetch(
+                    `${API}/preferencia`,
+                    {
+
+                        method: 'POST',
+
+                        headers: {
+                            'Content-Type':
+                                'application/json'
+                        },
+
+                        body: JSON.stringify({
+
+                            pedidoId:
+                                pedidoId
+
+                        })
+
+                    }
+                );
+
+
+            const texto =
+                await resposta.text();
+
+
+            let resultado;
+
+            try {
+
+                resultado =
+                    texto
+                        ? JSON.parse(texto)
+                        : {};
+
+            } catch {
+
+                console.error(
+                    'Resposta não JSON:',
+                    texto
+                );
+
+                throw new Error(
+                    `Servidor retornou uma resposta inválida ao criar o pagamento. HTTP ${resposta.status}`
+                );
+
+            }
+
+
+            console.log(
+                'Resposta preferência:',
+                resultado
+            );
+
+
+            if (!resposta.ok) {
+
+                throw new Error(
+                    resultado.erro ||
+                    resultado.error ||
+                    `Erro HTTP ${resposta.status}`
+                );
+
+            }
+
+
+            if (!resultado.initPoint) {
+
+                throw new Error(
+                    'O Mercado Pago não retornou o link de pagamento.'
+                );
+
+            }
+
+
+            return resultado.initPoint;
+
+        } catch (erro) {
+
+            console.error(
+                'Erro ao criar preferência:',
+                erro
+            );
+
+            mostrarErro(
+                erro.message ||
+                'Erro ao preparar pagamento.'
+            );
+
+            return null;
+
+        }
+
+    }
+
+
+    /*
+    ============================================================
+    FINALIZAR
+    ============================================================
+    */
+
+    async function finalizarPedido() {
+
+        mensagemErro.style.display =
+            'none';
+
+        mensagemSucesso.style.display =
+            'none';
+
+
+        if (!carrinho.length) {
+
+            mostrarErro(
+                'Seu carrinho está vazio.'
+            );
+
+            return;
+
+        }
+
+
+        /*
+        ========================================================
+        1. CRIA PEDIDO
+        ========================================================
+        */
+
+        const pedido =
+            await criarPedido();
+
+
+        if (!pedido) {
+
+            btnFinalizar.disabled =
+                false;
+
+            btnFinalizar.textContent =
+                'Continuar para pagamento';
+
+            return;
+
+        }
+
+
+        console.log(
+            'Pedido criado:',
+            pedido
+        );
+
+
+        /*
+        ========================================================
+        2. CRIA PREFERÊNCIA
+        ========================================================
+        */
+
+        const initPoint =
+            await criarPreferencia(
+                pedido.pedidoId
+            );
+
+
+        if (!initPoint) {
+
+            btnFinalizar.disabled =
+                false;
+
+            btnFinalizar.textContent =
+                'Continuar para pagamento';
+
+            return;
+
+        }
+
+
+        /*
+        ========================================================
+        3. LIMPA CARRINHO
+        ========================================================
+        */
+
+        localStorage.removeItem(
+            'carrinho'
+        );
+
+        localStorage.removeItem(
+            'cart'
+        );
+
+        localStorage.removeItem(
+            'shoppingCart'
+        );
+
+
+        /*
+        ========================================================
+        4. REDIRECIONA PARA MERCADO PAGO
+        ========================================================
+        */
+
+        console.log(
+            'Redirecionando para Mercado Pago:',
+            initPoint
+        );
+
+
+        window.location.href =
+            initPoint;
+
+    }
+
+
+    /*
+    ============================================================
+    EVENTO
+    ============================================================
+    */
+
+    btnFinalizar.addEventListener(
+        'click',
+        finalizarPedido
+    );
+
+
+    /*
+    ============================================================
+    INICIALIZAÇÃO
+    ============================================================
+    */
+
+    document.addEventListener(
+        'DOMContentLoaded',
+        () => {
+
+            const possuiCarrinho =
+                carregarCarrinho();
+
+            if (possuiCarrinho) {
+
+                renderizarCarrinho();
+
+            }
+
+        }
+    );
+
+</script>
+
+</body>
+</html>
