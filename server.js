@@ -127,10 +127,8 @@ app.use(
 // enviar front
 // =============
 
-// servir imagens
-app.use('/imagens', express.static(path.join(__dirname, 'views/imagens')));
-
-
+// servir css, js e etc
+app.use(express.static(path.join(__dirname, 'views')))
 
 
 
