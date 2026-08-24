@@ -1,4 +1,4 @@
-# 🛒 E-commerce — Projeto Freelancer
+#  E-commerce — Projeto Freelancer
 
 > Plataforma de e-commerce desenvolvida sob demanda para um cliente, com catálogo de produtos, autenticação de usuários, gerenciamento administrativo, checkout e integração com o Mercado Pago.
 
@@ -10,7 +10,7 @@ A aplicação possui backend desenvolvido em **Node.js/Express**, banco de dados
 
 ---
 
-# 📌 Sumário
+#  Sumário
 
 * [Sobre o Projeto](#-sobre-o-projeto)
 * [Demonstração](#-demonstração)
@@ -18,7 +18,6 @@ A aplicação possui backend desenvolvido em **Node.js/Express**, banco de dados
 * [Principais Funcionalidades](#-principais-funcionalidades)
 * [Arquitetura do Projeto](#-arquitetura-do-projeto)
 * [Fluxo da Aplicação](#-fluxo-da-aplicação)
-
   * [Cadastro de Usuário](#cadastro-de-usuário)
   * [Login](#login)
   * [Catálogo de Produtos](#catálogo-de-produtos)
@@ -34,7 +33,6 @@ A aplicação possui backend desenvolvido em **Node.js/Express**, banco de dados
 * [Banco de Dados](#-banco-de-dados)
 * [Executando o Projeto](#-executando-o-projeto)
 * [Documentação da API](#-documentação-da-api)
-
   * [Autenticação](#autenticação)
   * [Produtos](#produtos)
   * [Pedidos e Pagamentos](#pedidos-e-pagamentos)
@@ -48,7 +46,7 @@ A aplicação possui backend desenvolvido em **Node.js/Express**, banco de dados
 
 ---
 
-# 📖 Sobre o Projeto
+#  Sobre o Projeto
 
 Este projeto foi desenvolvido como uma solução personalizada de e-commerce para um cliente.
 
@@ -62,9 +60,9 @@ O projeto também possui integração com o Mercado Pago para criação de prefe
 
 ---
 
-# ✨ Principais Funcionalidades
+#  Principais Funcionalidades
 
-## 🛍️ E-commerce
+##  E-commerce
 
 * ✔ Catálogo de produtos
 * ✔ Página individual de produto
@@ -77,7 +75,7 @@ O projeto também possui integração com o Mercado Pago para criação de prefe
 * ✔ Sistema de checkout
 * ✔ Criação de pedidos
 
-## 👤 Usuários
+##  Usuários
 
 * ✔ Cadastro de usuários
 * ✔ Login
@@ -87,7 +85,7 @@ O projeto também possui integração com o Mercado Pago para criação de prefe
 * ✔ Validação de dados
 * ✔ Perfil do usuário
 
-## 🔧 Administração
+##  Administração
 
 * ✔ Cadastro de produtos
 * ✔ Edição de produtos
@@ -99,7 +97,7 @@ O projeto também possui integração com o Mercado Pago para criação de prefe
 
 A exclusão de produtos é feita de maneira lógica, mantendo o registro no banco para preservar a integridade do histórico de pedidos.
 
-## 💳 Pagamentos
+##  Pagamentos
 
 * ✔ Integração com Mercado Pago
 * ✔ Criação de preferência de pagamento
@@ -113,7 +111,7 @@ A exclusão de produtos é feita de maneira lógica, mantendo o registro no banc
 
 ---
 
-# 📸 Demonstração
+#  Demonstração
 
 > As imagens abaixo representam a interface desenvolvida para o projeto.
 
@@ -149,7 +147,7 @@ A exclusão de produtos é feita de maneira lógica, mantendo o registro no banc
 
 ---
 
-# 💼 Contexto do Projeto
+#  Contexto do Projeto
 
 Este projeto possui uma característica diferente de projetos acadêmicos, experimentais ou fictícios.
 
@@ -172,7 +170,7 @@ Por questões de **confidencialidade**, informações específicas sobre o clien
 
 ---
 
-# 🏗️ Arquitetura do Projeto
+#  Arquitetura do Projeto
 
 ```text
                      ┌─────────────────────┐
@@ -223,7 +221,7 @@ Por questões de **confidencialidade**, informações específicas sobre o clien
 
 ---
 
-# 🔄 Fluxo da Aplicação
+#  Fluxo da Aplicação
 
 ## Pipeline Base
 
@@ -432,7 +430,7 @@ O projeto mantém no banco identificadores como `preference_id` e `payment_id`, 
 
 ---
 
-# 🧰 Tecnologias Utilizadas
+#  Tecnologias Utilizadas
 
 ## Backend
 
@@ -475,7 +473,7 @@ O `package.json` do projeto inclui, entre outras dependências, Express 5, Postg
 
 ---
 
-# 📁 Estrutura de Pastas
+#  Estrutura de Pastas
 
 ```text
 ecommerce-freelancer
@@ -524,7 +522,7 @@ A estrutura atual do repositório separa controllers, middleware, models, routes
 
 ---
 
-# ⚙️ Instalação
+#  Instalação
 
 ## Pré-requisitos
 
@@ -562,7 +560,7 @@ As dependências são instaladas a partir do `package.json` existente no projeto
 
 ---
 
-# 🔐 Configuração do Ambiente
+#  Configuração do Ambiente
 
 Crie um arquivo `.env` na raiz do projeto.
 
@@ -596,7 +594,7 @@ O repositório já possui um `.env.example` para auxiliar na configuração do a
 
 ---
 
-# 🗄️ Banco de Dados
+#  Banco de Dados
 
 O projeto utiliza **PostgreSQL**.
 
@@ -627,7 +625,7 @@ A estrutura de produtos possui campos como nome, descrição, preço, estoque, i
 
 ---
 
-# ▶️ Executando o Projeto
+#  Executando o Projeto
 
 ## Desenvolvimento
 
@@ -727,7 +725,7 @@ Os endpoints estão centralizados na rota de integração com o Mercado Pago.
 
 ---
 
-# 🔒 Segurança
+#  Segurança
 
 O projeto utiliza diferentes mecanismos para reduzir riscos comuns em aplicações web:
 
@@ -751,7 +749,7 @@ A aplicação utiliza bibliotecas como Helmet, `express-rate-limit`, `express-va
 
 ---
 
-# 🔐 Privacidade e Proteção de Dados
+#  Privacidade e Proteção de Dados
 
 Por se tratar de um **projeto desenvolvido para um cliente**, o tratamento de dados deve ser considerado dentro do contexto da operação comercial para a qual a aplicação foi desenvolvida.
 
@@ -819,7 +817,7 @@ npm test
 
 ---
 
-# 🚀 Melhorias Futuras
+#  Melhorias Futuras
 
 * [ ] Implementar suíte de testes automatizados
 * [ ] Documentar a API utilizando OpenAPI/Swagger
@@ -841,7 +839,7 @@ npm test
 
 ---
 
-# 💼 Considerações sobre o Projeto Freelancer
+#  Considerações sobre o Projeto Freelancer
 
 Este projeto foi desenvolvido como **trabalho freelancer sob demanda**.
 
@@ -863,7 +861,7 @@ O uso do código deve respeitar os termos de contratação, direitos do cliente,
 
 ---
 
-# 🤝 Como Contribuir
+#  Como Contribuir
 
 Por se tratar de um projeto desenvolvido sob demanda para um cliente, este repositório **não funciona como um projeto open source tradicional**.
 
@@ -873,7 +871,7 @@ Caso exista interesse em discutir melhorias técnicas, correções ou reutiliza�
 
 ---
 
-# 📄 Licença
+#  Licença
 
 Este projeto está atualmente identificado com a licença **ISC** no `package.json`.
 
@@ -883,7 +881,7 @@ Consulte o arquivo `package.json` e, caso necessário, adicione um arquivo `LICE
 
 ---
 
-# 👨‍💻 Autor
+#  Autor
 
 **Rikael Ribeiro de Araújo Moraes**
 
@@ -894,7 +892,7 @@ Desenvolvedor Full Stack
 
 ---
 
-## 📌 Sobre este projeto
+## Sobre este projeto
 
 Projeto desenvolvido profissionalmente sob demanda, demonstrando experiência prática com:
 
