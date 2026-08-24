@@ -126,7 +126,6 @@ A exclusão de produtos é feita de maneira lógica, mantendo o registro no banc
 ## Carrinho
 
 ![Cart](./docs/cart.PNG)
-![Cart](./docs/cart.png)
 
 ## Identificação 1/2
 
@@ -134,12 +133,12 @@ A exclusão de produtos é feita de maneira lógica, mantendo o registro no banc
 
 ## Identificação 2/2
 
-![Cart](./docs/cart.png)
+![Cart](./docs/ident2.PNG)
 
 
 ## Cadastro
 
-![Cadastro](./docs/register.png)
+![Cadastro](./docs/continuarcompra.PNG)
 
 
 
