@@ -1,6 +1,6 @@
-require('dotenv').config();
-const { MercadoPagoConfig, Preference, Payment } = require('mercadopago');
-const pool = require('../config/dbpg');
+require("dotenv").config();
+const { MercadoPagoConfig, Preference, Payment } = require("mercadopago");
+const pool = require("../config/dbpg");
 
 // --- Configuração do client do Mercado Pago ---
 const client = new MercadoPagoConfig({
@@ -11,11 +11,9 @@ const preferenceClient = new Preference(client);
 const paymentClient = new Payment(client);
 
 const mercadopagoController = {
-
-
-// =================
+  // =================
   // USER CONTROLLERS
-// =============
+  // =============
   // Lista os produtos disponíveis para o usuário escolher
   // async listarProdutos(req, res) {
   //   try {
@@ -29,44 +27,42 @@ const mercadopagoController = {
   //   }
   // },
   async listarProdutos(req, res) {
-  try {
-    const resultado = await pool.query(
-      `SELECT id, nome, descricao, preco, preco_antigo, desconto_percentual, estoque
+    try {
+      const resultado = await pool.query(
+        `SELECT id, nome, descricao, preco, preco_antigo, desconto_percentual, estoque
        FROM produtos
        WHERE ativo = TRUE
-       ORDER BY nome`
-    );
-    return res.status(200).json(resultado.rows);
-  } catch (erro) {
-    console.error('Erro ao listar produtos:', erro);
-    return res.status(500).json({ erro: 'Erro ao listar produtos.' });
-  }
-},
+       ORDER BY nome`,
+      );
+      return res.status(200).json(resultado.rows);
+    } catch (erro) {
+      console.error("Erro ao listar produtos:", erro);
+      return res.status(500).json({ erro: "Erro ao listar produtos." });
+    }
+  },
 
+  // Busca um único produto pelo id (usado pela página de detalhe do produto)
+  async buscarProdutoPorId(req, res) {
+    const { id } = req.params;
 
-// Busca um único produto pelo id (usado pela página de detalhe do produto)
-async buscarProdutoPorId(req, res) {
-  const { id } = req.params;
-
-  try {
-    const resultado = await pool.query(
-      `SELECT id, nome, descricao, preco, preco_antigo, desconto_percentual, estoque, imagem_url
+    try {
+      const resultado = await pool.query(
+        `SELECT id, nome, descricao, preco, preco_antigo, desconto_percentual, estoque, imagem_url
        FROM produtos
        WHERE id = $1 AND ativo = TRUE`,
-      [id]
-    );
+        [id],
+      );
 
-    if (resultado.rows.length === 0) {
-      return res.status(404).json({ erro: 'Produto não encontrado.' });
+      if (resultado.rows.length === 0) {
+        return res.status(404).json({ erro: "Produto não encontrado." });
+      }
+
+      return res.status(200).json(resultado.rows[0]);
+    } catch (erro) {
+      console.error("Erro ao buscar produto por id:", erro);
+      return res.status(500).json({ erro: "Erro ao buscar produto." });
     }
-
-    return res.status(200).json(resultado.rows[0]);
-  } catch (erro) {
-    console.error('Erro ao buscar produto por id:', erro);
-    return res.status(500).json({ erro: 'Erro ao buscar produto.' });
-  }
-},
-
+  },
 
   // Cria um pedido a partir dos itens escolhidos pelo usuário
   // Body do user esperado: { itens: [{ produtoId, quantidade }] }
@@ -149,76 +145,107 @@ async buscarProdutoPorId(req, res) {
   //     conexao.release();
   //   }
   // },
-// Cria um pedido a partir dos itens do carrinho + dados de contato/entrega
-// Body esperado: {
-//   itens: [{ produtoId, quantidade }],
-//   nomeCompleto, email, cpfCnpj, telefone, dataNascimento,
-//   cep, pais, estado, cidade, bairro, rua, numero, complemento, pontoReferencia,
-//   nomeDestinatario, telefoneEntrega
-// }
-// O preço nunca vem do front — é sempre buscado na tabela produtos
-async criarPedido(req, res) {
-  const {
-    itens,
-    nomeCompleto, email, cpfCnpj, telefone, dataNascimento,
-    cep, pais, estado, cidade, bairro, rua, numero,
-    complemento, pontoReferencia, nomeDestinatario, telefoneEntrega
-  } = req.body;
+  // Cria um pedido a partir dos itens do carrinho + dados de contato/entrega
+  // Body esperado: {
+  //   itens: [{ produtoId, quantidade }],
+  //   nomeCompleto, email, cpfCnpj, telefone, dataNascimento,
+  //   cep, pais, estado, cidade, bairro, rua, numero, complemento, pontoReferencia,
+  //   nomeDestinatario, telefoneEntrega
+  // }
+  // O preço nunca vem do front — é sempre buscado na tabela produtos
+  async criarPedido(req, res) {
+    const {
+      itens,
+      nomeCompleto,
+      email,
+      cpfCnpj,
+      telefone,
+      dataNascimento,
+      cep,
+      pais,
+      estado,
+      cidade,
+      bairro,
+      rua,
+      numero,
+      complemento,
+      pontoReferencia,
+      nomeDestinatario,
+      telefoneEntrega,
+    } = req.body;
 
-  if (!itens || !Array.isArray(itens) || itens.length === 0) {
-    return res.status(400).json({ erro: 'Nenhum item foi selecionado.' });
-  }
-
-  const camposObrigatorios = {
-    nomeCompleto, email, cpfCnpj, telefone,
-    cep, pais, estado, cidade, bairro, rua, numero,
-    nomeDestinatario, telefoneEntrega
-  };
-  for (const [campo, valor] of Object.entries(camposObrigatorios)) {
-    if (!valor || String(valor).trim() === '') {
-      return res.status(400).json({ erro: `O campo "${campo}" é obrigatório.` });
-    }
-  }
-
-  const conexao = await pool.connect();
-
-  try {
-    await conexao.query('BEGIN');
-
-    const produtoIds = itens.map((item) => item.produtoId);
-    const resultadoProdutos = await conexao.query(
-      `SELECT id, nome, preco, estoque FROM produtos WHERE id = ANY($1::int[]) AND ativo = TRUE`,
-      [produtoIds]
-    );
-
-    const produtosEncontrados = resultadoProdutos.rows;
-
-    if (produtosEncontrados.length !== produtoIds.length) {
-      await conexao.query('ROLLBACK');
-      return res.status(400).json({ erro: 'Um ou mais produtos não existem ou estão indisponíveis.' });
+    if (!itens || !Array.isArray(itens) || itens.length === 0) {
+      return res.status(400).json({ erro: "Nenhum item foi selecionado." });
     }
 
-    let valorTotal = 0;
-    const itensParaInserir = itens.map((item) => {
-      const produto = produtosEncontrados.find((p) => p.id === item.produtoId);
+    const camposObrigatorios = {
+      nomeCompleto,
+      email,
+      cpfCnpj,
+      telefone,
+      cep,
+      pais,
+      estado,
+      cidade,
+      bairro,
+      rua,
+      numero,
+      nomeDestinatario,
+      telefoneEntrega,
+    };
+    for (const [campo, valor] of Object.entries(camposObrigatorios)) {
+      if (!valor || String(valor).trim() === "") {
+        return res
+          .status(400)
+          .json({ erro: `O campo "${campo}" é obrigatório.` });
+      }
+    }
 
-      if (item.quantidade > produto.estoque) {
-        throw new Error(`Estoque insuficiente para "${produto.nome}".`);
+    const conexao = await pool.connect();
+
+    try {
+      await conexao.query("BEGIN");
+
+      const produtoIds = itens.map((item) => item.produtoId);
+      const resultadoProdutos = await conexao.query(
+        `SELECT id, nome, preco, estoque FROM produtos WHERE id = ANY($1::int[]) AND ativo = TRUE`,
+        [produtoIds],
+      );
+
+      const produtosEncontrados = resultadoProdutos.rows;
+
+      if (produtosEncontrados.length !== produtoIds.length) {
+        await conexao.query("ROLLBACK");
+        return res
+          .status(400)
+          .json({
+            erro: "Um ou mais produtos não existem ou estão indisponíveis.",
+          });
       }
 
-      const subtotal = Number(produto.preco) * Number(item.quantidade);
-      valorTotal += subtotal;
+      let valorTotal = 0;
+      const itensParaInserir = itens.map((item) => {
+        const produto = produtosEncontrados.find(
+          (p) => p.id === item.produtoId,
+        );
 
-      return {
-        produtoId: produto.id,
-        titulo: produto.nome,
-        quantidade: item.quantidade,
-        preco: produto.preco,
-      };
-    });
+        if (item.quantidade > produto.estoque) {
+          throw new Error(`Estoque insuficiente para "${produto.nome}".`);
+        }
 
-    const resultadoPedido = await conexao.query(
-      `INSERT INTO pedidos (
+        const subtotal = Number(produto.preco) * Number(item.quantidade);
+        valorTotal += subtotal;
+
+        return {
+          produtoId: produto.id,
+          titulo: produto.nome,
+          quantidade: item.quantidade,
+          preco: produto.preco,
+        };
+      });
+
+      const resultadoPedido = await conexao.query(
+        `INSERT INTO pedidos (
          valor_total, status_pagamento,
          nome_completo, email, cpf_cnpj, telefone, data_nascimento,
          cep, pais, estado, cidade, bairro, rua, numero,
@@ -231,47 +258,60 @@ async criarPedido(req, res) {
          $14, $15, $16, $17,
          NOW()
        ) RETURNING id, criado_em`,
-      [
-        valorTotal,
-        nomeCompleto, email, cpfCnpj, telefone, dataNascimento || null,
-        cep, pais, estado.toUpperCase(), cidade, bairro, rua, numero,
-        complemento || null, pontoReferencia || null, nomeDestinatario, telefoneEntrega
-      ]
-    );
-    const pedidoId = resultadoPedido.rows[0].id;
-    const criadoEm = resultadoPedido.rows[0].criado_em;
+        [
+          valorTotal,
+          nomeCompleto,
+          email,
+          cpfCnpj,
+          telefone,
+          dataNascimento || null,
+          cep,
+          pais,
+          estado.toUpperCase(),
+          cidade,
+          bairro,
+          rua,
+          numero,
+          complemento || null,
+          pontoReferencia || null,
+          nomeDestinatario,
+          telefoneEntrega,
+        ],
+      );
+      const pedidoId = resultadoPedido.rows[0].id;
+      const criadoEm = resultadoPedido.rows[0].criado_em;
 
-    for (const item of itensParaInserir) {
-      await conexao.query(
-        `INSERT INTO pedido_itens (pedido_id, produto_id, titulo, quantidade, preco)
+      for (const item of itensParaInserir) {
+        await conexao.query(
+          `INSERT INTO pedido_itens (pedido_id, produto_id, titulo, quantidade, preco)
          VALUES ($1, $2, $3, $4, $5)`,
-        [pedidoId, item.produtoId, item.titulo, item.quantidade, item.preco]
-      );
+          [pedidoId, item.produtoId, item.titulo, item.quantidade, item.preco],
+        );
 
-      await conexao.query(
-        `UPDATE produtos SET estoque = estoque - $1 WHERE id = $2`,
-        [item.quantidade, item.produtoId]
-      );
+        await conexao.query(
+          `UPDATE produtos SET estoque = estoque - $1 WHERE id = $2`,
+          [item.quantidade, item.produtoId],
+        );
+      }
+
+      await conexao.query("COMMIT");
+
+      return res.status(201).json({
+        pedidoId,
+        valorTotal,
+        criadoEm,
+        itens: itensParaInserir,
+      });
+    } catch (erro) {
+      await conexao.query("ROLLBACK");
+      console.error("Erro ao criar pedido:", erro);
+      return res
+        .status(400)
+        .json({ erro: erro.message || "Erro ao criar pedido." });
+    } finally {
+      conexao.release();
     }
-
-    await conexao.query('COMMIT');
-
-    return res.status(201).json({
-      pedidoId,
-      valorTotal,
-      criadoEm,
-      itens: itensParaInserir,
-    });
-  } catch (erro) {
-    await conexao.query('ROLLBACK');
-    console.error('Erro ao criar pedido:', erro);
-    return res.status(400).json({ erro: erro.message || 'Erro ao criar pedido.' });
-  } finally {
-    conexao.release();
-  }
-},
-
-
+  },
 
   // Cria uma preferência de pagamento e devolve o link de checkout (init_point)
   // O front manda só o pedidoId — os itens e preços vêm do banco (pedido_itens),
@@ -280,24 +320,26 @@ async criarPedido(req, res) {
     const { pedidoId } = req.body;
 
     if (!pedidoId) {
-      return res.status(400).json({ erro: 'pedidoId não informado.' });
+      return res.status(400).json({ erro: "pedidoId não informado." });
     }
 
     try {
       const resultadoItens = await pool.query(
         `SELECT titulo, quantidade, preco FROM pedido_itens WHERE pedido_id = $1`,
-        [pedidoId]
+        [pedidoId],
       );
 
       if (resultadoItens.rows.length === 0) {
-        return res.status(404).json({ erro: 'Pedido não encontrado ou sem itens.' });
+        return res
+          .status(404)
+          .json({ erro: "Pedido não encontrado ou sem itens." });
       }
 
       const items = resultadoItens.rows.map((item) => ({
         title: item.titulo,
         quantity: Number(item.quantidade),
         unit_price: Number(item.preco),
-        currency_id: 'BRL',
+        currency_id: "BRL",
       }));
 
       const preference = await preferenceClient.create({
@@ -309,14 +351,14 @@ async criarPedido(req, res) {
             failure: `${process.env.APP_URL}/pagamento/falha`,
             pending: `${process.env.APP_URL}/pagamento/pendente`,
           },
-          auto_return: 'approved',
+          auto_return: "approved",
           notification_url: `${process.env.APP_URL}/api/mercadopago/webhook`,
         },
       });
 
       await pool.query(
         `UPDATE pedidos SET preference_id = $1, status_pagamento = $2 WHERE id = $3`,
-        [preference.id, 'pendente', pedidoId]
+        [preference.id, "pendente", pedidoId],
       );
 
       return res.status(201).json({
@@ -324,8 +366,10 @@ async criarPedido(req, res) {
         initPoint: preference.init_point,
       });
     } catch (erro) {
-      console.error('Erro ao criar preferência do Mercado Pago:', erro);
-      return res.status(500).json({ erro: 'Erro ao criar preferência de pagamento.' });
+      console.error("Erro ao criar preferência do Mercado Pago:", erro);
+      return res
+        .status(500)
+        .json({ erro: "Erro ao criar preferência de pagamento." });
     }
   },
 
@@ -361,53 +405,53 @@ async criarPedido(req, res) {
   //   }
   // },
 
-async receberWebhook(req, res) {
-  try {
-    console.log('========== WEBHOOK MERCADO PAGO ==========');
-    console.log('Body recebido:', JSON.stringify(req.body, null, 2));
+  async receberWebhook(req, res) {
+    try {
+      console.log("========== WEBHOOK MERCADO PAGO ==========");
+      console.log("Body recebido:", JSON.stringify(req.body, null, 2));
 
-    const { type, data } = req.body;
+      const { type, data } = req.body;
 
-    // Mercado Pago pode enviar outros tipos de notificação
-    if (type !== 'payment') {
-      console.log('Webhook ignorado. Tipo:', type);
-      return res.sendStatus(200);
-    }
+      // Mercado Pago pode enviar outros tipos de notificação
+      if (type !== "payment") {
+        console.log("Webhook ignorado. Tipo:", type);
+        return res.sendStatus(200);
+      }
 
-    if (!data || !data.id) {
-      console.log('Webhook sem data.id');
-      return res.sendStatus(200);
-    }
+      if (!data || !data.id) {
+        console.log("Webhook sem data.id");
+        return res.sendStatus(200);
+      }
 
-    console.log('Payment ID recebido:', data.id);
+      console.log("Payment ID recebido:", data.id);
 
-    // Busca o pagamento diretamente na API do Mercado Pago
-    const pagamento = await paymentClient.get({
-      id: data.id
-    });
+      // Busca o pagamento diretamente na API do Mercado Pago
+      const pagamento = await paymentClient.get({
+        id: data.id,
+      });
 
-    console.log(
-      'Pagamento retornado pelo Mercado Pago:',
-      JSON.stringify(pagamento, null, 2)
-    );
-
-    const status = pagamento.status;
-    const pedidoId = pagamento.external_reference;
-
-    console.log('Status:', status);
-    console.log('External Reference:', pedidoId);
-
-    if (!pedidoId) {
-      console.error(
-        'Pagamento não possui external_reference. Não foi possível identificar o pedido.'
+      console.log(
+        "Pagamento retornado pelo Mercado Pago:",
+        JSON.stringify(pagamento, null, 2),
       );
 
-      return res.sendStatus(200);
-    }
+      const status = pagamento.status;
+      const pedidoId = pagamento.external_reference;
 
-    // Atualiza pedido
-    const resultadoPedido = await pool.query(
-      `
+      console.log("Status:", status);
+      console.log("External Reference:", pedidoId);
+
+      if (!pedidoId) {
+        console.error(
+          "Pagamento não possui external_reference. Não foi possível identificar o pedido.",
+        );
+
+        return res.sendStatus(200);
+      }
+
+      // Atualiza pedido
+      const resultadoPedido = await pool.query(
+        `
       UPDATE pedidos
       SET
         status_pagamento = $1,
@@ -415,21 +459,14 @@ async receberWebhook(req, res) {
         atualizado_em = NOW()
       WHERE id = $3
       `,
-      [
-        status,
-        pagamento.id,
-        pedidoId
-      ]
-    );
+        [status, pagamento.id, pedidoId],
+      );
 
-    console.log(
-      'Pedidos atualizados:',
-      resultadoPedido.rowCount
-    );
+      console.log("Pedidos atualizados:", resultadoPedido.rowCount);
 
-    // Registra/atualiza pagamento
-    const resultadoPagamento = await pool.query(
-      `
+      // Registra/atualiza pagamento
+      const resultadoPagamento = await pool.query(
+        `
       INSERT INTO pagamentos (
         pedido_id,
         payment_id,
@@ -443,44 +480,31 @@ async receberWebhook(req, res) {
       DO UPDATE SET
         status = EXCLUDED.status
       `,
-      [
-        pedidoId,
-        pagamento.id,
-        status,
-        pagamento.transaction_amount,
-        pagamento.payment_method_id
-      ]
-    );
+        [
+          pedidoId,
+          pagamento.id,
+          status,
+          pagamento.transaction_amount,
+          pagamento.payment_method_id,
+        ],
+      );
 
-    console.log(
-      'Pagamento inserido/atualizado:',
-      resultadoPagamento.rowCount
-    );
+      console.log(
+        "Pagamento inserido/atualizado:",
+        resultadoPagamento.rowCount,
+      );
 
-    console.log('==========================================');
+      console.log("==========================================");
 
-    return res.sendStatus(200);
+      return res.sendStatus(200);
+    } catch (erro) {
+      console.error("Erro ao processar webhook do Mercado Pago:");
 
-  } catch (erro) {
-    console.error(
-      'Erro ao processar webhook do Mercado Pago:'
-    );
+      console.error(erro);
 
-    console.error(erro);
-
-    return res.sendStatus(500);
-  }
-},
-
-
-
-
-
-
-
-
-
-
+      return res.sendStatus(500);
+    }
+  },
 
   // Consulta manual do status de um pagamento pelo ID
   async consultarPagamento(req, res) {
@@ -496,8 +520,8 @@ async receberWebhook(req, res) {
         metodo: pagamento.payment_method_id,
       });
     } catch (erro) {
-      console.error('Erro ao consultar pagamento:', erro);
-      return res.status(500).json({ erro: 'Erro ao consultar pagamento.' });
+      console.error("Erro ao consultar pagamento:", erro);
+      return res.status(500).json({ erro: "Erro ao consultar pagamento." });
     }
   },
 
@@ -508,26 +532,25 @@ async receberWebhook(req, res) {
     try {
       const resultado = await pool.query(
         `SELECT status_pagamento, payment_id FROM pedidos WHERE id = $1`,
-        [pedidoId]
+        [pedidoId],
       );
 
       if (resultado.rows.length === 0) {
-        return res.status(404).json({ erro: 'Pedido não encontrado.' });
+        return res.status(404).json({ erro: "Pedido não encontrado." });
       }
 
       return res.status(200).json(resultado.rows[0]);
     } catch (erro) {
-      console.error('Erro ao buscar status do pedido:', erro);
-      return res.status(500).json({ erro: 'Erro ao buscar status do pedido.' });
+      console.error("Erro ao buscar status do pedido:", erro);
+      return res.status(500).json({ erro: "Erro ao buscar status do pedido." });
     }
   },
 
-
- // ADMIN CONTROLLER
-async listarPedidos(req, res) {
-  try {
-    const resultado = await pool.query(
-      `SELECT
+  // ADMIN CONTROLLER
+  async listarPedidos(req, res) {
+    try {
+      const resultado = await pool.query(
+        `SELECT
          p.id, p.valor_total, p.status_pagamento, p.payment_id, p.preference_id,
          p.nome_completo, p.email, p.cpf_cnpj, p.telefone, p.data_nascimento,
          p.cep, p.pais, p.estado, p.cidade, p.bairro, p.rua, p.numero,
@@ -546,23 +569,18 @@ async listarPedidos(req, res) {
        FROM pedidos p
        LEFT JOIN pedido_itens pi ON pi.pedido_id = p.id
        GROUP BY p.id
-       ORDER BY p.criado_em DESC`
-    );
-    return res.status(200).json(resultado.rows);
-  } catch (erro) {
-    console.error('Erro ao listar pedidos:', erro);
-    return res.status(500).json({ erro: 'Erro ao listar pedidos.' });
-  }
-},
-
-
-
+       ORDER BY p.criado_em DESC`,
+      );
+      return res.status(200).json(resultado.rows);
+    } catch (erro) {
+      console.error("Erro ao listar pedidos:", erro);
+      return res.status(500).json({ erro: "Erro ao listar pedidos." });
+    }
+  },
 };
 
 // Listar status de todos os pedidos
 
 // Lista todos os pedidos com o status de pagamento (usado no admin)
-
-
 
 module.exports = mercadopagoController;

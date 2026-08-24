@@ -1,438 +1,288 @@
-
 /* =========================================================
    NÃO ALTERADO — API
 ========================================================= */
 
-const API_PRODUTOS = '/api/produtos';
-const API_PEDIDOS = '/api/mercadopago/pedidos';
+const API_PRODUTOS = "/api/produtos";
+const API_PEDIDOS = "/api/mercadopago/pedidos";
 
-
-function formatarMoeda(v){
-  return Number(v).toLocaleString('pt-BR', {
-    style: 'currency',
-    currency: 'BRL'
+function formatarMoeda(v) {
+  return Number(v).toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL",
   });
 }
 
+function formatarData(iso) {
+  if (!iso) return "—";
 
-function formatarData(iso){
-  if(!iso) return '—';
-
-  return new Date(iso).toLocaleString('pt-BR', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
+  return new Date(iso).toLocaleString("pt-BR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
   });
 }
 
+function formatarDataSimples(iso) {
+  if (!iso) return "—";
 
-function formatarDataSimples(iso){
-  if(!iso) return '—';
-
-  return new Date(iso).toLocaleDateString('pt-BR', {
-    timeZone: 'UTC'
+  return new Date(iso).toLocaleDateString("pt-BR", {
+    timeZone: "UTC",
   });
 }
 
-
-function escapeHtml(str){
-  const div = document.createElement('div');
-  div.textContent = str ?? '';
+function escapeHtml(str) {
+  const div = document.createElement("div");
+  div.textContent = str ?? "";
   return div.innerHTML;
 }
-
 
 /* =========================================================
    ABAS
 ========================================================= */
 
-const abaBtns = document.querySelectorAll('.aba-btn');
+const abaBtns = document.querySelectorAll(".aba-btn");
 
 const paineis = {
-  produtos: document.getElementById('painel-produtos'),
-  pedidos: document.getElementById('painel-pedidos'),
+  produtos: document.getElementById("painel-produtos"),
+  pedidos: document.getElementById("painel-pedidos"),
 };
 
-
 abaBtns.forEach((btn) => {
-
-  btn.addEventListener('click', () => {
-
-    abaBtns.forEach((b) => b.classList.remove('ativa'));
-    btn.classList.add('ativa');
+  btn.addEventListener("click", () => {
+    abaBtns.forEach((b) => b.classList.remove("ativa"));
+    btn.classList.add("ativa");
 
     Object.values(paineis).forEach((p) => {
-      p.classList.remove('ativo');
+      p.classList.remove("ativo");
     });
 
-    paineis[btn.dataset.aba].classList.add('ativo');
+    paineis[btn.dataset.aba].classList.add("ativo");
 
     /*
      * Mantém também o estado visual da sidebar.
      * Não altera a lógica das APIs.
      */
     document
-      .querySelectorAll('.sidebar-nav button')
-      .forEach((b) => b.classList.remove('ativo'));
+      .querySelectorAll(".sidebar-nav button")
+      .forEach((b) => b.classList.remove("ativo"));
 
     const sidebarBtn = document.querySelector(
-      `.sidebar-nav button[data-aba="${btn.dataset.aba}"]`
+      `.sidebar-nav button[data-aba="${btn.dataset.aba}"]`,
     );
 
-    if(sidebarBtn){
-      sidebarBtn.classList.add('ativo');
+    if (sidebarBtn) {
+      sidebarBtn.classList.add("ativo");
     }
 
-    if(
-      btn.dataset.aba === 'pedidos' &&
-      pedidosCarregados === false
-    ){
+    if (btn.dataset.aba === "pedidos" && pedidosCarregados === false) {
       carregarPedidos();
     }
-
   });
-
 });
-
 
 /* =========================================================
    SIDEBAR
 ========================================================= */
 
-document
-  .querySelectorAll('.sidebar-nav button')
-  .forEach((btn) => {
+document.querySelectorAll(".sidebar-nav button").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const aba = document.querySelector(
+      `.aba-btn[data-aba="${btn.dataset.aba}"]`,
+    );
 
-    btn.addEventListener('click', () => {
-
-      const aba = document.querySelector(
-        `.aba-btn[data-aba="${btn.dataset.aba}"]`
-      );
-
-      if(aba){
-        aba.click();
-      }
-
-    });
-
+    if (aba) {
+      aba.click();
+    }
   });
-
+});
 
 /* =========================================================
    PRODUTOS
 ========================================================= */
 
-const form = document.getElementById('form-produto');
-const formTitulo = document.getElementById('form-titulo');
-const btnSalvar = document.getElementById('btn-salvar');
-const btnCancelarEdicao =
-  document.getElementById('btn-cancelar-edicao');
+const form = document.getElementById("form-produto");
+const formTitulo = document.getElementById("form-titulo");
+const btnSalvar = document.getElementById("btn-salvar");
+const btnCancelarEdicao = document.getElementById("btn-cancelar-edicao");
 
-const formMsg = document.getElementById('form-msg');
+const formMsg = document.getElementById("form-msg");
 
-const campoId = document.getElementById('produto-id');
-const campoNome = document.getElementById('produto-nome');
-const campoDescricao =
-  document.getElementById('produto-descricao');
+const campoId = document.getElementById("produto-id");
+const campoNome = document.getElementById("produto-nome");
+const campoDescricao = document.getElementById("produto-descricao");
 
-const campoPreco = document.getElementById('produto-preco');
-const campoPrecoAntigo =
-  document.getElementById('produto-preco-antigo');
+const campoPreco = document.getElementById("produto-preco");
+const campoPrecoAntigo = document.getElementById("produto-preco-antigo");
 
-const campoEstoque =
-  document.getElementById('produto-estoque');
+const campoEstoque = document.getElementById("produto-estoque");
 
-const campoAtivo =
-  document.getElementById('produto-ativo');
+const campoAtivo = document.getElementById("produto-ativo");
 
-const estadoProdutosEl =
-  document.getElementById('estado-produtos');
+const estadoProdutosEl = document.getElementById("estado-produtos");
 
-const produtosWrapEl =
-  document.getElementById('produtos-wrap');
+const produtosWrapEl = document.getElementById("produtos-wrap");
 
-const contagemProdutosEl =
-  document.getElementById('contagem-produtos');
+const contagemProdutosEl = document.getElementById("contagem-produtos");
 
-
-function mostrarFormMsg(msg, tipo){
-
+function mostrarFormMsg(msg, tipo) {
   formMsg.textContent = msg;
 
-  formMsg.className =
-    'form-msg ' + (tipo || '');
-
+  formMsg.className = "form-msg " + (tipo || "");
 }
 
-
-function entrarModoEdicao(produto){
-
+function entrarModoEdicao(produto) {
   campoId.value = produto.id;
   campoNome.value = produto.nome;
-  campoDescricao.value = produto.descricao || '';
+  campoDescricao.value = produto.descricao || "";
   campoPreco.value = produto.preco;
-  campoPrecoAntigo.value = produto.preco_antigo || '';
+  campoPrecoAntigo.value = produto.preco_antigo || "";
   campoEstoque.value = produto.estoque;
   campoAtivo.checked = !!produto.ativo;
 
-  formTitulo.textContent = 'Editar produto';
+  formTitulo.textContent = "Editar produto";
 
-  btnSalvar.textContent =
-    'Salvar alterações';
+  btnSalvar.textContent = "Salvar alterações";
 
   btnCancelarEdicao.hidden = false;
 
-  mostrarFormMsg('');
+  mostrarFormMsg("");
 
   campoNome.focus();
-
 }
 
-
-function sairModoEdicao(){
-
+function sairModoEdicao() {
   form.reset();
 
-  campoId.value = '';
+  campoId.value = "";
 
   campoAtivo.checked = true;
 
-  formTitulo.textContent =
-    'Novo produto';
+  formTitulo.textContent = "Novo produto";
 
-  btnSalvar.textContent =
-    'Adicionar produto';
+  btnSalvar.textContent = "Adicionar produto";
 
   btnCancelarEdicao.hidden = true;
 
-  mostrarFormMsg('');
-
+  mostrarFormMsg("");
 }
 
+btnCancelarEdicao.addEventListener("click", sairModoEdicao);
 
-btnCancelarEdicao.addEventListener(
-  'click',
-  sairModoEdicao
-);
+form.addEventListener("submit", async (evento) => {
+  evento.preventDefault();
 
+  const id = campoId.value;
 
-form.addEventListener(
-  'submit',
-  async (evento) => {
+  const payload = {
+    nome: campoNome.value.trim(),
 
-    evento.preventDefault();
+    descricao: campoDescricao.value.trim(),
 
-    const id = campoId.value;
+    preco: Number(campoPreco.value),
 
-    const payload = {
+    precoAntigo: campoPrecoAntigo.value ? Number(campoPrecoAntigo.value) : null,
 
-      nome: campoNome.value.trim(),
+    estoque: Number(campoEstoque.value),
 
-      descricao:
-        campoDescricao.value.trim(),
+    ativo: campoAtivo.checked,
+  };
 
-      preco:
-        Number(campoPreco.value),
+  if (!payload.nome) {
+    mostrarFormMsg("Informe o nome do produto.", "erro");
 
-      precoAntigo:
-        campoPrecoAntigo.value
-          ? Number(campoPrecoAntigo.value)
-          : null,
-
-      estoque:
-        Number(campoEstoque.value),
-
-      ativo:
-        campoAtivo.checked,
-
-    };
-
-
-    if(!payload.nome){
-
-      mostrarFormMsg(
-        'Informe o nome do produto.',
-        'erro'
-      );
-
-      return;
-
-    }
-
-
-    if(
-      payload.precoAntigo !== null &&
-      payload.precoAntigo <= payload.preco
-    ){
-
-      mostrarFormMsg(
-        'O preço antigo deve ser maior que o preço atual.',
-        'erro'
-      );
-
-      return;
-
-    }
-
-
-    btnSalvar.disabled = true;
-
-    mostrarFormMsg(
-      id
-        ? 'salvando alterações…'
-        : 'adicionando produto…'
-    );
-
-
-    try{
-
-      const url =
-        id
-          ? `${API_PRODUTOS}/${id}`
-          : API_PRODUTOS;
-
-      const metodo =
-        id
-          ? 'PUT'
-          : 'POST';
-
-
-      const resp = await fetch(
-        url,
-        {
-          method: metodo,
-
-          headers:{
-            'Content-Type':
-              'application/json'
-          },
-
-          body:
-            JSON.stringify(payload),
-        }
-      );
-
-
-      const dados =
-        await resp.json();
-
-
-      if(!resp.ok){
-
-        throw new Error(
-          dados.erro ||
-          'Não foi possível salvar o produto.'
-        );
-
-      }
-
-
-      mostrarFormMsg(
-        id
-          ? 'produto atualizado.'
-          : 'produto adicionado.',
-        'ok'
-      );
-
-
-      sairModoEdicao();
-
-      carregarProdutos();
-
-
-    }catch(erro){
-
-      console.error(erro);
-
-      mostrarFormMsg(
-        erro.message,
-        'erro'
-      );
-
-    }finally{
-
-      btnSalvar.disabled = false;
-
-    }
-
+    return;
   }
-);
 
+  if (payload.precoAntigo !== null && payload.precoAntigo <= payload.preco) {
+    mostrarFormMsg("O preço antigo deve ser maior que o preço atual.", "erro");
 
-async function carregarProdutos(){
+    return;
+  }
 
-  try{
+  btnSalvar.disabled = true;
 
-    const resp =
-      await fetch(
-        API_PRODUTOS + '?todos=1'
-      );
+  mostrarFormMsg(id ? "salvando alterações…" : "adicionando produto…");
 
+  try {
+    const url = id ? `${API_PRODUTOS}/${id}` : API_PRODUTOS;
 
-    if(!resp.ok){
+    const metodo = id ? "PUT" : "POST";
 
-      throw new Error(
-        'Falha ao buscar produtos.'
-      );
+    const resp = await fetch(url, {
+      method: metodo,
 
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify(payload),
+    });
+
+    const dados = await resp.json();
+
+    if (!resp.ok) {
+      throw new Error(dados.erro || "Não foi possível salvar o produto.");
     }
 
+    mostrarFormMsg(id ? "produto atualizado." : "produto adicionado.", "ok");
 
-    const produtos =
-      await resp.json();
+    sairModoEdicao();
 
-
-    renderizarProdutos(produtos);
-
-
-  }catch(erro){
-
+    carregarProdutos();
+  } catch (erro) {
     console.error(erro);
 
-    estadoProdutosEl.className =
-      'estado erro';
+    mostrarFormMsg(erro.message, "erro");
+  } finally {
+    btnSalvar.disabled = false;
+  }
+});
+
+async function carregarProdutos() {
+  try {
+    const resp = await fetch(API_PRODUTOS + "?todos=1");
+
+    if (!resp.ok) {
+      throw new Error("Falha ao buscar produtos.");
+    }
+
+    const produtos = await resp.json();
+
+    renderizarProdutos(produtos);
+  } catch (erro) {
+    console.error(erro);
+
+    estadoProdutosEl.className = "estado erro";
 
     estadoProdutosEl.textContent =
-      'não foi possível carregar os produtos. verifique se o servidor está no ar.';
+      "não foi possível carregar os produtos. verifique se o servidor está no ar.";
 
-    produtosWrapEl.innerHTML = '';
+    produtosWrapEl.innerHTML = "";
 
-    produtosWrapEl.appendChild(
-      estadoProdutosEl
-    );
-
+    produtosWrapEl.appendChild(estadoProdutosEl);
   }
-
 }
 
-
-function renderizarProdutos(produtos){
-
-  if(
-    !Array.isArray(produtos) ||
-    produtos.length === 0
-  ){
-
+function renderizarProdutos(produtos) {
+  if (!Array.isArray(produtos) || produtos.length === 0) {
     produtosWrapEl.innerHTML =
       '<div class="estado">nenhum produto cadastrado ainda</div>';
 
-    contagemProdutosEl.textContent = '';
+    contagemProdutosEl.textContent = "";
 
     return;
-
   }
 
+  contagemProdutosEl.textContent = produtos.length + " item(ns)";
 
-  contagemProdutosEl.textContent =
-    produtos.length + ' item(ns)';
-
-
-  const linhas = produtos.map((p) => `
+  const linhas = produtos
+    .map(
+      (p) => `
 
     <tr
-      class="${p.ativo ? '' : 'inativo'}"
+      class="${p.ativo ? "" : "inativo"}"
       data-id="${p.id}"
     >
 
@@ -442,11 +292,7 @@ function renderizarProdutos(produtos){
 
           ${escapeHtml(p.nome)}
 
-          ${
-            p.ativo
-              ? ''
-              : '<span class="tag-inativo">inativo</span>'
-          }
+          ${p.ativo ? "" : '<span class="tag-inativo">inativo</span>'}
 
         </div>
 
@@ -455,7 +301,7 @@ function renderizarProdutos(produtos){
             ? `<div class="descricao">
                 ${escapeHtml(p.descricao)}
                </div>`
-            : ''
+            : ""
         }
 
       </td>
@@ -468,7 +314,7 @@ function renderizarProdutos(produtos){
             ? `<div class="preco-antigo">
                  de ${formatarMoeda(p.preco_antigo)}
                </div>`
-            : ''
+            : ""
         }
 
         <div class="preco-atual">
@@ -480,7 +326,7 @@ function renderizarProdutos(produtos){
               ? `<span class="badge-desconto">
                    ↓ ${p.desconto_percentual}%
                  </span>`
-              : ''
+              : ""
           }
 
         </div>
@@ -515,8 +361,9 @@ function renderizarProdutos(produtos){
 
     </tr>
 
-  `).join('');
-
+  `,
+    )
+    .join("");
 
   produtosWrapEl.innerHTML = `
 
@@ -541,282 +388,161 @@ function renderizarProdutos(produtos){
 
   `;
 
+  produtosWrapEl.querySelectorAll("tr[data-id]").forEach((linha) => {
+    const id = linha.dataset.id;
 
-  produtosWrapEl
-    .querySelectorAll('tr[data-id]')
-    .forEach((linha) => {
+    const produto = produtos.find((p) => String(p.id) === id);
 
-      const id =
-        linha.dataset.id;
+    linha
+      .querySelector('[data-acao="editar"]')
+      .addEventListener("click", () => {
+        entrarModoEdicao(produto);
 
-      const produto =
-        produtos.find(
-          (p) =>
-            String(p.id) === id
-        );
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      });
 
-
-      linha
-        .querySelector(
-          '[data-acao="editar"]'
-        )
-        .addEventListener(
-          'click',
-          () => {
-
-            entrarModoEdicao(produto);
-
-            window.scrollTo({
-              top:0,
-              behavior:'smooth'
-            });
-
-          }
-        );
-
-
-      linha
-        .querySelector(
-          '[data-acao="excluir"]'
-        )
-        .addEventListener(
-          'click',
-          () => {
-
-            excluirProduto(
-              id,
-              produto.nome
-            );
-
-          }
-        );
-
-    });
-
+    linha
+      .querySelector('[data-acao="excluir"]')
+      .addEventListener("click", () => {
+        excluirProduto(id, produto.nome);
+      });
+  });
 }
 
+async function excluirProduto(id, nome) {
+  if (!confirm(`Remover "${nome}" do catálogo?`)) return;
 
-async function excluirProduto(id, nome){
+  try {
+    const resp = await fetch(`${API_PRODUTOS}/${id}`, {
+      method: "DELETE",
+    });
 
-  if(
-    !confirm(
-      `Remover "${nome}" do catálogo?`
-    )
-  ) return;
+    const dados = await resp.json();
 
-
-  try{
-
-    const resp =
-      await fetch(
-        `${API_PRODUTOS}/${id}`,
-        {
-          method:'DELETE'
-        }
-      );
-
-
-    const dados =
-      await resp.json();
-
-
-    if(!resp.ok){
-
-      throw new Error(
-        dados.erro ||
-        'Não foi possível remover o produto.'
-      );
-
+    if (!resp.ok) {
+      throw new Error(dados.erro || "Não foi possível remover o produto.");
     }
 
-
     carregarProdutos();
-
-
-  }catch(erro){
-
+  } catch (erro) {
     console.error(erro);
 
     alert(erro.message);
-
   }
-
 }
-
 
 /* =========================================================
    PEDIDOS
 ========================================================= */
 
-const pedidosWrapEl =
-  document.getElementById('pedidos-wrap');
+const pedidosWrapEl = document.getElementById("pedidos-wrap");
 
-const estadoPedidosEl =
-  document.getElementById('estado-pedidos');
+const estadoPedidosEl = document.getElementById("estado-pedidos");
 
-const contagemPedidosEl =
-  document.getElementById('contagem-pedidos');
+const contagemPedidosEl = document.getElementById("contagem-pedidos");
 
-const filtrosPedidosEl =
-  document.getElementById('filtros-pedidos');
+const filtrosPedidosEl = document.getElementById("filtros-pedidos");
 
-const btnAtualizarPedidos =
-  document.getElementById(
-    'btn-atualizar-pedidos'
-  );
-
+const btnAtualizarPedidos = document.getElementById("btn-atualizar-pedidos");
 
 let pedidos = [];
 
-let filtroPedidoAtual = 'todos';
+let filtroPedidoAtual = "todos";
 
 let pedidosCarregados = false;
 
 let pedidoAbertoId = null;
 
+function classeBadge(status) {
+  if (!status) return "outro";
 
-function classeBadge(status){
-
-  if(!status) return 'outro';
-
-  const chave =
-    status.toLowerCase();
+  const chave = status.toLowerCase();
 
   const permitidos = [
-
-    'pendente',
-    'approved',
-    'aprovado',
-    'rejected',
-    'rejeitado',
-    'cancelled',
-    'cancelado',
-    'in_process',
-    'em_processo'
-
+    "pendente",
+    "approved",
+    "aprovado",
+    "rejected",
+    "rejeitado",
+    "cancelled",
+    "cancelado",
+    "in_process",
+    "em_processo",
   ];
 
-  return permitidos.includes(chave)
-    ? chave
-    : 'outro';
-
+  return permitidos.includes(chave) ? chave : "outro";
 }
 
+async function carregarPedidos() {
+  estadoPedidosEl.className = "estado";
 
-async function carregarPedidos(){
+  estadoPedidosEl.textContent = "carregando pedidos…";
 
-  estadoPedidosEl.className =
-    'estado';
+  pedidosWrapEl.innerHTML = "";
 
-  estadoPedidosEl.textContent =
-    'carregando pedidos…';
+  pedidosWrapEl.appendChild(estadoPedidosEl);
 
-  pedidosWrapEl.innerHTML = '';
+  try {
+    const resp = await fetch(API_PEDIDOS);
 
-  pedidosWrapEl.appendChild(
-    estadoPedidosEl
-  );
-
-
-  try{
-
-    const resp =
-      await fetch(API_PEDIDOS);
-
-
-    if(!resp.ok){
-
-      throw new Error(
-        'Falha ao buscar pedidos.'
-      );
-
+    if (!resp.ok) {
+      throw new Error("Falha ao buscar pedidos.");
     }
 
-
-    pedidos =
-      await resp.json();
+    pedidos = await resp.json();
 
     pedidosCarregados = true;
 
     renderizarPedidos();
-
-
-  }catch(erro){
-
+  } catch (erro) {
     console.error(erro);
 
-    estadoPedidosEl.className =
-      'estado erro';
+    estadoPedidosEl.className = "estado erro";
 
     estadoPedidosEl.textContent =
-      'não foi possível carregar os pedidos. verifique se o servidor está no ar.';
-
+      "não foi possível carregar os pedidos. verifique se o servidor está no ar.";
   }
-
 }
 
-
-function renderizarPedidos(){
-
+function renderizarPedidos() {
   const filtrados =
-    filtroPedidoAtual === 'todos'
-
+    filtroPedidoAtual === "todos"
       ? pedidos
-
       : pedidos.filter(
-          (p) =>
-            (p.status_pagamento || '')
-              .toLowerCase() ===
-            filtroPedidoAtual
+          (p) => (p.status_pagamento || "").toLowerCase() === filtroPedidoAtual,
         );
 
-
-  if(
-    !Array.isArray(pedidos) ||
-    pedidos.length === 0
-  ){
-
+  if (!Array.isArray(pedidos) || pedidos.length === 0) {
     pedidosWrapEl.innerHTML =
       '<div class="estado">nenhum pedido registrado ainda</div>';
 
-    contagemPedidosEl.textContent = '';
+    contagemPedidosEl.textContent = "";
 
     return;
-
   }
 
-
-  if(filtrados.length === 0){
-
+  if (filtrados.length === 0) {
     pedidosWrapEl.innerHTML =
       '<div class="estado">nenhum pedido com esse status</div>';
 
-    contagemPedidosEl.textContent =
-      '0 de ' + pedidos.length;
+    contagemPedidosEl.textContent = "0 de " + pedidos.length;
 
     return;
-
   }
 
+  contagemPedidosEl.textContent = filtrados.length + " de " + pedidos.length;
 
-  contagemPedidosEl.textContent =
-    filtrados.length +
-    ' de ' +
-    pedidos.length;
-
-
-  const linhas =
-    filtrados.map((p) => {
-
-      const aberta =
-        String(p.id) ===
-        String(pedidoAbertoId);
-
+  const linhas = filtrados
+    .map((p) => {
+      const aberta = String(p.id) === String(pedidoAbertoId);
 
       return `
 
         <tr
-          class="linha-pedido ${aberta ? 'aberta' : ''}"
+          class="linha-pedido ${aberta ? "aberta" : ""}"
           data-id="${p.id}"
         >
 
@@ -833,54 +559,41 @@ function renderizarPedidos(){
           <td class="cel-nome">
 
             <div class="nome">
-              ${escapeHtml(
-                p.nome_completo || '—'
-              )}
+              ${escapeHtml(p.nome_completo || "—")}
             </div>
 
             <div class="descricao">
-              ${escapeHtml(
-                p.email || ''
-              )}
+              ${escapeHtml(p.email || "")}
             </div>
 
           </td>
 
 
           <td class="cel-preco">
-            ${formatarMoeda(
-              p.valor_total
-            )}
+            ${formatarMoeda(p.valor_total)}
           </td>
 
 
           <td>
 
             <span
-              class="badge ${classeBadge(
-                p.status_pagamento
-              )}"
+              class="badge ${classeBadge(p.status_pagamento)}"
             >
-              ${
-                p.status_pagamento ||
-                'sem status'
-              }
+              ${p.status_pagamento || "sem status"}
             </span>
 
           </td>
 
 
           <td class="cel-data-criacao">
-            ${formatarData(
-              p.criado_em
-            )}
+            ${formatarData(p.criado_em)}
           </td>
 
         </tr>
 
 
         <tr
-          class="linha-detalhe ${aberta ? 'aberta' : ''}"
+          class="linha-detalhe ${aberta ? "aberta" : ""}"
           data-detalhe-id="${p.id}"
         >
 
@@ -905,9 +618,7 @@ function renderizarPedidos(){
                     </div>
 
                     <div class="valor mono">
-                      ${escapeHtml(
-                        p.cpf_cnpj || '—'
-                      )}
+                      ${escapeHtml(p.cpf_cnpj || "—")}
                     </div>
 
                   </div>
@@ -920,9 +631,7 @@ function renderizarPedidos(){
                     </div>
 
                     <div class="valor">
-                      ${escapeHtml(
-                        p.telefone || '—'
-                      )}
+                      ${escapeHtml(p.telefone || "—")}
                     </div>
 
                   </div>
@@ -935,9 +644,7 @@ function renderizarPedidos(){
                     </div>
 
                     <div class="valor">
-                      ${formatarDataSimples(
-                        p.data_nascimento
-                      )}
+                      ${formatarDataSimples(p.data_nascimento)}
                     </div>
 
                   </div>
@@ -964,9 +671,7 @@ function renderizarPedidos(){
                     </div>
 
                     <div class="valor mono">
-                      ${escapeHtml(
-                        p.cep || '—'
-                      )}
+                      ${escapeHtml(p.cep || "—")}
                     </div>
 
                   </div>
@@ -979,9 +684,7 @@ function renderizarPedidos(){
                     </div>
 
                     <div class="valor">
-                      ${escapeHtml(
-                        p.pais || '—'
-                      )}
+                      ${escapeHtml(p.pais || "—")}
                     </div>
 
                   </div>
@@ -995,18 +698,9 @@ function renderizarPedidos(){
 
                     <div class="valor">
 
-                      ${escapeHtml(
-                        p.cidade || '—'
-                      )}
+                      ${escapeHtml(p.cidade || "—")}
 
-                      ${
-                        p.estado
-                          ? ' / ' +
-                            escapeHtml(
-                              p.estado
-                            )
-                          : ''
-                      }
+                      ${p.estado ? " / " + escapeHtml(p.estado) : ""}
 
                     </div>
 
@@ -1020,9 +714,7 @@ function renderizarPedidos(){
                     </div>
 
                     <div class="valor">
-                      ${escapeHtml(
-                        p.bairro || '—'
-                      )}
+                      ${escapeHtml(p.bairro || "—")}
                     </div>
 
                   </div>
@@ -1036,13 +728,9 @@ function renderizarPedidos(){
 
                     <div class="valor">
 
-                      ${escapeHtml(
-                        p.rua || '—'
-                      )},
+                      ${escapeHtml(p.rua || "—")},
 
-                      ${escapeHtml(
-                        p.numero || '—'
-                      )}
+                      ${escapeHtml(p.numero || "—")}
 
                     </div>
 
@@ -1056,9 +744,7 @@ function renderizarPedidos(){
                     </div>
 
                     <div class="valor">
-                      ${escapeHtml(
-                        p.complemento || '—'
-                      )}
+                      ${escapeHtml(p.complemento || "—")}
                     </div>
 
                   </div>
@@ -1071,9 +757,7 @@ function renderizarPedidos(){
                     </div>
 
                     <div class="valor">
-                      ${escapeHtml(
-                        p.ponto_referencia || '—'
-                      )}
+                      ${escapeHtml(p.ponto_referencia || "—")}
                     </div>
 
                   </div>
@@ -1086,9 +770,7 @@ function renderizarPedidos(){
                     </div>
 
                     <div class="valor">
-                      ${escapeHtml(
-                        p.nome_destinatario || '—'
-                      )}
+                      ${escapeHtml(p.nome_destinatario || "—")}
                     </div>
 
                   </div>
@@ -1101,9 +783,7 @@ function renderizarPedidos(){
                     </div>
 
                     <div class="valor">
-                      ${escapeHtml(
-                        p.telefone_entrega || '—'
-                      )}
+                      ${escapeHtml(p.telefone_entrega || "—")}
                     </div>
 
                   </div>
@@ -1124,18 +804,15 @@ function renderizarPedidos(){
                 <div class="detalhe-itens">
 
                   ${
-                    Array.isArray(p.itens) &&
-                    p.itens.length > 0
-
-                      ? p.itens.map(
-                          (item) => `
+                    Array.isArray(p.itens) && p.itens.length > 0
+                      ? p.itens
+                          .map(
+                            (item) => `
 
                             <div class="item-linha">
 
                               <span>
-                                ${escapeHtml(
-                                  item.titulo
-                                )}
+                                ${escapeHtml(item.titulo)}
 
                                 ×
 
@@ -1143,16 +820,14 @@ function renderizarPedidos(){
                               </span>
 
                               <span class="mono">
-                                ${formatarMoeda(
-                                  item.preco
-                                )}
+                                ${formatarMoeda(item.preco)}
                               </span>
 
                             </div>
 
-                          `
-                        ).join('')
-
+                          `,
+                          )
+                          .join("")
                       : `
                         <div class="detalhe-item"
                              style="padding:13px">
@@ -1182,9 +857,7 @@ function renderizarPedidos(){
                     </div>
 
                     <div class="valor mono">
-                      ${escapeHtml(
-                        p.payment_id || '—'
-                      )}
+                      ${escapeHtml(p.payment_id || "—")}
                     </div>
 
                   </div>
@@ -1197,9 +870,7 @@ function renderizarPedidos(){
                     </div>
 
                     <div class="valor mono">
-                      ${escapeHtml(
-                        p.preference_id || '—'
-                      )}
+                      ${escapeHtml(p.preference_id || "—")}
                     </div>
 
                   </div>
@@ -1212,9 +883,7 @@ function renderizarPedidos(){
                     </div>
 
                     <div class="valor mono">
-                      ${formatarData(
-                        p.criado_em
-                      )}
+                      ${formatarData(p.criado_em)}
                     </div>
 
                   </div>
@@ -1232,9 +901,8 @@ function renderizarPedidos(){
         </tr>
 
       `;
-
-    }).join('');
-
+    })
+    .join("");
 
   pedidosWrapEl.innerHTML = `
 
@@ -1264,75 +932,39 @@ function renderizarPedidos(){
 
   `;
 
+  pedidosWrapEl.querySelectorAll(".linha-pedido").forEach((linha) => {
+    linha.addEventListener("click", () => {
+      const id = linha.dataset.id;
 
-  pedidosWrapEl
-    .querySelectorAll('.linha-pedido')
-    .forEach((linha) => {
+      pedidoAbertoId = pedidoAbertoId === id ? null : id;
 
-      linha.addEventListener(
-        'click',
-        () => {
-
-          const id =
-            linha.dataset.id;
-
-          pedidoAbertoId =
-            pedidoAbertoId === id
-              ? null
-              : id;
-
-          renderizarPedidos();
-
-        }
-      );
-
+      renderizarPedidos();
     });
-
+  });
 }
 
+filtrosPedidosEl.addEventListener("click", (evento) => {
+  const botao = evento.target.closest(".filtro-btn");
 
-filtrosPedidosEl.addEventListener(
-  'click',
-  (evento) => {
+  if (!botao) return;
 
-    const botao =
-      evento.target.closest(
-        '.filtro-btn'
-      );
+  filtrosPedidosEl
+    .querySelectorAll(".filtro-btn")
+    .forEach((b) => b.classList.remove("ativo"));
 
-    if(!botao) return;
+  botao.classList.add("ativo");
 
+  filtroPedidoAtual = botao.dataset.status;
 
-    filtrosPedidosEl
-      .querySelectorAll('.filtro-btn')
-      .forEach(
-        (b) =>
-          b.classList.remove('ativo')
-      );
+  pedidoAbertoId = null;
 
+  renderizarPedidos();
+});
 
-    botao.classList.add('ativo');
-
-    filtroPedidoAtual =
-      botao.dataset.status;
-
-    pedidoAbertoId = null;
-
-    renderizarPedidos();
-
-  }
-);
-
-
-btnAtualizarPedidos.addEventListener(
-  'click',
-  carregarPedidos
-);
-
+btnAtualizarPedidos.addEventListener("click", carregarPedidos);
 
 /* =========================================================
    INÍCIO
 ========================================================= */
 
 carregarProdutos();
-

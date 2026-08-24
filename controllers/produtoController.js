@@ -1,17 +1,16 @@
-const pool = require('../config/dbpg');
+const pool = require("../config/dbpg");
 
 const produtoController = {
-
   // Lista os produtos.
   // Por padrão devolve só os ativos (usado pelo front de checkout).
   // Com ?todos=1 devolve também os inativos (usado pelo admin).
-async listarProdutos(req, res) {
-  const mostrarTodos = req.query.todos === '1';
+  async listarProdutos(req, res) {
+    const mostrarTodos = req.query.todos === "1";
 
-  try {
-    const resultado = await pool.query(
-      mostrarTodos
-        ? `SELECT 
+    try {
+      const resultado = await pool.query(
+        mostrarTodos
+          ? `SELECT 
              id,
              nome,
              descricao,
@@ -22,7 +21,7 @@ async listarProdutos(req, res) {
              ativo
            FROM produtos
            ORDER BY nome`
-        : `SELECT 
+          : `SELECT 
              id,
              nome,
              descricao,
@@ -33,17 +32,17 @@ async listarProdutos(req, res) {
              ativo
            FROM produtos
            WHERE ativo = TRUE
-           ORDER BY nome`
-    );
+           ORDER BY nome`,
+      );
 
-    return res.status(200).json(resultado.rows);
-  } catch (erro) {
-    console.error('Erro ao listar produtos:', erro);
-    return res.status(500).json({
-      erro: 'Erro ao listar produtos.'
-    });
-  }
-},
+      return res.status(200).json(resultado.rows);
+    } catch (erro) {
+      console.error("Erro ao listar produtos:", erro);
+      return res.status(500).json({
+        erro: "Erro ao listar produtos.",
+      });
+    }
+  },
 
   // async listarProdutos(req, res) {
   //   const mostrarTodos = req.query.todos === '1';
@@ -68,17 +67,17 @@ async listarProdutos(req, res) {
     try {
       const resultado = await pool.query(
         `SELECT id, nome, descricao, preco, estoque, ativo FROM produtos WHERE id = $1`,
-        [id]
+        [id],
       );
 
       if (resultado.rows.length === 0) {
-        return res.status(404).json({ erro: 'Produto não encontrado.' });
+        return res.status(404).json({ erro: "Produto não encontrado." });
       }
 
       return res.status(200).json(resultado.rows[0]);
     } catch (erro) {
-      console.error('Erro ao buscar produto:', erro);
-      return res.status(500).json({ erro: 'Erro ao buscar produto.' });
+      console.error("Erro ao buscar produto:", erro);
+      return res.status(500).json({ erro: "Erro ao buscar produto." });
     }
   },
 
@@ -110,60 +109,88 @@ async listarProdutos(req, res) {
   //   }
   // },
   async criarProduto(req, res) {
-  const { nome, descricao, preco, precoAntigo, estoque, ativo } = req.body;
+    const { nome, descricao, preco, precoAntigo, estoque, ativo } = req.body;
 
-  if (!nome || preco === undefined || estoque === undefined) {
-    return res.status(400).json({ erro: 'Nome, preço e estoque são obrigatórios.' });
-  }
+    if (!nome || preco === undefined || estoque === undefined) {
+      return res
+        .status(400)
+        .json({ erro: "Nome, preço e estoque são obrigatórios." });
+    }
 
-  if (precoAntigo !== undefined && precoAntigo !== null && Number(precoAntigo) <= Number(preco)) {
-    return res.status(400).json({ erro: 'O preço antigo deve ser maior que o preço atual.' });
-  }
+    if (
+      precoAntigo !== undefined &&
+      precoAntigo !== null &&
+      Number(precoAntigo) <= Number(preco)
+    ) {
+      return res
+        .status(400)
+        .json({ erro: "O preço antigo deve ser maior que o preço atual." });
+    }
 
-  try {
-    const resultado = await pool.query(
-      `INSERT INTO produtos (nome, descricao, preco, preco_antigo, estoque, ativo)
+    try {
+      const resultado = await pool.query(
+        `INSERT INTO produtos (nome, descricao, preco, preco_antigo, estoque, ativo)
        VALUES ($1, $2, $3, $4, $5, $6)
        RETURNING *`,
-      [nome, descricao || null, preco, precoAntigo || null, estoque, ativo ?? true]
-    );
-    return res.status(201).json(resultado.rows[0]);
-  } catch (erro) {
-    console.error('Erro ao criar produto:', erro);
-    return res.status(500).json({ erro: 'Erro ao criar produto.' });
-  }
-},
-
+        [
+          nome,
+          descricao || null,
+          preco,
+          precoAntigo || null,
+          estoque,
+          ativo ?? true,
+        ],
+      );
+      return res.status(201).json(resultado.rows[0]);
+    } catch (erro) {
+      console.error("Erro ao criar produto:", erro);
+      return res.status(500).json({ erro: "Erro ao criar produto." });
+    }
+  },
 
   // Atualiza um produto existente
   // Body esperado: { nome, descricao, preco, estoque, ativo } — todos opcionais
- async atualizarProduto(req, res) {
-  const { id } = req.params;
-  const { nome, descricao, preco, precoAntigo, estoque, ativo } = req.body;
+  async atualizarProduto(req, res) {
+    const { id } = req.params;
+    const { nome, descricao, preco, precoAntigo, estoque, ativo } = req.body;
 
-  if (precoAntigo !== undefined && precoAntigo !== null && Number(precoAntigo) <= Number(preco)) {
-    return res.status(400).json({ erro: 'O preço antigo deve ser maior que o preço atual.' });
-  }
+    if (
+      precoAntigo !== undefined &&
+      precoAntigo !== null &&
+      Number(precoAntigo) <= Number(preco)
+    ) {
+      return res
+        .status(400)
+        .json({ erro: "O preço antigo deve ser maior que o preço atual." });
+    }
 
-  try {
-    const resultado = await pool.query(
-      `UPDATE produtos
+    try {
+      const resultado = await pool.query(
+        `UPDATE produtos
        SET nome = $1, descricao = $2, preco = $3, preco_antigo = $4, estoque = $5, ativo = $6
        WHERE id = $7
        RETURNING *`,
-      [nome, descricao || null, preco, precoAntigo || null, estoque, ativo, id]
-    );
+        [
+          nome,
+          descricao || null,
+          preco,
+          precoAntigo || null,
+          estoque,
+          ativo,
+          id,
+        ],
+      );
 
-    if (resultado.rows.length === 0) {
-      return res.status(404).json({ erro: 'Produto não encontrado.' });
+      if (resultado.rows.length === 0) {
+        return res.status(404).json({ erro: "Produto não encontrado." });
+      }
+
+      return res.status(200).json(resultado.rows[0]);
+    } catch (erro) {
+      console.error("Erro ao atualizar produto:", erro);
+      return res.status(500).json({ erro: "Erro ao atualizar produto." });
     }
-
-    return res.status(200).json(resultado.rows[0]);
-  } catch (erro) {
-    console.error('Erro ao atualizar produto:', erro);
-    return res.status(500).json({ erro: 'Erro ao atualizar produto.' });
-  }
-},
+  },
 
   // Exclusão lógica do produto (mantém histórico de pedidos íntegro)
   async deletarProduto(req, res) {
@@ -172,17 +199,19 @@ async listarProdutos(req, res) {
     try {
       const resultado = await pool.query(
         `UPDATE produtos SET ativo = FALSE WHERE id = $1 RETURNING id`,
-        [id]
+        [id],
       );
 
       if (resultado.rows.length === 0) {
-        return res.status(404).json({ erro: 'Produto não encontrado.' });
+        return res.status(404).json({ erro: "Produto não encontrado." });
       }
 
-      return res.status(200).json({ mensagem: 'Produto removido com sucesso.' });
+      return res
+        .status(200)
+        .json({ mensagem: "Produto removido com sucesso." });
     } catch (erro) {
-      console.error('Erro ao remover produto:', erro);
-      return res.status(500).json({ erro: 'Erro ao remover produto.' });
+      console.error("Erro ao remover produto:", erro);
+      return res.status(500).json({ erro: "Erro ao remover produto." });
     }
   },
 };

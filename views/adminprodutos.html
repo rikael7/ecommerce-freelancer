@@ -1,455 +1,270 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/adminprodutos.css" />
+  </head>
 
-<title>Admin </title>
+  <body>
+    <aside class="sidebar">
+      <div class="logo-area">
+        <div class="logo-mark"></div>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/adminprodutos.css">
-
-</head>
-
-<body>
-
-<!-- =======================================================
-     SIDEBAR
-======================================================== -->
-
-<aside class="sidebar">
-
-  <div class="logo-area">
-
-    <div class="logo-mark">
-      B
-    </div>
-
-    <div class="logo-text">
-      <strong>Seu nome</strong>
-      <span>Painel administrativo</span>
-    </div>
-
-  </div>
-
-  <div class="sidebar-label">
-    Navegação
-  </div>
-
-  <nav class="sidebar-nav">
-
-    <button
-      type="button"
-      class="ativo"
-      data-aba="produtos"
-    >
-      <span class="nav-icon">▦</span>
-      <span>Produtos</span>
-    </button>
-
-    <button
-      type="button"
-      data-aba="pedidos"
-    >
-      <span class="nav-icon">▤</span>
-      <span>Pedidos</span>
-    </button>
-
-  </nav>
-
-  <div class="sidebar-bottom">
-
-    <div class="admin-profile">
-
-      <div class="admin-avatar">
-        A
+        <div class="logo-text">
+          <strong>Seu nome</strong>
+          <span>Painel administrativo</span>
+        </div>
       </div>
 
-      <div class="admin-info">
-        <strong>Administrador</strong>
-        <span>Painel interno</span>
+      <div class="sidebar-label">Navegação</div>
+
+      <nav class="sidebar-nav">
+        <button type="button" class="ativo" data-aba="produtos">
+          <span class="nav-icon">▦</span>
+          <span>Produtos</span>
+        </button>
+
+        <button type="button" data-aba="pedidos">
+          <span class="nav-icon">▤</span>
+          <span>Pedidos</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="admin-profile">
+          <div class="admin-avatar">A</div>
+
+          <div class="admin-info">
+            <strong>Administrador</strong>
+            <span>Painel interno</span>
+          </div>
+        </div>
       </div>
+    </aside>
 
-    </div>
-
-  </div>
-
-</aside>
-
-
-<!-- =======================================================
+    <!-- =======================================================
      APP
 ======================================================== -->
 
-<div class="app">
+    <div class="app">
+      <!-- HEADER -->
 
-  <!-- HEADER -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <span class="eyebrow"> Painel administrativo </span>
 
-  <header class="topbar">
+          <h1>Balcão</h1>
 
-    <div class="topbar-left">
+          <p>Gerencie produtos e acompanhe seus pedidos.</p>
+        </div>
 
-      <span class="eyebrow">
-        Painel administrativo
-      </span>
+        <div class="topbar-right">
+          <div class="topbar-status">
+            <span class="status-dot"></span>
 
-      <h1>Balcão</h1>
+            Sistema operacional
+          </div>
+        </div>
+      </header>
 
-      <p>
-        Gerencie produtos e acompanhe seus pedidos.
-      </p>
+      <!-- CONTENT -->
 
-    </div>
+      <main class="content">
+        <div class="tabs-wrapper">
+          <nav class="abas">
+            <button type="button" class="aba-btn ativa" data-aba="produtos">
+              Produtos
+            </button>
 
-    <div class="topbar-right">
+            <button type="button" class="aba-btn" data-aba="pedidos">
+              Pedidos
+            </button>
+          </nav>
+        </div>
 
-      <div class="topbar-status">
-
-        <span class="status-dot"></span>
-
-        Sistema operacional
-
-      </div>
-
-    </div>
-
-  </header>
-
-
-  <!-- CONTENT -->
-
-  <main class="content">
-
-    <div class="tabs-wrapper">
-
-      <nav class="abas">
-
-        <button
-          type="button"
-          class="aba-btn ativa"
-          data-aba="produtos"
-        >
-          Produtos
-        </button>
-
-        <button
-          type="button"
-          class="aba-btn"
-          data-aba="pedidos"
-        >
-          Pedidos
-        </button>
-
-      </nav>
-
-    </div>
-
-
-    <!-- ===================================================
+        <!-- ===================================================
          PRODUTOS
     ==================================================== -->
 
-    <section
-      id="painel-produtos"
-      class="painel ativo"
-    >
+        <section id="painel-produtos" class="painel ativo">
+          <div class="grid">
+            <!-- FORMULÁRIO -->
 
-      <div class="grid">
+            <div id="form-wrap">
+              <div class="cartao">
+                <div class="cartao-head">
+                  <h2 id="form-titulo">Novo produto</h2>
 
-        <!-- FORMULÁRIO -->
-
-        <div id="form-wrap">
-
-          <div class="cartao">
-
-            <div class="cartao-head">
-
-              <h2 id="form-titulo">
-                Novo produto
-              </h2>
-
-              <button
-                type="button"
-                class="link"
-                id="btn-cancelar-edicao"
-                hidden
-              >
-                cancelar edição
-              </button>
-
-            </div>
-
-            <form id="form-produto">
-
-              <input
-                type="hidden"
-                id="produto-id"
-              >
-
-              <div class="campo">
-
-                <label for="produto-nome">
-                  Nome do produto
-                </label>
-
-                <input
-                  type="text"
-                  id="produto-nome"
-                  required
-                  maxlength="120"
-                  placeholder="Digite o nome do produto"
-                >
-
-              </div>
-
-
-              <div class="campo">
-
-                <label for="produto-descricao">
-                  Descrição
-                </label>
-
-                <textarea
-                  id="produto-descricao"
-                  maxlength="300"
-                  placeholder="Descrição opcional"
-                ></textarea>
-
-              </div>
-
-
-              <div class="linha-dupla">
-
-                <div class="campo">
-
-                  <label for="produto-preco">
-                    Preço
-                  </label>
-
-                  <input
-                    type="number"
-                    id="produto-preco"
-                    step="0.01"
-                    min="0"
-                    required
-                    placeholder="0,00"
+                  <button
+                    type="button"
+                    class="link"
+                    id="btn-cancelar-edicao"
+                    hidden
                   >
-
+                    cancelar edição
+                  </button>
                 </div>
 
+                <form id="form-produto">
+                  <input type="hidden" id="produto-id" />
 
-                <div class="campo">
+                  <div class="campo">
+                    <label for="produto-nome"> Nome do produto </label>
 
-                  <label for="produto-preco-antigo">
-                    Preço antigo
+                    <input
+                      type="text"
+                      id="produto-nome"
+                      required
+                      maxlength="120"
+                      placeholder="Digite o nome do produto"
+                    />
+                  </div>
+
+                  <div class="campo">
+                    <label for="produto-descricao"> Descrição </label>
+
+                    <textarea
+                      id="produto-descricao"
+                      maxlength="300"
+                      placeholder="Descrição opcional"
+                    ></textarea>
+                  </div>
+
+                  <div class="linha-dupla">
+                    <div class="campo">
+                      <label for="produto-preco"> Preço </label>
+
+                      <input
+                        type="number"
+                        id="produto-preco"
+                        step="0.01"
+                        min="0"
+                        required
+                        placeholder="0,00"
+                      />
+                    </div>
+
+                    <div class="campo">
+                      <label for="produto-preco-antigo"> Preço antigo </label>
+
+                      <input
+                        type="number"
+                        id="produto-preco-antigo"
+                        step="0.01"
+                        min="0"
+                        placeholder="Opcional"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="campo">
+                    <label for="produto-estoque"> Estoque </label>
+
+                    <input
+                      type="number"
+                      id="produto-estoque"
+                      step="1"
+                      min="0"
+                      required
+                      placeholder="0"
+                    />
+                  </div>
+
+                  <label class="campo-check">
+                    <input type="checkbox" id="produto-ativo" checked />
+
+                    produto ativo (visível no balcão)
                   </label>
 
-                  <input
-                    type="number"
-                    id="produto-preco-antigo"
-                    step="0.01"
-                    min="0"
-                    placeholder="Opcional"
-                  >
+                  <div class="acoes-form">
+                    <button
+                      type="submit"
+                      class="btn btn-primario"
+                      id="btn-salvar"
+                    >
+                      Adicionar produto
+                    </button>
+                  </div>
 
-                </div>
-
+                  <p class="form-msg" id="form-msg"></p>
+                </form>
               </div>
-
-
-              <div class="campo">
-
-                <label for="produto-estoque">
-                  Estoque
-                </label>
-
-                <input
-                  type="number"
-                  id="produto-estoque"
-                  step="1"
-                  min="0"
-                  required
-                  placeholder="0"
-                >
-
-              </div>
-
-
-              <label class="campo-check">
-
-                <input
-                  type="checkbox"
-                  id="produto-ativo"
-                  checked
-                >
-
-                produto ativo (visível no balcão)
-
-              </label>
-
-
-              <div class="acoes-form">
-
-                <button
-                  type="submit"
-                  class="btn btn-primario"
-                  id="btn-salvar"
-                >
-                  Adicionar produto
-                </button>
-
-              </div>
-
-
-              <p
-                class="form-msg"
-                id="form-msg"
-              ></p>
-
-            </form>
-
-          </div>
-
-        </div>
-
-
-        <!-- CATÁLOGO -->
-
-        <div class="cartao">
-
-          <div class="cartao-head">
-
-            <h2>
-              Catálogo
-            </h2>
-
-            <span
-              class="info"
-              id="contagem-produtos"
-            ></span>
-
-          </div>
-
-          <div id="produtos-wrap">
-
-            <div
-              class="estado"
-              id="estado-produtos"
-            >
-              carregando produtos…
             </div>
 
+            <!-- CATÁLOGO -->
+
+            <div class="cartao">
+              <div class="cartao-head">
+                <h2>Catálogo</h2>
+
+                <span class="info" id="contagem-produtos"></span>
+              </div>
+
+              <div id="produtos-wrap">
+                <div class="estado" id="estado-produtos">
+                  carregando produtos…
+                </div>
+              </div>
+            </div>
           </div>
+        </section>
 
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- ===================================================
+        <!-- ===================================================
          PEDIDOS
     ==================================================== -->
 
-    <section
-      id="painel-pedidos"
-      class="painel"
-    >
+        <section id="painel-pedidos" class="painel">
+          <div class="cartao">
+            <div class="cartao-head">
+              <h2>Todos os pedidos</h2>
 
-      <div class="cartao">
+              <div class="filtros" id="filtros-pedidos">
+                <button
+                  type="button"
+                  class="filtro-btn ativo"
+                  data-status="todos"
+                >
+                  todos
+                </button>
 
-        <div class="cartao-head">
+                <button type="button" class="filtro-btn" data-status="pendente">
+                  pendente
+                </button>
 
-          <h2>
-            Todos os pedidos
-          </h2>
+                <button type="button" class="filtro-btn" data-status="approved">
+                  aprovado
+                </button>
 
+                <button type="button" class="filtro-btn" data-status="rejected">
+                  rejeitado
+                </button>
+              </div>
 
-          <div
-            class="filtros"
-            id="filtros-pedidos"
-          >
+              <div>
+                <span class="info" id="contagem-pedidos"></span>
 
-            <button
-              type="button"
-              class="filtro-btn ativo"
-              data-status="todos"
-            >
-              todos
-            </button>
+                <button type="button" class="link" id="btn-atualizar-pedidos">
+                  atualizar
+                </button>
+              </div>
+            </div>
 
-            <button
-              type="button"
-              class="filtro-btn"
-              data-status="pendente"
-            >
-              pendente
-            </button>
-
-            <button
-              type="button"
-              class="filtro-btn"
-              data-status="approved"
-            >
-              aprovado
-            </button>
-
-            <button
-              type="button"
-              class="filtro-btn"
-              data-status="rejected"
-            >
-              rejeitado
-            </button>
-
+            <div id="pedidos-wrap">
+              <div class="estado" id="estado-pedidos">carregando pedidos…</div>
+            </div>
           </div>
+        </section>
+      </main>
+    </div>
 
-
-          <div>
-
-            <span
-              class="info"
-              id="contagem-pedidos"
-            ></span>
-
-            <button
-              type="button"
-              class="link"
-              id="btn-atualizar-pedidos"
-            >
-              atualizar
-            </button>
-
-          </div>
-
-        </div>
-
-
-        <div id="pedidos-wrap">
-
-          <div
-            class="estado"
-            id="estado-pedidos"
-          >
-            carregando pedidos…
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-  </main>
-
-</div>
-
-
-<script src="/js/adminprodutos.js"></script>
-
-</body>
+    <script src="/js/adminprodutos.js"></script>
+  </body>
 </html>
