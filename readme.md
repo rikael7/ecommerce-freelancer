@@ -121,7 +121,7 @@ A exclusão de produtos é feita de maneira lógica, mantendo o registro no banc
 
 ## Página de produto
 
-![Produto](./docs/produto.png)
+![Produto](./docs/produto.PNG)
 
 ## Carrinho
 
