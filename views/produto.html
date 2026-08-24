@@ -711,7 +711,7 @@
         border: 0;
       }
 
-            .see-more-about {
+      .see-more-about {
         color: var(--color-orange);
         font-weight: 700;
         font-size: 13.5px;
@@ -723,7 +723,6 @@
         border: 0;
         display: flex;
       }
-
 
       .see-more svg {
         width: 14px;
@@ -765,7 +764,6 @@
         color: #1c2a3a;
         margin-bottom: 18px;
       }
-
 
       .spec-heading svg {
         width: 20px;
@@ -1676,21 +1674,6 @@
       }
     </style>
 
-    <!-- ================= TOPBAR ================= -->
-    <div class="topbar">
-      <div class="container">
-        <div class="topbar-left">
-          <a href="#">Minha Conta</a>
-          <a href="#">Acompanhe seus pedidos</a>
-          <a href="#">Como Comprar</a>
-          <a href="#">Trabalhe Conosco</a>
-        </div>
-        <div class="topbar-left">
-          <a href="#">Vendas corporativas: (11) 3185-6786</a>
-          <a href="#">Central de Ajuda</a>
-        </div>
-      </div>
-    </div>
 
     <!-- ================= HEADER ================= -->
     <header class="main-header">
@@ -1724,7 +1707,15 @@
             </svg>
             <span>Entrar / <strong>Cadastrar</strong></span>
           </a>
-          <a href="#" class="header-action cart-trigger" id="cartTrigger" onclick="toggleCartDrawer(true); return false;">
+          <a
+            href="#"
+            class="header-action cart-trigger"
+            id="cartTrigger"
+            onclick="
+              toggleCartDrawer(true);
+              return false;
+            "
+          >
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -1747,7 +1738,11 @@
     </header>
 
     <!-- ================= CARRINHO (drawer) ================= -->
-    <div class="cart-overlay" id="cartOverlay" onclick="toggleCartDrawer(false)"></div>
+    <div
+      class="cart-overlay"
+      id="cartOverlay"
+      onclick="toggleCartDrawer(false)"
+    ></div>
     <aside class="cart-drawer" id="cartDrawer">
       <div class="cart-drawer-header">
         <span>Meu Carrinho</span>
@@ -1757,24 +1752,12 @@
         <div class="cart-empty">Seu carrinho está vazio.</div>
       </div>
       <div class="cart-drawer-footer">
-        <div class="cart-total-row"><span>Total</span><span id="cartDrawerTotal">R$ 0,00</span></div>
+        <div class="cart-total-row">
+          <span>Total</span><span id="cartDrawerTotal">R$ 0,00</span>
+        </div>
         <a href="/cart" class="cart-checkout-btn">Finalizar compra</a>
       </div>
     </aside>
-
-    <!-- ================= MENU DE CATEGORIAS ================= -->
-    <nav class="category-nav">
-      <div class="container">
-        <a href="#" class="all-cats">☰ Todas as categorias</a>
-        <a href="#">Ferramentas Manuais</a>
-        <a href="#">Ferramentas Elétricas</a>
-        <a href="#">Ferramentas Automotivas</a>
-        <a href="#">Equipamento Caminhões</a>
-        <a href="#">EPI</a>
-        <a href="#">Ferramentas em Geral</a>
-        <a href="#">Black Friday</a>
-      </div>
-    </nav>
 
     <main>
       <div class="container">
@@ -1816,9 +1799,7 @@
               <span class="badge-best">🔥 Mais vendido</span>
               <a href="#" class="badge-rank">17º Lugar em Bancada</a>
             </div>
-            <h1 class="product-title" id="productTitle">
-              
-            </h1>
+            <h1 class="product-title" id="productTitle"></h1>
             <div class="rating-row">
               <span class="stars" aria-label="5.0 de 5 estrelas">
                 <svg viewBox="0 0 20 20" class="star-full">
@@ -2200,9 +2181,7 @@
             </svg>
             Sobre o Produto
           </div>
-            <div class="about-row">
-              Descrição do Produto Aqui
-            </div>
+          <div class="about-row">Descrição do Produto Aqui</div>
 
           <button class="see-more-about" id="seeMoreBtn">
             Ver detalhes
@@ -2619,174 +2598,6 @@
       </section>
     </main>
 
-    <!-- ================= RODAPÉ ================= -->
-    <footer class="footer">
-      <div class="container footer-cats">
-        <div class="footer-grid">
-          <div class="footer-col">
-            <ul>
-              <li><a href="#">Minha Conta</a></li>
-              <li><a href="#">Acompanhe seus pedidos</a></li>
-              <li><a href="#">Como Comprar</a></li>
-              <li><a href="#">Entrega</a></li>
-              <li><a href="#">Formas de Pagamento</a></li>
-              <li><a href="#">Nosso Blog</a></li>
-              <li><a href="#">Trabalhe Conosco</a></li>
-              <li><a href="#">LGPD</a></li>
-              <li><a href="#">Garantia Estendida</a></li>
-              <li><a href="#">Cupons de Desconto</a></li>
-              <li><a href="#">Black Friday</a></li>
-            </ul>
-          </div>
-          <div class="footer-col corporate">
-            <h4>Vendas corporativas</h4>
-            <span class="underline"></span>
-            <div class="phone">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-              >
-                <path
-                  d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"
-                />
-              </svg>
-              (11) 3185-6786
-            </div>
-            <div class="mail">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-              >
-                <rect x="2" y="4" width="20" height="16" rx="2" />
-                <path d="m22 6-10 7L2 6" />
-              </svg>
-              corporativo@lojadomecanico.com.br
-            </div>
-          </div>
-          <div class="footer-col categories">
-            <ul>
-              <li class="category"><a href="#">Ferramentas Manuais</a></li>
-              <li class="category">
-                <a href="#">Injeção Eletrônica e Motor</a>
-              </li>
-              <li class="category"><a href="#">Ferramentas Pneumáticas</a></li>
-              <li class="category"><a href="#">Lava Jato e Posto</a></li>
-              <li class="category"><a href="#">Ferramentas Automotivas</a></li>
-              <li class="category"><a href="#">Jardinagem</a></li>
-              <li class="category"><a href="#">Construção Civil</a></li>
-              <li class="category"><a href="#">Funilaria e Pintura</a></li>
-            </ul>
-          </div>
-          <div class="footer-col categories">
-            <ul>
-              <li class="category"><a href="#">EPI</a></li>
-              <li class="category"><a href="#">Borracharia</a></li>
-              <li class="category"><a href="#">Ferramentas em Geral</a></li>
-              <li class="category"><a href="#">Equipamento Caminhões</a></li>
-              <li class="category"><a href="#">Para Você e Sua Casa</a></li>
-              <li class="category"><a href="#">Aditivos e Lubrificantes</a></li>
-              <li class="category"><a href="#">Movimentação e Carga</a></li>
-              <li class="category"><a href="#">Camping e Hobby</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="footer-brands container">
-        <b>Navegue pelas Marcas:</b>
-        A - B - C - D - E - F - G - H - I - J - K - L - M - N - O - P - Q - R -
-        S - T - U - V - W - X - Y - Z
-      </div>
-
-      <div class="container footer-utility">
-        <div class="footer-utility-top">
-          <div class="footer-links">
-            <a href="#">Atendimento</a>
-            <a href="#">Central de ajuda</a>
-            <a href="#">Troca e Devolução</a>
-            <a href="#">Quem somos</a>
-            <a href="#">Segurança</a>
-            <a href="#">Entrega</a>
-          </div>
-          <div class="footer-app">
-            <div>
-              <h5>BAIXE NOSSO APP</h5>
-              <div class="qr-box"></div>
-            </div>
-            <div class="store-badges">
-              <span>🍎 App Store</span>
-              <span>▶ Google Play</span>
-            </div>
-          </div>
-          <div class="footer-certs">
-            <div>
-              <h5>CERTIFICADOS</h5>
-              <div style="display: flex; gap: 10px">
-                <div class="cert-badge">💎<br />EXCELENTE</div>
-                <div class="cert-badge">🏆<br />PRÊMIO 2025</div>
-                <div class="cert-badge">✔<br />Verificada por ReclameAQUI</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="footer-meta">
-          <div>
-            <p>
-              Em caso de divergência de preços no site, o valor válido é o do
-              Carrinho de Compras.<br />
-              Razão Social: GurgelMix Máquinas e Ferramentas S.A. CNPJ:
-              29.302.348/0001-15 - Matriz: Avenida Alagoas, 1193, Jardim
-              Paulista - Franca-SP - 14401-402
-            </p>
-            <div class="footer-brazil">🇧🇷 EMPRESA 100% BRASILEIRA</div>
-            <div class="footer-social">
-              <a href="#" aria-label="Facebook"
-                ><svg viewBox="0 0 24 24" fill="currentColor">
-                  <path
-                    d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0 0 22 12Z"
-                  /></svg
-              ></a>
-              <a href="#" aria-label="Youtube"
-                ><svg viewBox="0 0 24 24" fill="currentColor">
-                  <path
-                    d="M23 12s0-3.6-.5-5.3a3 3 0 0 0-2.1-2.1C18.7 4 12 4 12 4s-6.7 0-8.4.6A3 3 0 0 0 1.5 6.7C1 8.4 1 12 1 12s0 3.6.5 5.3a3 3 0 0 0 2.1 2.1C5.3 20 12 20 12 20s6.7 0 8.4-.6a3 3 0 0 0 2.1-2.1c.5-1.7.5-5.3.5-5.3ZM10 15.5v-7l6 3.5Z"
-                  /></svg
-              ></a>
-              <a href="#" aria-label="Instagram"
-                ><svg viewBox="0 0 24 24" fill="currentColor">
-                  <path
-                    d="M12 2c-2.7 0-3 0-4.1.06-1.1.06-1.85.24-2.5.5a5 5 0 0 0-1.83 1.19A5 5 0 0 0 2.56 5.6c-.27.66-.45 1.4-.5 2.5C2 9.2 2 9.5 2 12.2s0 3 .06 4.1c.06 1.1.24 1.85.5 2.5a5 5 0 0 0 1.19 1.83 5 5 0 0 0 1.83 1.19c.66.27 1.4.45 2.5.5C9.2 22 9.5 22 12.2 22s3 0 4.1-.06c1.1-.06 1.85-.24 2.5-.5a5 5 0 0 0 1.83-1.19 5 5 0 0 0 1.19-1.83c.27-.66.45-1.4.5-2.5.06-1.1.06-1.4.06-4.1s0-3-.06-4.1c-.06-1.1-.24-1.85-.5-2.5a5 5 0 0 0-1.19-1.83A5 5 0 0 0 18.6 2.56c-.66-.27-1.4-.45-2.5-.5C15 2 14.7 2 12 2Zm0 1.8c2.66 0 2.97 0 4 .06.97.04 1.5.2 1.85.34.46.18.8.4 1.15.75.35.35.57.68.75 1.15.13.36.3.88.34 1.85.06 1.03.06 1.34.06 4s0 2.97-.06 4c-.04.97-.2 1.5-.34 1.85-.18.46-.4.8-.75 1.15-.35.35-.68.57-1.15.75-.36.13-.88.3-1.85.34-1.03.06-1.34.06-4 .06s-2.97 0-4-.06c-.97-.04-1.5-.2-1.85-.34a3.1 3.1 0 0 1-1.15-.75 3.1 3.1 0 0 1-.75-1.15c-.13-.36-.3-.88-.34-1.85C3.8 14.97 3.8 14.66 3.8 12s0-2.97.06-4c.04-.97.2-1.5.34-1.85.18-.46.4-.8.75-1.15.35-.35.68-.57 1.15-.75.36-.13.88-.3 1.85-.34C8.03 3.8 8.34 3.8 12 3.8Zm0 3.05a5.15 5.15 0 1 0 0 10.3 5.15 5.15 0 0 0 0-10.3Zm0 8.5a3.35 3.35 0 1 1 0-6.7 3.35 3.35 0 0 1 0 6.7Zm5.35-8.7a1.2 1.2 0 1 1-2.4 0 1.2 1.2 0 0 1 2.4 0Z"
-                  /></svg
-              ></a>
-              <a href="#" aria-label="TikTok"
-                ><svg viewBox="0 0 24 24" fill="currentColor">
-                  <path
-                    d="M14 3c.3 2 1.7 3.4 4 3.7v2.6c-1.4 0-2.7-.4-4-1.2v6.2A5.7 5.7 0 1 1 8.5 8.7v2.7a3 3 0 1 0 2.5 3V3Z"
-                  /></svg
-              ></a>
-            </div>
-          </div>
-          <div class="footer-copy">
-            Copyright © 2000-2026 Loja do Mecânico - Todos os direitos
-            reservados.
-          </div>
-        </div>
-      </div>
-
-      <div
-        class="footer-brands container"
-        style="border-top: 1px solid var(--color-border); border-bottom: 0"
-      >
-        <b>Navegue pelas Marcas:</b>
-        A - B - C - D - E - F - G - H - I - J - K - L - M - N - O - P - Q - R -
-        S - T - U - V - W - X - Y - Z
-      </div>
-    </footer>
 
     <script>
       // ========
@@ -3231,7 +3042,10 @@
 
       function formatBRL(valor) {
         const n = Number(valor) || 0;
-        return n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+        return n.toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        });
       }
 
       function getCarrinho() {
