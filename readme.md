@@ -119,27 +119,30 @@ A exclusão de produtos é feita de maneira lógica, mantendo o registro no banc
 
 ## Página inicial / Loja
 
-![Loja](./docs/loja.png)
+![Loja](./docs/lojadomecanico.png)
 
 ## Página de produto
 
 ![Produto](./docs/produto.png)
 
-## Login
+## Carrinho
 
-![Login](./docs/login.png)
+![Cart](./docs/cart.png)
+
+## Identificação 1/2
+
+![Cart](./docs/cart.png)
+
+## Identificação 2/2
+
+![Cart](./docs/cart.png)
+
 
 ## Cadastro
 
 ![Cadastro](./docs/register.png)
 
-## Checkout
 
-![Checkout](./docs/checkout.png)
-
-## Administração de produtos
-
-![Administração](./docs/adminprodutos.png)
 
 > Caso os nomes das imagens sejam diferentes no repositório, ajuste os caminhos acima para corresponder aos arquivos presentes na pasta `docs`.
 
